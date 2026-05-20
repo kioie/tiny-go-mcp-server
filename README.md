@@ -1,109 +1,185 @@
-# Nimble Go MCP Server
+# Tiny Go MCP Server
 
-A lightweight, spec-faithful, and high-performance **Model Context Protocol (MCP) server** written in Go using the official `github.com/modelcontextprotocol/go-sdk`. 
+[![CI](https://github.com/kioie/mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/kioie/mcp-server/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/kioie/mcp-server/tinymcp.svg)](https://pkg.go.dev/github.com/kioie/mcp-server/tinymcp)
 
-This server is designed to compile into an ultra-small statically linked binary (~5MB) with **zero runtime dependencies** on the host machine. It automatically generates JSON Schemas for its tools using standard Go struct reflection—eliminating manual schema definitions.
+A lightweight **Model Context Protocol (MCP)** toolkit for Go. Build spec-compliant, stdio-based MCP servers that AI clients can discover and call — with minimal boilerplate and automatic JSON Schema generation from Go structs.
 
-[![CI Build & Test](https://github.com/kioie/mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/kioie/mcp-server/actions)
-
----
-
-## 🛠️ Features
-
-* **Zero Fluff**: 100% self-contained statically compiled binary requiring no Go runtime, node/python runtime, or virtual environment.
-* **Automatic Schema Reflection**: Uses standard Go structs with `jsonschema` tags to dynamically define tool parameter configurations.
-* **Spec-Faithful**: Leverages the official, Google-collaborative `go-sdk` for fully compliant MCP communications.
-* **Highly Optimized**: Complete make task suite for producing stripped, size-optimized binaries.
-* **Comprehensive Test Suite**: Exposes full coverage including unit testing for core helpers and mocked handler tests for complete JSON-RPC validation.
+Built on the official [`modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk).
 
 ---
 
-## 🚀 Exposed Tools
+## Why Tiny?
 
-1. **`add`**: Adds two integers together and returns the sum (args: `a`, `b`).
-2. **`subtract`**: Subtracts integer B from integer A (args: `a`, `b`).
-3. **`greet`**: Personalized greeting generator (args: `name` (required), `greeting` (optional)).
+| | Tiny Go MCP Server | Full frameworks |
+|---|---|---|
+| **Goal** | Thin wrapper + tiny static binary | Full MCP feature surface |
+| **Deps** | Official go-sdk only | Varies |
+| **Binary** | ~5MB stripped, no runtime on host | Often larger stacks |
+| **Schemas** | Inferred from struct tags | Manual or builder APIs |
+
+Use this project as a **library** (`tinymcp` package) or as a **starting template** (`cmd/tinymcp`).
 
 ---
 
-## 📦 Getting Started
+## Quick start (library)
 
-### 📋 Prerequisites
-* [Go 1.25+](https://go.dev/dl/) installed locally (only required for building/testing; running the compiled binary has no prerequisites).
+```bash
+go get github.com/kioie/mcp-server/tinymcp@latest
+```
 
-### 📥 Installation
-Clone the repository:
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/kioie/mcp-server/tinymcp"
+	"github.com/modelcontextprotocol/go-sdk/mcp"
+)
+
+type greetArgs struct {
+	Name string `json:"name" jsonschema:"Person to greet"`
+}
+
+func main() {
+	s := tinymcp.NewServer("my-mcp", "1.0.0")
+	_ = tinymcp.RegisterTool(s, "greet", "Greet someone by name", greet)
+	log.Fatal(s.Start())
+}
+
+func greet(_ context.Context, _ *mcp.CallToolRequest, args greetArgs) (*mcp.CallToolResult, any, error) {
+	return tinymcp.TextResult(fmt.Sprintf("Hello, %s!", args.Name)), nil, nil
+}
+```
+
+See [`examples/minimal`](examples/minimal) for a runnable copy-paste example.
+
+---
+
+## Install the example server
+
+```bash
+go install github.com/kioie/mcp-server/cmd/tinymcp@latest
+```
+
+Or build from source:
+
 ```bash
 git clone https://github.com/kioie/mcp-server.git
 cd mcp-server
+make release   # stripped binary → ./tiny-go-mcp
 ```
+
+### Example tools (reference server)
+
+| Tool | Description | Arguments |
+|------|-------------|-----------|
+| `add` | Add two integers | `a`, `b` |
+| `subtract` | Subtract integers | `a`, `b` |
+| `greet` | Personalized greeting | `name` (required), `greeting` (optional) |
 
 ---
 
-## 🛠️ Makefile Commands
+## Connect AI clients
 
-The included `Makefile` covers all essential workflows:
+MCP servers communicate over **stdio**. Point your client at the compiled binary path.
 
-### 🧪 Run the Test Suite
-Executes all unit and integration mock tests with full verbose logs:
-```bash
-make test
-```
+### Cursor
 
-### 🔨 Standard Dev Build
-Compiles a standard binary with debug tables:
-```bash
-make build
-```
+Settings → **Features → MCP** → Add server:
 
-### ⚡ Highly Optimized Statically Compiled Release Build
-Strips DWARF debug symbols and symbol tables to yield an ultra-small, lightning-fast binary (down to ~5MB):
-```bash
-make release
-```
+- **Name**: `tiny-go-mcp`
+- **Type**: `stdio`
+- **Command**: `/absolute/path/to/tiny-go-mcp`
 
-### 🧹 Clean Build Artifacts
-```bash
-make clean
-```
-
----
-
-## 📉 Ultimate Compression: Down to ~1.8MB
-If you want the absolute ultimate in size minimization, you can compress the stripped binary with **[UPX](https://upx.github.io/)** (Ultimate Packer for eXecutables):
-
-```bash
-# First create the stripped release binary
-make release
-
-# Pack with UPX
-upx --best --lzma mcp-server
-```
-This compresses the executable down to **~1.8MB** while retaining instantaneous startup times.
-
----
-
-## 🤖 Client Integration
-
-To register this server with your favorite AI environments, compile the binary and add it to your configuration file.
-
-### 1. Claude Desktop
-Add this to your `claude_desktop_config.json` (usually at `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS):
+Or add to `.cursor/mcp.json` in your project:
 
 ```json
 {
   "mcpServers": {
-    "nimble-go-mcp": {
-      "command": "/absolute/path/to/mcp-server"
+    "tiny-go-mcp": {
+      "command": "/absolute/path/to/tiny-go-mcp"
     }
   }
 }
 ```
 
-### 2. Cursor IDE
-1. Open Cursor settings and navigate to **Features > MCP**.
-2. Click **+ Add New MCP Server**.
-3. Fill in details:
-   * **Name**: `nimble-go-mcp`
-   * **Type**: `stdio`
-   * **Command**: `/absolute/path/to/mcp-server`
+### Claude Desktop
+
+`~/Library/Application Support/Claude/claude_desktop_config.json` (macOS):
+
+```json
+{
+  "mcpServers": {
+    "tiny-go-mcp": {
+      "command": "/absolute/path/to/tiny-go-mcp"
+    }
+  }
+}
+```
+
+### Tips for LLM-friendly tools
+
+- Use clear **tool names** (`snake_case`) and **one-sentence descriptions** — models pick tools from these.
+- Add `jsonschema` tags on struct fields so argument docs appear in the schema.
+- Return human-readable text via `tinymcp.TextResult` for predictable client display.
+- See [AGENTS.md](AGENTS.md) for conventions when extending this repo with AI assistants.
+
+---
+
+## Package API
+
+```go
+server := tinymcp.NewServer("name", "version")
+tinymcp.RegisterTool(server, name, description, handler) // typed handler, auto schema
+server.Start()                                              // stdio transport
+tinymcp.TextResult("message")                               // helper for text tools
+server.RawServer()                                          // escape hatch to go-sdk
+```
+
+Documentation: [pkg.go.dev/github.com/kioie/mcp-server/tinymcp](https://pkg.go.dev/github.com/kioie/mcp-server/tinymcp)
+
+---
+
+## Development
+
+| Command | Description |
+|---------|-------------|
+| `make test` | Run tests with race detector |
+| `make lint` | golangci-lint |
+| `make coverage` | Coverage report |
+| `make build` | Dev binary `./tiny-go-mcp` |
+| `make release` | Stripped static binary |
+| `make install` | `go install` to `$GOPATH/bin` |
+
+### Smaller binaries (~1.8MB)
+
+After `make release`, optionally pack with [UPX](https://upx.github.io/):
+
+```bash
+upx --best --lzma tiny-go-mcp
+```
+
+---
+
+## Project structure
+
+```
+tinymcp/           # Library package
+cmd/tinymcp/       # Reference MCP server
+examples/minimal/  # Minimal example
+.github/workflows/ # CI, lint, CodeQL, releases
+```
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). CI runs tests, lint, and CodeQL; Dependabot keeps Go and Actions dependencies updated.
+
+## License
+
+MIT — see [LICENSE](LICENSE).

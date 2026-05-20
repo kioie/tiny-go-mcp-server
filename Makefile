@@ -1,23 +1,30 @@
-.PHONY: all build release test clean
+.PHONY: all build release test lint coverage clean install
 
-# The binary name
-BINARY_NAME=mcp-server
+BINARY_NAME=tiny-go-mcp
+CMD=./cmd/tinymcp
+LDFLAGS=-s -w
 
 all: test build
 
-# Standard build for development
 build:
-	go build -o $(BINARY_NAME) main.go
+	go build -o $(BINARY_NAME) $(CMD)
 
-# Stripped, size-optimized release build
 release:
-	go build -ldflags="-s -w" -o $(BINARY_NAME) main.go
+	CGO_ENABLED=0 go build -ldflags="$(LDFLAGS)" -o $(BINARY_NAME) $(CMD)
 
-# Run all unit and integration tests
+install:
+	go install $(CMD)
+
 test:
-	go test -v ./...
+	go test -race -v ./...
 
-# Clean build artifacts
+lint:
+	golangci-lint run ./...
+
+coverage:
+	go test -race -coverprofile=coverage.out -covermode=atomic ./...
+	go tool cover -func=coverage.out
+
 clean:
-	rm -f $(BINARY_NAME)
+	rm -f $(BINARY_NAME) tinymcp.exe coverage.out
 	go clean

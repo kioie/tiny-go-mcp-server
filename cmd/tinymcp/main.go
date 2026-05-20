@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/kioie/mcp-server/tinymcp"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -29,51 +30,54 @@ type GreetArguments struct {
 }
 
 func main() {
-	// Initialize the MCP server with clean implementation info
-	server := mcp.NewServer(
-		&mcp.Implementation{
-			Name:    "nimble-go-mcp",
-			Version: "1.0.0",
-		},
-		nil,
-	)
+	// Initialize the Tiny Go MCP Server
+	server := tinymcp.NewServer("tiny-go-mcp", "1.0.0")
 
-	// Register tools to the server
+	// Register tools to the server using the simplified tinymcp library
 	if err := RegisterTools(server); err != nil {
 		log.Fatalf("Failed to register tools: %v", err)
 	}
 
 	// Serve the MCP server over standard input/output (stdio)
-	log.Println("Starting nimble Go MCP server over stdin/stdout...")
-	if err := server.Run(context.Background(), &mcp.StdioTransport{}); err != nil {
+	log.Println("Starting Tiny Go MCP server over stdin/stdout...")
+	if err := server.Start(); err != nil {
 		fmt.Fprintf(os.Stderr, "Fatal server error: %v\n", err)
 		os.Exit(1)
 	}
 }
 
-// RegisterTools configures and maps all tools to the given MCP server.
-func RegisterTools(server *mcp.Server) error {
+// RegisterTools configures and maps all tools to the given TinyServer.
+func RegisterTools(server *tinymcp.TinyServer) error {
 	if server == nil {
 		return errors.New("cannot register tools on a nil server")
 	}
 
 	// 1. Add Tool
-	mcp.AddTool(server, &mcp.Tool{
-		Name:        "add",
-		Description: "Adds two integers together and returns the sum",
-	}, handleAdd)
+	if err := tinymcp.RegisterTool(server,
+		"add",
+		"Adds two integers together and returns the sum",
+		handleAdd,
+	); err != nil {
+		return fmt.Errorf("failed to register 'add' tool: %w", err)
+	}
 
 	// 2. Subtract Tool
-	mcp.AddTool(server, &mcp.Tool{
-		Name:        "subtract",
-		Description: "Subtracts integer B from integer A and returns the difference",
-	}, handleSubtract)
+	if err := tinymcp.RegisterTool(server,
+		"subtract",
+		"Subtracts integer B from integer A and returns the difference",
+		handleSubtract,
+	); err != nil {
+		return fmt.Errorf("failed to register 'subtract' tool: %w", err)
+	}
 
 	// 3. Greet Tool
-	mcp.AddTool(server, &mcp.Tool{
-		Name:        "greet",
-		Description: "Generates a personalized greeting message",
-	}, handleGreet)
+	if err := tinymcp.RegisterTool(server,
+		"greet",
+		"Generates a personalized greeting message",
+		handleGreet,
+	); err != nil {
+		return fmt.Errorf("failed to register 'greet' tool: %w", err)
+	}
 
 	return nil
 }
@@ -82,22 +86,14 @@ func RegisterTools(server *mcp.Server) error {
 func handleAdd(ctx context.Context, req *mcp.CallToolRequest, args AddArguments) (*mcp.CallToolResult, any, error) {
 	sum := Add(args.A, args.B)
 	resultText := fmt.Sprintf("Result of addition: %d + %d = %d", args.A, args.B, sum)
-	return &mcp.CallToolResult{
-		Content: []mcp.Content{
-			&mcp.TextContent{Text: resultText},
-		},
-	}, nil, nil
+	return tinymcp.TextResult(resultText), nil, nil
 }
 
 // handleSubtract processes subtraction tool requests.
 func handleSubtract(ctx context.Context, req *mcp.CallToolRequest, args SubtractArguments) (*mcp.CallToolResult, any, error) {
 	diff := Subtract(args.A, args.B)
 	resultText := fmt.Sprintf("Result of subtraction: %d - %d = %d", args.A, args.B, diff)
-	return &mcp.CallToolResult{
-		Content: []mcp.Content{
-			&mcp.TextContent{Text: resultText},
-		},
-	}, nil, nil
+	return tinymcp.TextResult(resultText), nil, nil
 }
 
 // handleGreet processes greet tool requests.
@@ -106,11 +102,7 @@ func handleGreet(ctx context.Context, req *mcp.CallToolRequest, args GreetArgume
 		return nil, nil, errors.New("name argument is required and cannot be empty")
 	}
 	greeting := Greet(args.Name, args.Greeting)
-	return &mcp.CallToolResult{
-		Content: []mcp.Content{
-			&mcp.TextContent{Text: greeting},
-		},
-	}, nil, nil
+	return tinymcp.TextResult(greeting), nil, nil
 }
 
 // Core Business Logic (isolated for straightforward unit testing)

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://glama.ai/schemas/mcp.json",
+  "name": "tiny-go-mcp",
+  "version": "1.0.0",
+  "title": "Tiny Go MCP Server",
+  "description": "Minimal stdio MCP server (add, subtract, greet) built with tinymcp on the official modelcontextprotocol/go-sdk. ~5MB static image, struct-derived JSON Schema.",
+  "license": "MIT",
+  "language": "go",
+  "framework": "tinymcp",
+  "type": "mcp_server",
+  "status": "stable",
+  "transport": ["stdio"],
+  "tools": 3,
+  "keywords": [
+    "mcp",
+    "go",
+    "golang",
+    "stdio",
+    "model-context-protocol",
+    "go-sdk",
+    "tinymcp",
+    "cursor",
+    "claude",
+    "llm",
+    "docker"
+  ],
+  "categories": [
+    "Developer Tools",
+    "AI Agents"
+  ],
+  "homepage": "https://github.com/kioie/tiny-go-mcp-server",
+  "repository": {
+    "url": "https://github.com/kioie/tiny-go-mcp-server",
+    "source": "github",
+    "subfolder": "cmd/tiny-go-mcp"
+  },
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/kioie/tiny-go-mcp:1.0.0",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "mcpServers": {
+    "tiny-go-mcp": {
+      "name": "tiny-go-mcp",
+      "description": "Reference tinymcp server: add, subtract, greet tools over stdio.",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "ghcr.io/kioie/tiny-go-mcp:1.0.0"
+      ],
+      "env": {
+        "TINY_GO_MCP_VERBOSE": ""
+      },
+      "capabilities": {
+        "tools": {
+          "enabled": true,
+          "listChanged": true
+        },
+        "resources": {
+          "enabled": false
+        },
+        "prompts": {
+          "enabled": false
+        }
+      },
+      "timeout": {
+        "initialize": 30000,
+        "message": 120000
+      },
+      "metadata": {
+        "version": "1.0.0",
+        "homepage": "https://github.com/kioie/tiny-go-mcp-server",
+        "license": "MIT",
+        "tags": ["go", "mcp", "stdio", "tinymcp"],
+        "categories": ["Developer Tools", "AI Agents"]
+      }
+    }
+  },
+  "maintainers": ["kioie"]
+}

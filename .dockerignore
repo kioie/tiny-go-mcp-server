@@ -1,0 +1,9 @@
+.git
+.github
+dist
+tiny-go-mcp
+tiny-go-mcp.exe
+coverage.out
+*.md
+!README.md
+.DS_Store

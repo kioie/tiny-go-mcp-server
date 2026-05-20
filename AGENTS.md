@@ -15,7 +15,7 @@ Guidance for AI coding agents working in this repository.
 ## Layout
 
 - `tinymcp/` — importable library (`github.com/kioie/tiny-go-mcp-server/tinymcp`)
-- `cmd/tinymcp/` — reference MCP server (add, subtract, greet tools)
+- `cmd/tiny-go-mcp/` — reference MCP server (add, subtract, greet tools)
 - `examples/minimal/` — smallest possible server for copy-paste
 
 ## MCP tool conventions

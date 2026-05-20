@@ -4,7 +4,7 @@ A lightweight, spec-faithful, and high-performance **Model Context Protocol (MCP
 
 This server is designed to compile into an ultra-small statically linked binary (~5MB) with **zero runtime dependencies** on the host machine. It automatically generates JSON Schemas for its tools using standard Go struct reflection—eliminating manual schema definitions.
 
-[![CI Build & Test](https://github.com/<your-username>/mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-username>/mcp-server/actions)
+[![CI Build & Test](https://github.com/kioie/mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/kioie/mcp-server/actions)
 
 ---
 
@@ -34,7 +34,7 @@ This server is designed to compile into an ultra-small statically linked binary 
 ### 📥 Installation
 Clone the repository:
 ```bash
-git clone https://github.com/<your-username>/mcp-server.git
+git clone https://github.com/kioie/mcp-server.git
 cd mcp-server
 ```
 

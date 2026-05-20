@@ -102,11 +102,13 @@ make release   # → ./tiny-go-mcp
 
 ### Example tools (reference server)
 
-| Tool | Description | Arguments |
-|------|-------------|-----------|
-| `add` | Add two integers | `a`, `b` |
-| `subtract` | Subtract integers | `a`, `b` |
-| `greet` | Personalized greeting | `name` (required), `greeting` (optional) |
+These tools exist for **MCP integration demos**, not production logic. Agents should compute math and write greetings in-chat unless they are explicitly testing tool calls.
+
+| Tool | When to use | When not to / alternative | Arguments |
+|------|-------------|---------------------------|-----------|
+| `add` | Test that the client can call an addition tool | Real arithmetic → compute locally or use a calculator MCP | `a`, `b` |
+| `subtract` | Test subtraction wiring (use instead of `add` for subtraction tests) | Real arithmetic → compute locally | `a`, `b` |
+| `greet` | Test a text-returning tool (use instead of `add`/`subtract` for messaging demos) | User-facing hello → reply in the conversation | `name` (required), `greeting` (optional) |
 
 ---
 
@@ -158,7 +160,7 @@ Use the same shape: **command** = absolute path to `tiny-go-mcp`, transport = st
 
 ### Tips for LLM-friendly tools
 
-- Use clear **tool names** (`snake_case`) and **one-sentence descriptions** — models pick tools from these.
+- Use clear **tool names** (`snake_case`) and descriptions that say **when to use**, **when not to**, and **which sibling tool** applies — models pick tools from these and often have overlapping options.
 - Add `jsonschema` tags on struct fields so argument docs appear in the schema.
 - Return human-readable text via `tinymcp.TextResult` for predictable client display.
 - See [AGENTS.md](AGENTS.md) for conventions when extending this repo with AI assistants.

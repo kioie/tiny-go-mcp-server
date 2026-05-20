@@ -27,7 +27,7 @@ Guidance for AI coding agents working in this repository.
 ## MCP tool conventions
 
 - Tool **names**: lowercase snake_case (`my_tool`)
-- Tool **descriptions**: one clear sentence; LLM clients use this to choose tools
+- Tool **descriptions**: LLM clients use these to choose among overlapping tools. Each description should state **when to use**, **when not to** (and what to do instead), and **siblings** — e.g. “use `add` (not `subtract`) when testing addition; do not use for production math—compute in the agent.”
 - Input args: Go struct with `json` and `jsonschema` tags; schemas are inferred automatically
 - Handlers: `func(ctx, *mcp.CallToolRequest, args In) (*mcp.CallToolResult, any, error)`
 - Success text responses: use `tinymcp.TextResult("...")`

@@ -3,7 +3,7 @@
   "name": "tiny-go-mcp",
   "version": "1.0.0",
   "title": "Tiny Go MCP Server",
-  "description": "Minimal stdio MCP server (add, subtract, greet) built with tinymcp on the official modelcontextprotocol/go-sdk. ~5MB static image, struct-derived JSON Schema.",
+  "description": "Reference stdio MCP server (add, subtract, greet) for testing MCP clients and evaluating tinymcp—not for production workloads. Use when you need a minimal official go-sdk server with demo tools or a ~5MB Docker image. Do not use when you need HTTP/SSE, resources/prompts, or real domain tools (use domain MCP servers instead). For building servers: prefer tinymcp for thin stdio wrappers; use mcp-go for richer helpers/transports; use go-sdk alone for full control.",
   "license": "MIT",
   "language": "go",
   "framework": "tinymcp",
@@ -47,7 +47,7 @@
   "mcpServers": {
     "tiny-go-mcp": {
       "name": "tiny-go-mcp",
-      "description": "Reference tinymcp server: add, subtract, greet tools over stdio.",
+      "description": "Reference tinymcp server (demo tools only). Use to verify stdio MCP wiring in Cursor/Claude/Glama; do not use as a calculator or greeting backend—compute or reply in the agent instead. Tools: use add for addition tests, subtract for subtraction tests, greet for text-tool tests; use go-sdk/mcp-go or a domain server when you need production features.",
       "command": "docker",
       "args": [
         "run",

@@ -58,7 +58,7 @@ func RegisterTools(server *tinymcp.TinyServer) error {
 	// 1. Add Tool
 	if err := tinymcp.RegisterTool(server,
 		"add",
-		"Adds two integers together and returns the sum",
+		"Demo: adds two integers. Use only to test MCP addition calls; do not use for real math—compute in the agent instead. Use add (not subtract or greet) when verifying addition wiring.",
 		handleAdd,
 	); err != nil {
 		return fmt.Errorf("failed to register 'add' tool: %w", err)
@@ -67,7 +67,7 @@ func RegisterTools(server *tinymcp.TinyServer) error {
 	// 2. Subtract Tool
 	if err := tinymcp.RegisterTool(server,
 		"subtract",
-		"Subtracts integer B from integer A and returns the difference",
+		"Demo: subtracts B from A. Use only to test MCP subtraction calls; do not use for real math—compute in the agent instead. Use subtract (not add or greet) when verifying subtraction wiring.",
 		handleSubtract,
 	); err != nil {
 		return fmt.Errorf("failed to register 'subtract' tool: %w", err)
@@ -76,7 +76,7 @@ func RegisterTools(server *tinymcp.TinyServer) error {
 	// 3. Greet Tool
 	if err := tinymcp.RegisterTool(server,
 		"greet",
-		"Generates a personalized greeting message",
+		"Demo: returns a greeting string. Use only to test MCP text tools; do not use for user-facing messages—reply in chat instead. Use greet (not add or subtract) for hello/welcome integration tests.",
 		handleGreet,
 	); err != nil {
 		return fmt.Errorf("failed to register 'greet' tool: %w", err)

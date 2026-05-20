@@ -38,3 +38,7 @@ The example server is **`tiny-go-mcp`** (stdio). Client config template: [`examp
 > Minimal Go library on the official MCP SDK for stdio servers — struct-derived JSON Schema, ~5MB static binaries.
 
 Use this in directory listings and social posts.
+
+## Descriptions for agents
+
+Registry and directory text (`server.json`, `glama.json`) and each MCP **tool** description should tell models **when to use**, **when not to**, and **alternatives** (including sibling tools: “use `add` instead of `subtract` when …”). See [`README.md`](../README.md) “When to use what” and the reference tool table.

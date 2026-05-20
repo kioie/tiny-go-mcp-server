@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Please report security issues privately via [GitHub Security Advisories](https://github.com/kioie/mcp-server/security/advisories/new) rather than in public issues.
+Please report security issues privately via [GitHub Security Advisories](https://github.com/kioie/tiny-go-mcp-server/security/advisories/new) rather than in public issues.
 
 We will acknowledge reports promptly and work on fixes as needed.
 

@@ -10,8 +10,8 @@ Thank you for contributing to **Tiny Go MCP Server**.
 ## Setup
 
 ```bash
-git clone https://github.com/kioie/mcp-server.git
-cd mcp-server
+git clone https://github.com/kioie/tiny-go-mcp-server.git
+cd tiny-go-mcp-server
 go mod download
 ```
 
@@ -41,4 +41,4 @@ Tag with semver (`v1.0.0`). The [Release workflow](.github/workflows/release.yml
 
 ## Questions
 
-Open a [GitHub issue](https://github.com/kioie/mcp-server/issues) for bugs or feature requests.
+Open a [GitHub issue](https://github.com/kioie/tiny-go-mcp-server/issues) for bugs or feature requests.

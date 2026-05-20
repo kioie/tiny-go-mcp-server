@@ -1,7 +1,7 @@
 # Tiny Go MCP Server
 
-[![CI](https://github.com/kioie/mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/kioie/mcp-server/actions/workflows/ci.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/kioie/mcp-server/tinymcp.svg)](https://pkg.go.dev/github.com/kioie/mcp-server/tinymcp)
+[![CI](https://github.com/kioie/tiny-go-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/kioie/tiny-go-mcp-server/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/kioie/tiny-go-mcp-server/tinymcp.svg)](https://pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp)
 
 A lightweight **Model Context Protocol (MCP)** toolkit for Go. Build spec-compliant, stdio-based MCP servers that AI clients can discover and call — with minimal boilerplate and automatic JSON Schema generation from Go structs.
 
@@ -25,7 +25,7 @@ Use this project as a **library** (`tinymcp` package) or as a **starting templat
 ## Quick start (library)
 
 ```bash
-go get github.com/kioie/mcp-server/tinymcp@latest
+go get github.com/kioie/tiny-go-mcp-server/tinymcp@latest
 ```
 
 ```go
@@ -36,7 +36,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/kioie/mcp-server/tinymcp"
+	"github.com/kioie/tiny-go-mcp-server/tinymcp"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -62,14 +62,14 @@ See [`examples/minimal`](examples/minimal) for a runnable copy-paste example.
 ## Install the example server
 
 ```bash
-go install github.com/kioie/mcp-server/cmd/tinymcp@latest
+go install github.com/kioie/tiny-go-mcp-server/cmd/tinymcp@latest
 ```
 
 Or build from source:
 
 ```bash
-git clone https://github.com/kioie/mcp-server.git
-cd mcp-server
+git clone https://github.com/kioie/tiny-go-mcp-server.git
+cd tiny-go-mcp-server
 make release   # stripped binary → ./tiny-go-mcp
 ```
 
@@ -140,7 +140,7 @@ tinymcp.TextResult("message")                               // helper for text t
 server.RawServer()                                          // escape hatch to go-sdk
 ```
 
-Documentation: [pkg.go.dev/github.com/kioie/mcp-server/tinymcp](https://pkg.go.dev/github.com/kioie/mcp-server/tinymcp)
+Documentation: [pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp](https://pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp)
 
 ---
 

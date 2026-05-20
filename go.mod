@@ -1,4 +1,4 @@
-module github.com/kioie/mcp-server
+module github.com/kioie/tiny-go-mcp-server
 
 go 1.26.1
 

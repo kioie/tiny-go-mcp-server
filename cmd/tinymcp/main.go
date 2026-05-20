@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/kioie/mcp-server/tinymcp"
+	"github.com/kioie/tiny-go-mcp-server/tinymcp"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

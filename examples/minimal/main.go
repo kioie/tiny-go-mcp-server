@@ -1,7 +1,7 @@
 // Minimal example: a Tiny Go MCP server with one tool.
 //
 // Run: go run ./examples/minimal
-// Or install: go install github.com/kioie/mcp-server/examples/minimal@latest
+// Or install: go install github.com/kioie/tiny-go-mcp-server/examples/minimal@latest
 package main
 
 import (
@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/kioie/mcp-server/tinymcp"
+	"github.com/kioie/tiny-go-mcp-server/tinymcp"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

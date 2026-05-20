@@ -1,31 +1,51 @@
-name: CI Build & Test
+name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  test-and-build:
-    name: Run Tests & Build Release
+  test:
+    name: Test
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Run tests with race detector
+        run: make test
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '1.26.x'
-        cache: true
+  build:
+    name: Release build
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Compile stripped binary
+        run: make release
+      - name: Verify binary size
+        run: ls -lh tiny-go-mcp
 
-    - name: Run Tests
-      run: make test
-
-    - name: Compile Release Binary
-      run: make release
-
-    - name: Verify Binary Size
-      run: ls -lh mcp-server
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Generate coverage report
+        run: make coverage

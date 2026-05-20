@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/kioie/mcp-server/tinymcp"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -185,13 +186,7 @@ func TestRegisterTools(t *testing.T) {
 	})
 
 	t.Run("successful tool registration", func(t *testing.T) {
-		server := mcp.NewServer(
-			&mcp.Implementation{
-				Name:    "test-server",
-				Version: "1.0.0",
-			},
-			nil,
-		)
+		server := tinymcp.NewServer("test-server", "1.0.0")
 
 		err := RegisterTools(server)
 		if err != nil {

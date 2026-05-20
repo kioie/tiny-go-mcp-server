@@ -1,4 +1,4 @@
-module mcp-server
+module github.com/kioie/mcp-server
 
 go 1.26.1
 

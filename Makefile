@@ -1,7 +1,7 @@
 .PHONY: all build release test lint coverage clean install
 
 BINARY_NAME=tiny-go-mcp
-CMD=./cmd/tinymcp
+CMD=./cmd/tiny-go-mcp
 LDFLAGS=-s -w
 
 all: test build

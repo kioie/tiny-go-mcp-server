@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/kioie/tiny-go-mcp-server/tinymcp"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -24,7 +25,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Println("Tiny Go MCP example server (stdio)")
+	if os.Getenv("TINY_GO_MCP_VERBOSE") != "" {
+		log.Println("Tiny Go MCP example server (stdio)")
+	}
 	if err := server.Start(); err != nil {
 		log.Fatal(err)
 	}

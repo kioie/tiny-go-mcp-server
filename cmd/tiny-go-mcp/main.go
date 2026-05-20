@@ -38,8 +38,11 @@ func main() {
 		log.Fatalf("Failed to register tools: %v", err)
 	}
 
-	// Serve the MCP server over standard input/output (stdio)
-	log.Println("Starting Tiny Go MCP server over stdin/stdout...")
+	// Serve the MCP server over standard input/output (stdio).
+	// MCP uses stdin/stdout for the protocol; optional logs go to stderr (set TINY_GO_MCP_VERBOSE=1).
+	if os.Getenv("TINY_GO_MCP_VERBOSE") != "" {
+		log.Println("Starting Tiny Go MCP server (stdio)")
+	}
 	if err := server.Start(); err != nil {
 		fmt.Fprintf(os.Stderr, "Fatal server error: %v\n", err)
 		os.Exit(1)

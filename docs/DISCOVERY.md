@@ -1,0 +1,40 @@
+# Discovery and publishing
+
+Ways to make **Tiny Go MCP Server** visible to AI clients and the community.
+
+## Go package (library)
+
+1. Tag a semver release on GitHub (e.g. `v1.0.0`) so `go get github.com/kioie/tiny-go-mcp-server/tinymcp@latest` resolves to a stable version.
+2. pkg.go.dev indexes automatically: https://pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp
+3. Optional: add a [Go Report Card](https://goreportcard.com/report/github.com/kioie/tiny-go-mcp-server/tinymcp) badge after the first tag.
+
+## MCP server (reference binary)
+
+The example server is **`tiny-go-mcp`** (stdio). Client config template: [`examples/mcp-client-config.json`](../examples/mcp-client-config.json).
+
+### Official MCP Registry
+
+1. Install the publisher CLI: https://modelcontextprotocol.io/registry/quickstart
+2. Edit [`server.json`](../server.json) (namespace `io.github.kioie/tiny-go-mcp`).
+3. Authenticate and publish: `mcp-publisher login github` then `mcp-publisher publish`.
+
+### Community directories (manual)
+
+| Directory | How to submit |
+|-----------|----------------|
+| [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | PR to README (library + server) |
+| [mcp.so](https://mcp.so) | Site submission form |
+| [Glama](https://glama.ai/mcp) | Submission form |
+| [Smithery](https://smithery.ai) | Publisher / CLI |
+
+## GitHub repository
+
+- **About** description and **topics** (`mcp`, `go`, `model-context-protocol`, …) improve search.
+- Pin the README **Quick start** and link to `examples/minimal`.
+- GitHub **Releases** attach cross-platform binaries (see `.github/workflows/release.yml`).
+
+## Positioning one-liner
+
+> Minimal Go library on the official MCP SDK for stdio servers — struct-derived JSON Schema, ~5MB static binaries.
+
+Use this in directory listings and social posts.

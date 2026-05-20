@@ -9,5 +9,15 @@
     "url": "https://github.com/kioie/tiny-go-mcp-server",
     "source": "github",
     "subfolder": "cmd/tiny-go-mcp"
-  }
+  },
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/kioie/tiny-go-mcp:1.0.0",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
 }

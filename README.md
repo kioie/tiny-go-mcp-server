@@ -225,7 +225,7 @@ git push origin v1.0.0
 
 ## Discovery and registries
 
-See [docs/DISCOVERY.md](docs/DISCOVERY.md) for MCP Registry (`server.json`), awesome lists, and community directories.
+See [docs/DISCOVERY.md](docs/DISCOVERY.md) for MCP Registry (`server.json`), awesome lists, and community directories. For Glama hosting with Docker, see [docs/GLAMA.md](docs/GLAMA.md).
 
 ## Contributing
 

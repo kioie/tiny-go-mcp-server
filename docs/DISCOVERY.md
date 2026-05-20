@@ -24,7 +24,7 @@ The example server is **`tiny-go-mcp`** (stdio). Client config template: [`examp
 |-----------|----------------|
 | [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | PR to README (library + server) |
 | [mcp.so](https://mcp.so) | Site submission form |
-| [Glama](https://glama.ai/mcp) | Submission form |
+| [Glama](https://glama.ai/mcp/servers) | GitHub + [`Dockerfile`](../Dockerfile) + [`glama.json`](../glama.json) — [GLAMA.md](./GLAMA.md) |
 | [Smithery](https://smithery.ai) | Publisher / CLI |
 
 ## GitHub repository

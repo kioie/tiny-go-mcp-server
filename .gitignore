@@ -1,0 +1,9 @@
+# Compiled binaries
+mcp-server
+mcp-server.exe
+*.exe
+*.test
+*.prof
+
+# OS specific files
+.DS_Store

@@ -1,9 +1,9 @@
-# Binaries
-tiny-go-mcp
-tiny-go-mcp.exe
-tinymcp/tinymcp
+# Binaries (root only — do not ignore cmd/tiny-go-mcp source directory)
+/tiny-go-mcp
+/tiny-go-mcp.exe
+/tinymcp
 tinymcp.exe
-mcp-server
+/mcp-server
 mcp-server.exe
 *.exe
 *.test

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.kioie/tiny-go-mcp",
+  "title": "Tiny Go MCP Server",
+  "description": "Reference stdio MCP server (add, subtract, greet) built with the tinymcp library on the official Go SDK.",
+  "version": "1.0.0",
+  "websiteUrl": "https://github.com/kioie/tiny-go-mcp-server",
+  "repository": {
+    "url": "https://github.com/kioie/tiny-go-mcp-server",
+    "source": "github",
+    "subfolder": "cmd/tiny-go-mcp"
+  }
+}

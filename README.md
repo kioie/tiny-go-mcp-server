@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/kioie/tiny-go-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/kioie/tiny-go-mcp-server/actions/workflows/ci.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/kioie/tiny-go-mcp-server/tinymcp.svg)](https://pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kioie/tiny-go-mcp-server/tinymcp)](https://goreportcard.com/report/github.com/kioie/tiny-go-mcp-server/tinymcp)
 
 A lightweight **Model Context Protocol (MCP)** toolkit for Go. Build spec-compliant, stdio-based MCP servers that AI clients can discover and call — with minimal boilerplate and automatic JSON Schema generation from Go structs.
 
@@ -21,6 +22,21 @@ Built on the official [`modelcontextprotocol/go-sdk`](https://github.com/modelco
 | **Schemas** | Inferred from struct tags | Manual or builder APIs |
 
 Use this project as a **library** (`tinymcp` package) or as a **starting template** (`cmd/tiny-go-mcp`).
+
+### When to use what
+
+| | **tinymcp** (this repo) | **[mcp-go](https://github.com/mark3labs/mcp-go)** | **[go-sdk](https://github.com/modelcontextprotocol/go-sdk)** alone |
+|---|---|---|---|
+| **Best for** | Thin wrapper, tiny binary, official SDK | Rich helpers, large ecosystem | Full control, no extra layer |
+| **Schema** | Struct tags → auto JSON Schema | Builder APIs / helpers | `AddTool` + generics yourself |
+| **Transport** | stdio via `Start()` | stdio, SSE, HTTP, … | All transports |
+| **Deps** | go-sdk only | Standalone module | go-sdk only |
+
+Choose **tinymcp** when you want the official protocol implementation with minimal boilerplate and a small static server binary.
+
+### Transport
+
+`tinymcp.Start()` runs **stdio** (stdin/stdout) — what Cursor, Claude Desktop, and most local clients expect. For HTTP, SSE, or custom transports, use `server.RawServer()` with the [go-sdk](https://github.com/modelcontextprotocol/go-sdk) directly.
 
 ---
 
@@ -98,6 +114,10 @@ make release   # → ./tiny-go-mcp
 
 MCP servers communicate over **stdio**. Point your client at the compiled binary path.
 
+Template config: [`examples/mcp-client-config.json`](examples/mcp-client-config.json) (copy and set the absolute path to `tiny-go-mcp`).
+
+**Logging:** The protocol uses stdin/stdout. Server logs (if any) go to **stderr** only. Set `TINY_GO_MCP_VERBOSE=1` on the server process to enable startup log lines.
+
 ### Cursor
 
 Settings → **Features → MCP** → Add server:
@@ -120,7 +140,7 @@ Or add to `.cursor/mcp.json` in your project:
 
 ### Claude Desktop
 
-`~/Library/Application Support/Claude/claude_desktop_config.json` (macOS):
+`~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
 
 ```json
 {
@@ -131,6 +151,10 @@ Or add to `.cursor/mcp.json` in your project:
   }
 }
 ```
+
+### Windsurf / Zed / other stdio clients
+
+Use the same shape: **command** = absolute path to `tiny-go-mcp`, transport = stdio. Refer to your client’s MCP docs for the config file location.
 
 ### Tips for LLM-friendly tools
 
@@ -182,10 +206,26 @@ upx --best --lzma tiny-go-mcp
 tinymcp/           # Library package
 cmd/tiny-go-mcp/   # Reference MCP server
 examples/minimal/  # Minimal example
+examples/mcp-client-config.json  # Cursor/Claude-style template
+docs/DISCOVERY.md  # Registries and visibility
+server.json        # MCP Registry metadata (publish with mcp-publisher)
 .github/workflows/ # CI, lint, CodeQL, releases
 ```
 
 ---
+
+## Releases
+
+Tag a semver version (e.g. `v1.0.0`) to publish stable `go get` versions and trigger [GitHub Releases](https://github.com/kioie/tiny-go-mcp-server/releases) with cross-platform binaries.
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+## Discovery and registries
+
+See [docs/DISCOVERY.md](docs/DISCOVERY.md) for MCP Registry (`server.json`), awesome lists, and community directories.
 
 ## Contributing
 

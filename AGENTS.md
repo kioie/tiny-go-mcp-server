@@ -18,6 +18,12 @@ Guidance for AI coding agents working in this repository.
 - `cmd/tiny-go-mcp/` — reference MCP server (add, subtract, greet tools)
 - `examples/minimal/` — smallest possible server for copy-paste
 
+## API notes
+
+- Tool registration: `tinymcp.RegisterTool(server, name, desc, handler)` — package-level generic, not a method on `TinyServer`.
+- Handlers need both `tinymcp` and `github.com/modelcontextprotocol/go-sdk/mcp` imports.
+- Optional server logs: set env `TINY_GO_MCP_VERBOSE=1` (stderr only; stdio is reserved for MCP).
+
 ## MCP tool conventions
 
 - Tool **names**: lowercase snake_case (`my_tool`)
@@ -37,3 +43,7 @@ Guidance for AI coding agents working in this repository.
 ## CI expectations
 
 PRs should pass: tests (`-race`), golangci-lint, and build. Security scanning runs via CodeQL on `main`.
+
+## Publishing
+
+Registry metadata: `server.json`. Community listing steps: `docs/DISCOVERY.md`.

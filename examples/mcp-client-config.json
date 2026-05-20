@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tiny-go-mcp": {
+      "command": "/absolute/path/to/tiny-go-mcp",
+      "env": {}
+    }
+  }
+}

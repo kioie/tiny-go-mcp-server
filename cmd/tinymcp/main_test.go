@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"testing"
 
 	"github.com/kioie/mcp-server/tinymcp"
@@ -83,7 +82,7 @@ func TestGreet(t *testing.T) {
 // =============================================================================
 
 func TestHandleAdd(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	args := AddArguments{A: 12, B: 30}
 
 	result, extra, err := handleAdd(ctx, nil, args)
@@ -110,7 +109,7 @@ func TestHandleAdd(t *testing.T) {
 }
 
 func TestHandleSubtract(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	args := SubtractArguments{A: 50, B: 15}
 
 	result, extra, err := handleSubtract(ctx, nil, args)
@@ -137,9 +136,8 @@ func TestHandleSubtract(t *testing.T) {
 }
 
 func TestHandleGreet(t *testing.T) {
-	ctx := context.Background()
-
 	t.Run("valid greeting request", func(t *testing.T) {
+		ctx := t.Context()
 		args := GreetArguments{Name: "Alice", Greeting: "Bonjour"}
 		result, extra, err := handleGreet(ctx, nil, args)
 		if err != nil {
@@ -165,6 +163,7 @@ func TestHandleGreet(t *testing.T) {
 	})
 
 	t.Run("missing name error", func(t *testing.T) {
+		ctx := t.Context()
 		args := GreetArguments{Name: ""}
 		_, _, err := handleGreet(ctx, nil, args)
 		if err == nil {

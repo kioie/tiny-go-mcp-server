@@ -7,6 +7,8 @@ A lightweight **Model Context Protocol (MCP)** toolkit for Go. Build spec-compli
 
 Built on the official [`modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk).
 
+**Requirements:** Go 1.26+ ([download](https://go.dev/dl/)).
+
 ---
 
 ## Why Tiny?
@@ -18,7 +20,7 @@ Built on the official [`modelcontextprotocol/go-sdk`](https://github.com/modelco
 | **Binary** | ~5MB stripped, no runtime on host | Often larger stacks |
 | **Schemas** | Inferred from struct tags | Manual or builder APIs |
 
-Use this project as a **library** (`tinymcp` package) or as a **starting template** (`cmd/tinymcp`).
+Use this project as a **library** (`tinymcp` package) or as a **starting template** (`cmd/tiny-go-mcp`).
 
 ---
 
@@ -61,17 +63,26 @@ See [`examples/minimal`](examples/minimal) for a runnable copy-paste example.
 
 ## Install the example server
 
+Both install paths produce a binary named **`tiny-go-mcp`**:
+
 ```bash
-go install github.com/kioie/tiny-go-mcp-server/cmd/tinymcp@latest
+# Installs to $(go env GOPATH)/bin/tiny-go-mcp
+go install github.com/kioie/tiny-go-mcp-server/cmd/tiny-go-mcp@latest
 ```
 
-Or build from source:
+Or build from source (binary in the repo root):
 
 ```bash
 git clone https://github.com/kioie/tiny-go-mcp-server.git
 cd tiny-go-mcp-server
-make release   # stripped binary → ./tiny-go-mcp
+make release   # → ./tiny-go-mcp
 ```
+
+| Method | Binary name | Typical path |
+|--------|-------------|--------------|
+| `go install …/cmd/tiny-go-mcp` | `tiny-go-mcp` | `$(go env GOPATH)/bin/tiny-go-mcp` |
+| `make build` / `make release` | `tiny-go-mcp` | `./tiny-go-mcp` in the repo |
+| `make install` | `tiny-go-mcp` | `$(go env GOPATH)/bin/tiny-go-mcp` |
 
 ### Example tools (reference server)
 
@@ -153,7 +164,7 @@ Documentation: [pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp](https://
 | `make coverage` | Coverage report |
 | `make build` | Dev binary `./tiny-go-mcp` |
 | `make release` | Stripped static binary |
-| `make install` | `go install` to `$GOPATH/bin` |
+| `make install` | `go install` → `$(go env GOPATH)/bin/tiny-go-mcp` |
 
 ### Smaller binaries (~1.8MB)
 
@@ -169,7 +180,7 @@ upx --best --lzma tiny-go-mcp
 
 ```
 tinymcp/           # Library package
-cmd/tinymcp/       # Reference MCP server
+cmd/tiny-go-mcp/   # Reference MCP server
 examples/minimal/  # Minimal example
 .github/workflows/ # CI, lint, CodeQL, releases
 ```

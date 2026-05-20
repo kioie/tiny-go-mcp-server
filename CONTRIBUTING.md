@@ -18,7 +18,7 @@ go mod download
 ## Workflow
 
 1. Create a branch from `main`.
-2. Make your changes (library in `tinymcp/`, example server in `cmd/tinymcp/`).
+2. Make your changes (library in `tinymcp/`, example server in `cmd/tiny-go-mcp/`).
 3. Run checks locally:
 
    ```bash
@@ -33,7 +33,7 @@ go mod download
 1. Define an arguments struct with `json` and `jsonschema` tags.
 2. Implement a handler matching `mcp.ToolHandlerFor[YourArgs, any]`.
 3. Register with `server.RegisterTool` in `RegisterTools`.
-4. Add unit tests in `cmd/tinymcp/main_test.go`.
+4. Add unit tests in `cmd/tiny-go-mcp/main_test.go`.
 
 ## Releases
 

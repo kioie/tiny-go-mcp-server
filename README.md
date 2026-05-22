@@ -187,16 +187,37 @@ Use the same shape: **command** = absolute path to `tiny-go-mcp`, transport = st
 
 ---
 
+## Resources and prompts
+
+Register read-only context and reusable prompt templates alongside tools:
+
+```go
+_ = tinymcp.RegisterTextResource(server, "file:///info", "info", "Server metadata", "text/plain", "…")
+_ = tinymcp.RegisterPrompt(server, "code_review", "Review code", []*mcp.PromptArgument{
+    {Name: "code", Required: true},
+}, func(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
+    return tinymcp.PromptResult("Review", tinymcp.UserPromptMessage("Review:\n"+req.Params.Arguments["code"])), nil
+})
+```
+
+Runnable example: [`examples/resources`](examples/resources). For dynamic URI templates use `RegisterResourceTemplate`.
+
+---
+
 ## Package API
 
 ```go
 server := tinymcp.NewServer("name", "version")
-tinymcp.RegisterTool(server, name, description, handler) // typed handler, auto schema
+tinymcp.RegisterTool(server, name, description, handler)     // typed handler, auto schema
+tinymcp.RegisterTextResource(server, uri, name, desc, mime, text)
+tinymcp.RegisterPrompt(server, name, desc, args, handler)
 server.Start()                                              // stdio transport
 server.StartHTTP(":8080", &tinymcp.HTTPOptions{})         // streamable HTTP
 server.StartSSE(":8080", nil)                             // legacy SSE
 tinymcp.StreamableHTTPHandler(server, nil)                // mount on custom http.Server
-tinymcp.TextResult("message")                               // helper for text tools
+tinymcp.TextResult("message")                               // tool text helper
+tinymcp.TextResource(uri, mime, text)                       // resource read helper
+tinymcp.PromptResult(desc, tinymcp.UserPromptMessage("…")) // prompt helper
 server.RawServer()                                          // escape hatch to go-sdk
 ```
 
@@ -232,6 +253,7 @@ tinymcp/           # Library package
 cmd/tiny-go-mcp/   # Reference MCP server
 examples/minimal/  # Minimal stdio example
 examples/http/     # Streamable HTTP example
+examples/resources/ # Resources + prompts example
 examples/mcp-client-config.json  # Cursor/Claude-style template
 docs/HTTP.md       # stdio vs HTTP vs SSE
 docs/DISCOVERY.md  # Registries and visibility

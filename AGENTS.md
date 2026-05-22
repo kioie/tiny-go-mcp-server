@@ -12,6 +12,7 @@ Guidance for AI coding agents working in this repository.
 - **Build example server**: `make build` → `./tiny-go-mcp`
 - **Minimal example**: `go run ./examples/minimal`
 - **HTTP example**: `go run ./examples/http` (listens on `:8080`, override with `TINY_GO_MCP_ADDR`)
+- **HTTP deploy / Smithery URL**: `go run ./examples/http-deploy` — see `docs/SMITHERY.md`
 - **Resources/prompts example**: `go run ./examples/resources`
 
 ## Layout

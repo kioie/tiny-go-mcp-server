@@ -9,6 +9,8 @@ Steps and text for second-tier directories and social posts (P1).
 
 ## mcp.so
 
+**Submitted:** https://github.com/chatmcp/mcpso/issues/2470 (awaiting triage)
+
 1. Open https://mcp.so and use **Submit Server** (or equivalent form).
 2. Use this blurb:
 
@@ -28,7 +30,7 @@ go install github.com/kioie/tiny-go-mcp-server/cmd/tiny-go-mcp@latest
 
 ## Smithery
 
-**Live listing:** https://smithery.ai/servers/kioie/tiny-go-mcp
+**Live listing:** https://smithery.ai/servers/kioie/tiny-go-mcp (icon uploaded)
 
 1. Install CLI: `npm install -g @smithery/cli` (or `npx @smithery/cli`)
 2. Authenticate: `smithery auth login`
@@ -60,7 +62,10 @@ Requires Go 1.26+ and tagged submodule `template` (`template/v1.1.1+`).
 
 ## Launch post (Glama Discord / r/mcp)
 
-**Title:** Tiny Go MCP Server v1.1.0 — minimal tinymcp on official go-sdk
+**Glama Discord:** https://glama.ai/mcp/discord  
+**r/mcp:** post manually at https://www.reddit.com/r/mcp/submit/?type=TEXT (Reddit blocks automated submits)
+
+**Title:** Tiny Go MCP Server v1.1 — minimal tinymcp on official go-sdk
 
 **Body:**
 
@@ -70,6 +75,7 @@ We shipped **Tiny Go MCP Server** — a thin Go layer on the official `modelcont
 - Reference server: demo tools + resource + prompt
 - **MCP Registry:** `io.github.kioie/tiny-go-mcp` v1.1.0
 - **Glama:** https://glama.ai/mcp/servers/kioie/tiny-go-mcp-server
+- **Smithery:** https://smithery.ai/servers/kioie/tiny-go-mcp
 - **Docker:** `ghcr.io/kioie/tiny-go-mcp:1.1.0`
 
 ```bash

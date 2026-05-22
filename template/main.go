@@ -1,6 +1,6 @@
 // Scaffold a new tinymcp MCP server.
 //
-// Create a project: go create github.com/kioie/tiny-go-mcp-server/template@latest
+// Create a project: gonew github.com/kioie/tiny-go-mcp-server/template@latest example.com/my-mcp my-mcp
 package main
 
 import (

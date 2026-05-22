@@ -97,15 +97,16 @@ See [`examples/minimal`](examples/minimal) for a runnable copy-paste example.
 
 ### Scaffold a new server
 
-After tag **v1.1.1** (includes the template module):
+Requires tagged module [`template/`](template/) (v1.1.1+):
 
 ```bash
-go create github.com/kioie/tiny-go-mcp-server/template@latest
+go install golang.org/x/tools/cmd/gonew@latest
+gonew github.com/kioie/tiny-go-mcp-server/template@latest example.com/my-mcp my-mcp
 cd my-mcp
 go run .
 ```
 
-Until then, copy [`examples/minimal`](examples/minimal) or [`template/`](template/).
+Or copy [`examples/minimal`](examples/minimal) or [`template/`](template/) directly.
 
 ---
 

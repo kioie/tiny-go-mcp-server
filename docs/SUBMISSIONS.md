@@ -39,15 +39,16 @@ smithery mcp publish --name @kioie/tiny-go-mcp --transport stdio
 
 Or connect GitHub at https://smithery.ai/new if prompted.
 
-## Project scaffold (`go create`)
+## Project scaffold (`gonew`)
 
 ```bash
-go create github.com/kioie/tiny-go-mcp-server/template@latest
+go install golang.org/x/tools/cmd/gonew@latest
+gonew github.com/kioie/tiny-go-mcp-server/template@latest example.com/my-mcp my-mcp
 cd my-mcp
 go run .
 ```
 
-Requires Go 1.26+ and tagged module `template` (v1.1.0+).
+Requires Go 1.26+ and tagged submodule `template` (`template/v1.1.1+`).
 
 ## Launch post (Glama Discord / r/mcp)
 
@@ -64,7 +65,7 @@ We shipped **Tiny Go MCP Server** — a thin Go layer on the official `modelcont
 - **Docker:** `ghcr.io/kioie/tiny-go-mcp:1.1.0`
 
 ```bash
-go create github.com/kioie/tiny-go-mcp-server/template@latest
+gonew github.com/kioie/tiny-go-mcp-server/template@latest example.com/my-mcp my-mcp
 go get github.com/kioie/tiny-go-mcp-server/tinymcp@latest
 ```
 

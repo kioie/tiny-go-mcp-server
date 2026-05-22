@@ -12,6 +12,7 @@ Guidance for AI coding agents working in this repository.
 - **Build example server**: `make build` → `./tiny-go-mcp`
 - **Minimal example**: `go run ./examples/minimal`
 - **HTTP example**: `go run ./examples/http` (listens on `:8080`, override with `TINY_GO_MCP_ADDR`)
+- **Resources/prompts example**: `go run ./examples/resources`
 
 ## Layout
 
@@ -25,6 +26,8 @@ Guidance for AI coding agents working in this repository.
 - Handlers need both `tinymcp` and `github.com/modelcontextprotocol/go-sdk/mcp` imports.
 - Optional server logs: set env `TINY_GO_MCP_VERBOSE=1` (stderr only; stdio is reserved for MCP).
 - HTTP/SSE: `StartHTTP`, `StartSSE`, `StreamableHTTPHandler`, `SSEHandler` — see `docs/HTTP.md`.
+- Resources: `RegisterResource`, `RegisterResourceTemplate`, `RegisterTextResource`, `TextResource`
+- Prompts: `RegisterPrompt`, `PromptResult`, `UserPromptMessage`, `AssistantPromptMessage`
 
 ## MCP tool conventions
 

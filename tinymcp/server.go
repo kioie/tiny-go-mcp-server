@@ -11,7 +11,7 @@ import (
 )
 
 // TinyServer wraps the official MCP Server with a simplified API for registering
-// tools and starting stdio transport.
+// tools, resources, prompts, and starting transports.
 type TinyServer struct {
 	server *mcp.Server
 }

@@ -1,6 +1,8 @@
 # Smithery configuration for Tiny Go MCP Server
 # Docs: https://smithery.ai/docs/build/publish
-# Publish: smithery auth login && smithery mcp publish --name @kioie/tiny-go-mcp --transport stdio
+# Build: npx mcp-bundler bundle --entry=smithery/entry.js && npx @anthropic-ai/mcpb pack .smithery/mcpb server.mcpb
+# Publish: smithery auth login && smithery mcp publish server.mcpb -n kioie/tiny-go-mcp
+name: tiny-go-mcp
 startCommand:
   type: stdio
   configSchema:

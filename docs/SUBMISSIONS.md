@@ -28,16 +28,24 @@ go install github.com/kioie/tiny-go-mcp-server/cmd/tiny-go-mcp@latest
 
 ## Smithery
 
+**Live listing:** https://smithery.ai/servers/kioie/tiny-go-mcp
+
 1. Install CLI: `npm install -g @smithery/cli` (or `npx @smithery/cli`)
 2. Authenticate: `smithery auth login`
-3. Repo includes [`smithery.yaml`](../smithery.yaml) for stdio via Docker.
-4. Publish:
+3. Build MCPB bundle from [`smithery.yaml`](../smithery.yaml):
 
 ```bash
-smithery mcp publish --name @kioie/tiny-go-mcp --transport stdio
+npx mcp-bundler . .smithery/mcpb --entry=smithery/entry.js --inspect
+npx @anthropic-ai/mcpb pack .smithery/mcpb server.mcpb
 ```
 
-Or connect GitHub at https://smithery.ai/new if prompted.
+4. Publish (namespace must match your Smithery account, e.g. `kioie/tiny-go-mcp`):
+
+```bash
+smithery mcp publish server.mcpb -n kioie/tiny-go-mcp
+```
+
+Requires Docker on the client machine (bundle runs `ghcr.io/kioie/tiny-go-mcp:1.1.0`). Alternative: connect GitHub at https://smithery.ai/new.
 
 ## Project scaffold (`gonew`)
 

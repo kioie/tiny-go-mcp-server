@@ -12,3 +12,7 @@ dist/
 
 # OS
 .DS_Store
+
+# Smithery MCPB build artifacts
+.smithery/
+server.mcpb

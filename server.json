@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.kioie/tiny-go-mcp",
   "title": "Tiny Go MCP Server",
-  "description": "Reference stdio MCP server (add, subtract, greet) for MCP client tests and tinymcp evaluation—not production math or messaging. Use for minimal stdio + demo tools; do not use when you need HTTP/SSE, resources/prompts, or domain integrations (use specialized MCP servers). Alternatives: tinymcp library for thin wrappers, mark3labs/mcp-go for richer APIs/transports, modelcontextprotocol/go-sdk alone for full control.",
-  "version": "1.0.0",
+  "description": "Demo stdio MCP server (tools, resource, prompt) for tinymcp tests—not production use.",
+  "version": "1.1.0",
   "websiteUrl": "https://github.com/kioie/tiny-go-mcp-server",
   "repository": {
     "url": "https://github.com/kioie/tiny-go-mcp-server",
@@ -13,8 +13,8 @@
   "packages": [
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/kioie/tiny-go-mcp:1.0.0",
-      "version": "1.0.0",
+      "identifier": "ghcr.io/kioie/tiny-go-mcp:1.1.0",
+      "version": "1.1.0",
       "transport": {
         "type": "stdio"
       }

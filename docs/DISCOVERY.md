@@ -15,8 +15,11 @@ The example server is **`tiny-go-mcp`** (stdio). Client config template: [`examp
 ### Official MCP Registry
 
 1. Install the publisher CLI: https://modelcontextprotocol.io/registry/quickstart
-2. Edit [`server.json`](../server.json) (namespace `io.github.kioie/tiny-go-mcp`).
-3. Authenticate and publish: `mcp-publisher login github` then `mcp-publisher publish`.
+2. Edit [`server.json`](../server.json) (namespace `io.github.kioie/tiny-go-mcp`, version aligned with release tag).
+3. Authenticate: `mcp-publisher login github`
+4. Validate: `mcp-publisher validate` (from repo root)
+5. Publish: `mcp-publisher publish`
+6. After tagging `v1.1.0`, the Release workflow also pushes `ghcr.io/kioie/tiny-go-mcp:1.1.0`.
 
 ### Community directories (manual)
 
@@ -35,7 +38,7 @@ The example server is **`tiny-go-mcp`** (stdio). Client config template: [`examp
 
 ## Positioning one-liner
 
-> Minimal Go library on the official MCP SDK for stdio servers — struct-derived JSON Schema, ~5MB static binaries.
+> Minimal Go library on the official MCP SDK — stdio, HTTP, SSE; tools, resources, prompts; struct-derived JSON Schema; ~5MB static binaries.
 
 Use this in directory listings and social posts.
 

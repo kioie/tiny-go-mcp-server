@@ -5,7 +5,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/kioie/tiny-go-mcp-server/tinymcp)](https://goreportcard.com/report/github.com/kioie/tiny-go-mcp-server/tinymcp)
 [![tiny-go-mcp-server MCP server](https://glama.ai/mcp/servers/kioie/tiny-go-mcp-server/badges/score.svg)](https://glama.ai/mcp/servers/kioie/tiny-go-mcp-server)
 
-A lightweight **Model Context Protocol (MCP)** toolkit for Go. Build spec-compliant, stdio-based MCP servers that AI clients can discover and call — with minimal boilerplate and automatic JSON Schema generation from Go structs.
+A lightweight **Model Context Protocol (MCP)** toolkit for Go. Build spec-compliant MCP servers (stdio, streamable HTTP, legacy SSE) with tools, resources, and prompts — minimal boilerplate and automatic JSON Schema from Go structs.
 
 Built on the official [`modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk).
 

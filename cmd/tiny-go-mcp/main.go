@@ -31,11 +31,14 @@ type GreetArguments struct {
 
 func main() {
 	// Initialize the Tiny Go MCP Server
-	server := tinymcp.NewServer("tiny-go-mcp", "1.0.0")
+	server := tinymcp.NewServer("tiny-go-mcp", "1.1.0")
 
 	// Register tools to the server using the simplified tinymcp library
 	if err := RegisterTools(server); err != nil {
 		log.Fatalf("Failed to register tools: %v", err)
+	}
+	if err := RegisterResourcesAndPrompts(server); err != nil {
+		log.Fatalf("Failed to register resources/prompts: %v", err)
 	}
 
 	// Serve the MCP server over standard input/output (stdio).

@@ -185,11 +185,27 @@ func TestRegisterTools(t *testing.T) {
 	})
 
 	t.Run("successful tool registration", func(t *testing.T) {
-		server := tinymcp.NewServer("test-server", "1.0.0")
+		server := tinymcp.NewServer("test-server", "1.1.0")
 
 		err := RegisterTools(server)
 		if err != nil {
 			t.Fatalf("unexpected error registering tools: %v", err)
+		}
+	})
+}
+
+func TestRegisterResourcesAndPrompts(t *testing.T) {
+	t.Run("nil server validation", func(t *testing.T) {
+		err := RegisterResourcesAndPrompts(nil)
+		if err == nil {
+			t.Error("expected error when registering resources on nil server, got nil")
+		}
+	})
+
+	t.Run("successful registration", func(t *testing.T) {
+		server := tinymcp.NewServer("test-server", "1.1.0")
+		if err := RegisterResourcesAndPrompts(server); err != nil {
+			t.Fatalf("unexpected error: %v", err)
 		}
 	})
 }

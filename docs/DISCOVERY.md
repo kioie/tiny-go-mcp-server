@@ -25,10 +25,10 @@ The example server is **`tiny-go-mcp`** (stdio). Client config template: [`examp
 
 | Directory | How to submit |
 |-----------|----------------|
-| [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | PR to README (library + server) |
-| [mcp.so](https://mcp.so) | Site submission form |
+| [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | PR to README (library + server) — [PR #6665](https://github.com/punkpeye/awesome-mcp-servers/pull/6665) |
+| [mcp.so](https://mcp.so) | Site form — blurb in [SUBMISSIONS.md](./SUBMISSIONS.md) |
 | [Glama](https://glama.ai/mcp/servers) | GitHub + [`Dockerfile`](../Dockerfile) + [`glama.json`](../glama.json) — [GLAMA.md](./GLAMA.md) |
-| [Smithery](https://smithery.ai) | Publisher / CLI |
+| [Smithery](https://smithery.ai) | [`smithery.yaml`](../smithery.yaml) + CLI — [SUBMISSIONS.md](./SUBMISSIONS.md) |
 
 ## GitHub repository
 

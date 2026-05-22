@@ -95,6 +95,18 @@ func greet(_ context.Context, _ *mcp.CallToolRequest, args greetArgs) (*mcp.Call
 
 See [`examples/minimal`](examples/minimal) for a runnable copy-paste example.
 
+### Scaffold a new server
+
+After tag **v1.1.1** (includes the template module):
+
+```bash
+go create github.com/kioie/tiny-go-mcp-server/template@latest
+cd my-mcp
+go run .
+```
+
+Until then, copy [`examples/minimal`](examples/minimal) or [`template/`](template/).
+
 ---
 
 ## Install the example server
@@ -274,7 +286,7 @@ git push origin v1.0.0
 
 ## Discovery and registries
 
-See [docs/DISCOVERY.md](docs/DISCOVERY.md) for MCP Registry (`server.json`), awesome lists, and community directories. For Glama hosting with Docker, see [docs/GLAMA.md](docs/GLAMA.md).
+See [docs/DISCOVERY.md](docs/DISCOVERY.md) for MCP Registry (`server.json`), awesome lists, and community directories. Listing copy and launch posts: [docs/SUBMISSIONS.md](docs/SUBMISSIONS.md). For Glama hosting with Docker, see [docs/GLAMA.md](docs/GLAMA.md).
 
 ## Contributing
 

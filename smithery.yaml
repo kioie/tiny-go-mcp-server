@@ -1,0 +1,24 @@
+# Smithery configuration for Tiny Go MCP Server
+# Docs: https://smithery.ai/docs/build/publish
+# Publish: smithery auth login && smithery mcp publish --name @kioie/tiny-go-mcp --transport stdio
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      TINY_GO_MCP_VERBOSE:
+        type: string
+        title: Verbose logs
+        description: Set to "1" to log startup messages on stderr
+        default: ""
+  commandFunction: |-
+    (config) => ({
+      command: 'docker',
+      args: [
+        'run', '-i', '--rm',
+        '-e', `TINY_GO_MCP_VERBOSE=${config.TINY_GO_MCP_VERBOSE || ''}`,
+        'ghcr.io/kioie/tiny-go-mcp:1.1.0'
+      ]
+    })
+  exampleConfig:
+    TINY_GO_MCP_VERBOSE: ""

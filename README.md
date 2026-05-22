@@ -60,7 +60,7 @@ handler, _ := tinymcp.StreamableHTTPHandler(server, nil)
 http.Handle("/mcp", handler)
 ```
 
-See [`docs/HTTP.md`](docs/HTTP.md) and [`examples/http`](examples/http). For advanced session routing or event stores, use `server.RawServer()` with the [go-sdk](https://github.com/modelcontextprotocol/go-sdk) directly.
+See [`docs/HTTP.md`](docs/HTTP.md) and [`examples/http`](examples/http). To host for [Smithery URL listing](docs/SMITHERY.md) (no Docker for end users), use [`examples/http-deploy`](examples/http-deploy). For advanced session routing or event stores, use `server.RawServer()` with the [go-sdk](https://github.com/modelcontextprotocol/go-sdk) directly.
 
 ---
 
@@ -269,8 +269,9 @@ upx --best --lzma tiny-go-mcp
 tinymcp/           # Library package
 cmd/tiny-go-mcp/   # Reference MCP server
 examples/minimal/  # Minimal stdio example
-examples/http/     # Streamable HTTP example
-examples/resources/ # Resources + prompts example
+examples/http/         # Streamable HTTP example
+examples/http-deploy/  # Deployable HTTP + Smithery URL listing (server card, Render/Fly)
+examples/resources/    # Resources + prompts example
 examples/mcp-client-config.json  # Cursor/Claude-style template
 docs/HTTP.md       # stdio vs HTTP vs SSE
 docs/DISCOVERY.md  # Registries and visibility

@@ -28,7 +28,7 @@ The example server is **`tiny-go-mcp`** (stdio). Client config template: [`examp
 | [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers) | PR to README (library + server) — [PR #6665](https://github.com/punkpeye/awesome-mcp-servers/pull/6665) |
 | [mcp.so](https://mcp.so) | Site form — blurb in [SUBMISSIONS.md](./SUBMISSIONS.md) |
 | [Glama](https://glama.ai/mcp/servers) | GitHub + [`Dockerfile`](../Dockerfile) + [`glama.json`](../glama.json) — [GLAMA.md](./GLAMA.md) |
-| [Smithery](https://smithery.ai) | [`smithery.yaml`](../smithery.yaml) + MCPB publish — [live](https://smithery.ai/servers/kioie/tiny-go-mcp) |
+| [Smithery](https://smithery.ai) | URL: [`examples/http-deploy`](../examples/http-deploy) + [`docs/SMITHERY.md`](./SMITHERY.md); stdio MCPB: [`smithery.yaml`](../smithery.yaml) — [live](https://smithery.ai/servers/kioie/tiny-go-mcp) |
 
 ### Community posts
 

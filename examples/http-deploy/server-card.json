@@ -1,0 +1,23 @@
+{
+  "serverInfo": {
+    "name": "tiny-go-mcp-http",
+    "version": "1.0.0"
+  },
+  "tools": [
+    {
+      "name": "ping",
+      "description": "Echo a message over HTTP MCP",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message to echo back"
+          }
+        }
+      }
+    }
+  ],
+  "resources": [],
+  "prompts": []
+}

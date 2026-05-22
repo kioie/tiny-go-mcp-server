@@ -1,0 +1,13 @@
+# Render Blueprint — deploy without Docker.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: tiny-go-mcp-http
+    runtime: go
+    rootDir: examples/http-deploy
+    buildCommand: go build -o server .
+    startCommand: ./server
+    healthCheckPath: /health
+    envVars:
+      - key: TINY_GO_MCP_VERBOSE
+        value: "1"

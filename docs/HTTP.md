@@ -51,6 +51,12 @@ Runnable example: [`examples/http`](../examples/http).
 
 Point an MCP client that supports streamable HTTP at your server URL (often the root path or `/mcp`). See your client’s docs for `url` / `transport: http` config.
 
+### Smithery URL listing (no Docker for users)
+
+Host streamable HTTP on a public HTTPS URL and publish to [Smithery](https://smithery.ai) so clients connect via the Smithery Gateway — end users do not run Docker or a local binary.
+
+Deploy template: [`examples/http-deploy`](../examples/http-deploy) (includes `/health` and `/.well-known/mcp/server-card.json`). Full steps: [`docs/SMITHERY.md`](./SMITHERY.md).
+
 ## Legacy SSE (2024-11-05)
 
 ```go

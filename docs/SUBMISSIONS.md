@@ -30,7 +30,24 @@ go install github.com/kioie/tiny-go-mcp-server/cmd/tiny-go-mcp@latest
 
 ## Smithery
 
-**Live listing:** https://smithery.ai/servers/kioie/tiny-go-mcp (icon uploaded)
+**Live listing (stdio MCPB):** https://smithery.ai/servers/kioie/tiny-go-mcp (icon uploaded)
+
+### URL listing (no Docker for users)
+
+**Live listing:** https://smithery.ai/servers/kioie/tiny-go-mcp-http  
+**Upstream:** https://tiny-go-mcp-http.fly.dev  
+**Deploy:** [`examples/http-deploy`](../examples/http-deploy) + [`fly.http.toml`](../fly.http.toml)
+
+Host streamable HTTP and publish your HTTPS URL — see [`docs/SMITHERY.md`](./SMITHERY.md):
+
+```bash
+go run ./examples/http-deploy
+# deploy to Render/Railway/Fly, then:
+smithery auth login
+smithery mcp publish "https://YOUR_HOST" -n your-namespace/your-server
+```
+
+### MCPB listing (stdio; requires Docker on client)
 
 1. Install CLI: `npm install -g @smithery/cli` (or `npx @smithery/cli`)
 2. Authenticate: `smithery auth login`

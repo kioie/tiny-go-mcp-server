@@ -20,6 +20,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
 
 FROM alpine:3.21
 
+# Required by MCP Registry for OCI package verification (server.json packages[].identifier).
+LABEL io.modelcontextprotocol.server.name="io.github.kioie/tiny-go-mcp"
+
 RUN apk add --no-cache ca-certificates
 
 COPY --from=builder /out/tiny-go-mcp /usr/local/bin/tiny-go-mcp

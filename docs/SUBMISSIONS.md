@@ -60,10 +60,9 @@ go run .
 
 Requires Go 1.26+ and tagged submodule `template` (`template/v1.1.1+`).
 
-## Launch post (Glama Discord / r/mcp)
+## Launch post (r/mcp)
 
-**Glama Discord:** https://glama.ai/mcp/discord  
-**r/mcp:** post manually at https://www.reddit.com/r/mcp/submit/?type=TEXT (Reddit blocks automated submits)
+**Posted:** https://www.reddit.com/r/mcp/comments/1tkru4a/tiny_go_mcp_server_v11_minimal_tinymcp_on/
 
 **Title:** Tiny Go MCP Server v1.1 — minimal tinymcp on official go-sdk
 
@@ -84,7 +83,3 @@ go get github.com/kioie/tiny-go-mcp-server/tinymcp@latest
 ```
 
 Feedback and PRs welcome: https://github.com/kioie/tiny-go-mcp-server
-
----
-
-After posting, link back from README **Discovery** section if desired.

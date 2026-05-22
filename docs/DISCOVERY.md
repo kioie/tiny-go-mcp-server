@@ -19,7 +19,7 @@ The example server is **`tiny-go-mcp`** (stdio). Client config template: [`examp
 3. Authenticate: `mcp-publisher login github`
 4. Validate: `mcp-publisher validate` (from repo root)
 5. Publish: `mcp-publisher publish`
-6. After tagging `v1.1.0`, the Release workflow also pushes `ghcr.io/kioie/tiny-go-mcp:1.1.0`.
+6. After tagging a release (e.g. `v1.1.2`), the Release workflow also pushes `ghcr.io/kioie/tiny-go-mcp:<version>`.
 
 ### Community directories (manual)
 

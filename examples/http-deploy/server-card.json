@@ -1,23 +1,52 @@
 {
   "serverInfo": {
     "name": "tiny-go-mcp-http",
-    "version": "1.0.0"
+    "version": "1.1.2"
+  },
+  "authentication": {
+    "required": false
   },
   "tools": [
     {
       "name": "ping",
-      "description": "Echo a message over HTTP MCP",
+      "description": "Demo: echo a message over streamable HTTP MCP. Use only to verify HTTP transport, Smithery connectivity, or client wiring; do not use for production messaging—reply in chat instead. Returns the input message or \"pong\" when empty.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "message": {
             "type": "string",
-            "description": "Message to echo back"
+            "description": "Message to echo back (defaults to pong when empty)"
           }
         }
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "title": "Ping"
       }
     }
   ],
-  "resources": [],
-  "prompts": []
+  "resources": [
+    {
+      "name": "info",
+      "uri": "file:///info",
+      "description": "Demo: static server metadata for HTTP MCP. Use to test resources/read over streamable HTTP; do not use for live config—read env or APIs instead.",
+      "mimeType": "text/plain"
+    }
+  ],
+  "prompts": [
+    {
+      "name": "connectivity_check",
+      "description": "Demo: workflow prompt to verify MCP prompt support over HTTP. Use for Smithery score and integration tests; do not use for production workflows.",
+      "arguments": [
+        {
+          "name": "target",
+          "description": "Optional label for the check (defaults to server name)",
+          "required": false
+        }
+      ]
+    }
+  ]
 }

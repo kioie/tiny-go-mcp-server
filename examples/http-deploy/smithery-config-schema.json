@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "TINY_GO_MCP_VERBOSE": {
+      "type": "string",
+      "title": "Verbose logs",
+      "description": "Set to \"1\" to log startup messages on stderr",
+      "default": ""
+    }
+  }
+}

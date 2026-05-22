@@ -1,7 +1,7 @@
 {
   "$schema": "https://glama.ai/schemas/mcp.json",
   "name": "tiny-go-mcp",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "title": "Tiny Go MCP Server",
   "description": "Reference stdio MCP server for testing clients and evaluating tinymcp: demo tools (add, subtract, greet), info resource, code_review prompt. ~5MB Docker image. tinymcp library also supports streamable HTTP, legacy SSE, resources, and prompts—see github.com/kioie/tiny-go-mcp-server. Not for production workloads.",
   "license": "MIT",
@@ -39,8 +39,8 @@
   "packages": [
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/kioie/tiny-go-mcp:1.1.0",
-      "version": "1.1.0",
+      "identifier": "ghcr.io/kioie/tiny-go-mcp:1.1.2",
+      "version": "1.1.2",
       "transport": {
         "type": "stdio"
       }
@@ -55,7 +55,7 @@
         "run",
         "-i",
         "--rm",
-        "ghcr.io/kioie/tiny-go-mcp:1.1.0"
+        "ghcr.io/kioie/tiny-go-mcp:1.1.2"
       ],
       "env": {
         "TINY_GO_MCP_VERBOSE": ""
@@ -79,7 +79,7 @@
         "message": 120000
       },
       "metadata": {
-        "version": "1.1.0",
+        "version": "1.1.2",
         "homepage": "https://github.com/kioie/tiny-go-mcp-server",
         "license": "MIT",
         "tags": ["go", "mcp", "stdio", "tinymcp", "resources", "prompts"],

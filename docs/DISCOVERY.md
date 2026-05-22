@@ -30,6 +30,8 @@ The example server is **`tiny-go-mcp`** (stdio). Client config template: [`examp
 | [Glama](https://glama.ai/mcp/servers) | GitHub + [`Dockerfile`](../Dockerfile) + [`glama.json`](../glama.json) — [GLAMA.md](./GLAMA.md) |
 | [Smithery](https://smithery.ai) | [`smithery.yaml`](../smithery.yaml) + MCPB publish — [live](https://smithery.ai/servers/kioie/tiny-go-mcp) |
 
+Official logo and banner: [`docs/BRANDING.md`](./BRANDING.md) · [`docs/assets/`](../docs/assets/)
+
 ## GitHub repository
 
 - **About** description and **topics** (`mcp`, `go`, `model-context-protocol`, …) improve search.

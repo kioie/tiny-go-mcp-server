@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/banner.png" alt="Tiny Go MCP Server — minimal Go MCP toolkit" width="720">
+</p>
+
 # Tiny Go MCP Server
 
 [![CI](https://github.com/kioie/tiny-go-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/kioie/tiny-go-mcp-server/actions/workflows/ci.yml)

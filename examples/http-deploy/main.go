@@ -19,6 +19,7 @@ package main
 import (
 	"context"
 	_ "embed"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -27,18 +28,23 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
+const (
+	serverVersion   = "1.1.2"
+	infoResourceURI = "file:///info"
+)
+
 //go:embed server-card.json
 var serverCardJSON []byte
 
 type pingArgs struct {
-	Message string `json:"message" jsonschema:"Message to echo back"`
+	Message string `json:"message" jsonschema:"Message to echo back (defaults to pong when empty)"`
 }
 
 func main() {
 	addr := listenAddr()
-	server := tinymcp.NewServer("tiny-go-mcp-http", "1.0.0")
+	server := tinymcp.NewServer("tiny-go-mcp-http", serverVersion)
 
-	if err := tinymcp.RegisterTool(server, "ping", "Echo a message over HTTP MCP", ping); err != nil {
+	if err := registerCapabilities(server); err != nil {
 		log.Fatal(err)
 	}
 
@@ -70,12 +76,57 @@ func main() {
 	}
 }
 
+func registerCapabilities(server *tinymcp.TinyServer) error {
+	openWorld := false
+	destructive := false
+	mcp.AddTool(server.RawServer(), &mcp.Tool{
+		Name: "ping",
+		Description: "Demo: echo a message over streamable HTTP MCP. Use only to verify HTTP transport, " +
+			"Smithery connectivity, or client wiring; do not use for production messaging—reply in chat instead. " +
+			"Returns the input message or \"pong\" when empty.",
+		Annotations: &mcp.ToolAnnotations{
+			ReadOnlyHint:    true,
+			IdempotentHint:    true,
+			OpenWorldHint:     &openWorld,
+			DestructiveHint:   &destructive,
+			Title:             "Ping",
+		},
+	}, ping)
+
+	if err := tinymcp.RegisterTextResource(server,
+		infoResourceURI,
+		"info",
+		"Demo: static server metadata for HTTP MCP. Use to test resources/read over streamable HTTP; do not use for live config—read env or APIs instead.",
+		"text/plain",
+		fmt.Sprintf("Tiny Go MCP Server (HTTP) v%s — tinymcp Smithery URL listing example", serverVersion),
+	); err != nil {
+		return err
+	}
+
+	return tinymcp.RegisterPrompt(server,
+		"connectivity_check",
+		"Demo: workflow prompt to verify MCP prompt support over HTTP. Use for Smithery score and integration tests; do not use for production workflows.",
+		[]*mcp.PromptArgument{{Name: "target", Required: false, Description: "Optional label for the check (defaults to server name)"}},
+		handleConnectivityPrompt,
+	)
+}
+
 func ping(_ context.Context, _ *mcp.CallToolRequest, args pingArgs) (*mcp.CallToolResult, any, error) {
 	msg := args.Message
 	if msg == "" {
 		msg = "pong"
 	}
 	return tinymcp.TextResult(msg), nil, nil
+}
+
+func handleConnectivityPrompt(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
+	target := req.Params.Arguments["target"]
+	if target == "" {
+		target = "tiny-go-mcp-http"
+	}
+	return tinymcp.PromptResult("Connectivity check",
+		tinymcp.UserPromptMessage(fmt.Sprintf("Confirm MCP connectivity to %s is working.", target)),
+	), nil
 }
 
 func listenAddr() string {

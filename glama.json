@@ -1,9 +1,9 @@
 {
   "$schema": "https://glama.ai/schemas/mcp.json",
   "name": "tiny-go-mcp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": "Tiny Go MCP Server",
-  "description": "Reference stdio MCP server (add, subtract, greet) for testing MCP clients and evaluating tinymcp—not for production workloads. Use when you need a minimal official go-sdk server with demo tools or a ~5MB Docker image. Do not use when you need HTTP/SSE, resources/prompts, or real domain tools (use domain MCP servers instead). For building servers: prefer tinymcp for thin stdio wrappers; use mcp-go for richer helpers/transports; use go-sdk alone for full control.",
+  "description": "Reference stdio MCP server for testing clients and evaluating tinymcp: demo tools (add, subtract, greet), info resource, code_review prompt. ~5MB Docker image. tinymcp library also supports streamable HTTP, legacy SSE, resources, and prompts—see github.com/kioie/tiny-go-mcp-server. Not for production workloads.",
   "license": "MIT",
   "language": "go",
   "framework": "tinymcp",
@@ -22,7 +22,9 @@
     "cursor",
     "claude",
     "llm",
-    "docker"
+    "docker",
+    "resources",
+    "prompts"
   ],
   "categories": [
     "Developer Tools",
@@ -37,8 +39,8 @@
   "packages": [
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/kioie/tiny-go-mcp:1.0.0",
-      "version": "1.0.0",
+      "identifier": "ghcr.io/kioie/tiny-go-mcp:1.1.0",
+      "version": "1.1.0",
       "transport": {
         "type": "stdio"
       }
@@ -47,13 +49,13 @@
   "mcpServers": {
     "tiny-go-mcp": {
       "name": "tiny-go-mcp",
-      "description": "Reference tinymcp server (demo tools only). Use to verify stdio MCP wiring in Cursor/Claude/Glama; do not use as a calculator or greeting backend—compute or reply in the agent instead. Tools: use add for addition tests, subtract for subtraction tests, greet for text-tool tests; use go-sdk/mcp-go or a domain server when you need production features.",
+      "description": "Reference tinymcp server (demo only). Tools: add/subtract/greet for MCP wiring tests. Resource file:///info for read tests. Prompt code_review for prompt tests. Do not use for production math or messaging.",
       "command": "docker",
       "args": [
         "run",
         "-i",
         "--rm",
-        "ghcr.io/kioie/tiny-go-mcp:1.0.0"
+        "ghcr.io/kioie/tiny-go-mcp:1.1.0"
       ],
       "env": {
         "TINY_GO_MCP_VERBOSE": ""
@@ -64,10 +66,12 @@
           "listChanged": true
         },
         "resources": {
-          "enabled": false
+          "enabled": true,
+          "listChanged": true
         },
         "prompts": {
-          "enabled": false
+          "enabled": true,
+          "listChanged": true
         }
       },
       "timeout": {
@@ -75,10 +79,10 @@
         "message": 120000
       },
       "metadata": {
-        "version": "1.0.0",
+        "version": "1.1.0",
         "homepage": "https://github.com/kioie/tiny-go-mcp-server",
         "license": "MIT",
-        "tags": ["go", "mcp", "stdio", "tinymcp"],
+        "tags": ["go", "mcp", "stdio", "tinymcp", "resources", "prompts"],
         "categories": ["Developer Tools", "AI Agents"]
       }
     }

@@ -1,6 +1,6 @@
 // Package tinymcp provides a lightweight wrapper around the official Model Context
-// Protocol Go SDK. It reduces boilerplate for building stdio MCP servers that AI
-// clients (Cursor, Claude Desktop, Windsurf, etc.) can discover and call.
+// Protocol Go SDK. It reduces boilerplate for building MCP servers (stdio, streamable
+// HTTP, or legacy SSE) that AI clients can discover and call.
 package tinymcp
 
 import (

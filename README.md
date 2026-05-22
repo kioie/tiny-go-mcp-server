@@ -30,14 +30,33 @@ Use this project as a **library** (`tinymcp` package) or as a **starting templat
 |---|---|---|---|
 | **Best for** | Thin wrapper, tiny binary, official SDK | Rich helpers, large ecosystem | Full control, no extra layer |
 | **Schema** | Struct tags → auto JSON Schema | Builder APIs / helpers | `AddTool` + generics yourself |
-| **Transport** | stdio via `Start()` | stdio, SSE, HTTP, … | All transports |
+| **Transport** | stdio (`Start()`), streamable HTTP (`StartHTTP`), legacy SSE (`StartSSE`) | stdio, SSE, HTTP, … | All transports |
 | **Deps** | go-sdk only | Standalone module | go-sdk only |
 
 Choose **tinymcp** when you want the official protocol implementation with minimal boilerplate and a small static server binary.
 
 ### Transport
 
-`tinymcp.Start()` runs **stdio** (stdin/stdout) — what Cursor, Claude Desktop, and most local clients expect. For HTTP, SSE, or custom transports, use `server.RawServer()` with the [go-sdk](https://github.com/modelcontextprotocol/go-sdk) directly.
+| Method | API | Typical clients |
+|--------|-----|-----------------|
+| **stdio** (default) | `Start()` | Cursor, Claude Desktop, Windsurf (local subprocess) |
+| **Streamable HTTP** | `StartHTTP(addr, opts)` or `StreamableHTTPHandler` | Remote MCP clients, gateways, browser tools |
+| **Legacy SSE** | `StartSSE(addr, opts)` or `SSEHandler` | Older clients on MCP 2024-11-05 SSE transport |
+
+`Start()` runs **stdio** (stdin/stdout) — what most local AI clients expect.
+
+For HTTP/SSE, tinymcp wraps the official go-sdk handlers with minimal options:
+
+```go
+// Streamable HTTP on :8080 (stateless demo mode)
+log.Fatal(server.StartHTTP(":8080", &tinymcp.HTTPOptions{Stateless: true}))
+
+// Or mount on your own mux (auth, TLS, path prefix)
+handler, _ := tinymcp.StreamableHTTPHandler(server, nil)
+http.Handle("/mcp", handler)
+```
+
+See [`docs/HTTP.md`](docs/HTTP.md) and [`examples/http`](examples/http). For advanced session routing or event stores, use `server.RawServer()` with the [go-sdk](https://github.com/modelcontextprotocol/go-sdk) directly.
 
 ---
 
@@ -174,6 +193,9 @@ Use the same shape: **command** = absolute path to `tiny-go-mcp`, transport = st
 server := tinymcp.NewServer("name", "version")
 tinymcp.RegisterTool(server, name, description, handler) // typed handler, auto schema
 server.Start()                                              // stdio transport
+server.StartHTTP(":8080", &tinymcp.HTTPOptions{})         // streamable HTTP
+server.StartSSE(":8080", nil)                             // legacy SSE
+tinymcp.StreamableHTTPHandler(server, nil)                // mount on custom http.Server
 tinymcp.TextResult("message")                               // helper for text tools
 server.RawServer()                                          // escape hatch to go-sdk
 ```
@@ -208,8 +230,10 @@ upx --best --lzma tiny-go-mcp
 ```
 tinymcp/           # Library package
 cmd/tiny-go-mcp/   # Reference MCP server
-examples/minimal/  # Minimal example
+examples/minimal/  # Minimal stdio example
+examples/http/     # Streamable HTTP example
 examples/mcp-client-config.json  # Cursor/Claude-style template
+docs/HTTP.md       # stdio vs HTTP vs SSE
 docs/DISCOVERY.md  # Registries and visibility
 server.json        # MCP Registry metadata (publish with mcp-publisher)
 .github/workflows/ # CI, lint, CodeQL, releases

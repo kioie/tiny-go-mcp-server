@@ -17,12 +17,9 @@ type TinyServer struct {
 }
 
 // NewServer creates a TinyServer identified by name and version for connected clients.
-func NewServer(name, version string) *TinyServer {
-	s := mcp.NewServer(
-		&mcp.Implementation{Name: name, Version: version},
-		nil,
-	)
-	return &TinyServer{server: s}
+// Optional server configuration uses functional options or [NewServerWithOptions].
+func NewServer(name, version string, opts ...ServerOption) *TinyServer {
+	return newServer(name, version, opts...)
 }
 
 // RegisterTool registers a tool on s with automatic JSON Schema inference from the

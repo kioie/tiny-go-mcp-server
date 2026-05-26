@@ -225,6 +225,8 @@ Runnable example: [`examples/resources`](examples/resources). For dynamic URI te
 
 ```go
 server := tinymcp.NewServer("name", "version")
+tinymcp.NewServer("name", "version", tinymcp.WithInstructions("…")) // optional SDK config
+tinymcp.NewServerWithOptions("name", "version", &mcp.ServerOptions{…})
 tinymcp.RegisterTool(server, name, description, handler)     // typed handler, auto schema
 tinymcp.RegisterTextResource(server, uri, name, desc, mime, text)
 tinymcp.RegisterPrompt(server, name, desc, args, handler)

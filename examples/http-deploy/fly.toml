@@ -1,21 +1,2 @@
-# fly.toml — deploy from repository root (paths in fly.toml are relative to this file):
+# Use fly.http.toml at the repository root (not this file):
 #   fly deploy --config fly.http.toml
-# Or use this file from repo root via ../fly.http.toml (see fly.http.toml at repo root).
-app = 'tiny-go-mcp-http'
-primary_region = 'lhr'
-
-[build]
-  dockerfile = 'Dockerfile'
-
-[env]
-  TINY_GO_MCP_VERBOSE = '1'
-
-[http_service]
-  internal_port = 8080
-  force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 0
-
-[[vm]]
-  size = 'shared-cpu-1x'

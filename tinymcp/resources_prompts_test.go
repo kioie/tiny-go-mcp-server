@@ -2,6 +2,7 @@ package tinymcp
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -86,5 +87,38 @@ func TestRegisterResource_nilServer(t *testing.T) {
 	}
 	if err := RegisterPrompt(s, "p", "", nil, nil); err == nil {
 		t.Error("RegisterPrompt(nil): expected error")
+	}
+}
+
+func TestRegister_nilHandlerOnServer(t *testing.T) {
+	s := NewServer("test", "1.0.0")
+	if err := RegisterPrompt(s, "p", "demo", nil, nil); err == nil {
+		t.Fatal("RegisterPrompt(nil handler): expected error")
+	}
+	if err := RegisterResource(s, "file:///x", "x", "", "text/plain", nil); err == nil {
+		t.Fatal("RegisterResource(nil handler): expected error")
+	}
+}
+
+func TestRegisterResourceTemplate_invalidTemplate(t *testing.T) {
+	s := NewServer("test", "1.0.0")
+	err := RegisterResourceTemplate(s, "{{{", "bad", "", "text/plain", func(context.Context, *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {
+		return nil, nil
+	})
+	if err == nil {
+		t.Fatal("expected error for invalid URI template")
+	}
+}
+
+func TestPromptResult_emptyMessagesNotNull(t *testing.T) {
+	b, err := json.Marshal(PromptResult("desc"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(b) == `{"description":"desc","messages":null}` {
+		t.Fatalf("messages encoded as null: %s", b)
+	}
+	if string(b) != `{"description":"desc","messages":[]}` {
+		t.Fatalf("unexpected JSON: %s", b)
 	}
 }

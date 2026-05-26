@@ -6,6 +6,7 @@ package tinymcp
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -25,15 +26,17 @@ func NewServer(name, version string, opts ...ServerOption) *TinyServer {
 // RegisterTool registers a tool on s with automatic JSON Schema inference from the
 // handler's input struct (use json and jsonschema struct tags). The handler must
 // match mcp.ToolHandlerFor[In, Out] — typically return TextResult for text tools.
+// Invalid tool definitions surface as returned errors instead of panicking.
 func RegisterTool[In, Out any](s *TinyServer, name, description string, handler mcp.ToolHandlerFor[In, Out]) error {
 	if s == nil || s.server == nil {
 		return errors.New("cannot register tool on a nil server")
 	}
-	mcp.AddTool(s.server, &mcp.Tool{
-		Name:        name,
-		Description: description,
-	}, handler)
-	return nil
+	return registerRecover(fmt.Sprintf("tool %q", name), func() {
+		mcp.AddTool(s.server, &mcp.Tool{
+			Name:        name,
+			Description: description,
+		}, handler)
+	})
 }
 
 // Start runs the server over stdin/stdout (stdio), the standard transport for local AI clients.

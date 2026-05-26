@@ -23,7 +23,7 @@ Production deploy (no Docker required for operators on Render/Railway — native
 
 - **Render:** root dir `examples/http-deploy`, build `go build -o server .`, start `./server` — see [`render.yaml`](../examples/http-deploy/render.yaml)
 - **Railway:** `railway up` from `examples/http-deploy`
-- **Fly.io:** `fly deploy --config examples/http-deploy/fly.toml` from repo root
+- **Fly.io:** `fly deploy --config fly.http.toml` from repo root — see [`fly.http.toml`](../fly.http.toml)
 
 The example exposes:
 

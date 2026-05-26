@@ -40,6 +40,9 @@ func RegisterResourcesAndPrompts(server *tinymcp.TinyServer) error {
 
 func handleCodeReviewPrompt(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
 	code := req.Params.Arguments["code"]
+	if code == "" {
+		return nil, tinymcp.RequiredPromptArgument("code")
+	}
 	return tinymcp.PromptResult("Code review",
 		tinymcp.UserPromptMessage("Review this code for bugs and clarity:\n\n"+code),
 	), nil

@@ -88,7 +88,9 @@ type greetArgs struct {
 
 func main() {
 	s := tinymcp.NewServer("my-mcp", "1.0.0")
-	_ = tinymcp.RegisterTool(s, "greet", "Greet someone by name", greet)
+	if err := tinymcp.RegisterTool(s, "greet", "Greet someone by name", greet); err != nil {
+		log.Fatal(err)
+	}
 	log.Fatal(s.Start())
 }
 
@@ -209,12 +211,20 @@ Use the same shape: **command** = absolute path to `tiny-go-mcp`, transport = st
 Register read-only context and reusable prompt templates alongside tools:
 
 ```go
-_ = tinymcp.RegisterTextResource(server, "file:///info", "info", "Server metadata", "text/plain", "…")
-_ = tinymcp.RegisterPrompt(server, "code_review", "Review code", []*mcp.PromptArgument{
-    {Name: "code", Required: true},
+if err := tinymcp.RegisterTextResource(server, "file:///info", "info", "Server metadata", "text/plain", "…"); err != nil {
+	log.Fatal(err)
+}
+if err := tinymcp.RegisterPrompt(server, "code_review", "Review code", []*mcp.PromptArgument{
+	{Name: "code", Required: true},
 }, func(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
-    return tinymcp.PromptResult("Review", tinymcp.UserPromptMessage("Review:\n"+req.Params.Arguments["code"])), nil
-})
+	code := req.Params.Arguments["code"]
+	if code == "" {
+		return nil, tinymcp.RequiredPromptArgument("code")
+	}
+	return tinymcp.PromptResult("Review", tinymcp.UserPromptMessage("Review:\n"+code)), nil
+}); err != nil {
+	log.Fatal(err)
+}
 ```
 
 Runnable example: [`examples/resources`](examples/resources). For dynamic URI templates use `RegisterResourceTemplate`.

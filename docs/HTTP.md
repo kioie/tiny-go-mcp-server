@@ -72,7 +72,7 @@ Clients use `SSEClientTransport` with your server’s SSE endpoint URL. Prefer s
 ## Security
 
 - Bind to `127.0.0.1:8080` when only local access is needed (`TINY_GO_MCP_ADDR=0.0.0.0:8080` to listen on all interfaces).
-- For local **ngrok/tunnel** testing on loopback, set `TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1` when running [`examples/http-deploy`](../examples/http-deploy), or set `DisableLocalhostProtection: true` in `HTTPOptions` (e.g. [`examples/http`](../examples/http)).
+- For local **ngrok/tunnel** testing on loopback, set `TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1` (`tinymcp.DisableLocalhostProtectionFromEnv()` in [`examples/http`](../examples/http) and [`examples/http-deploy`](../examples/http-deploy)).
 - Put **TLS**, authentication, and rate limiting in front of public endpoints (reverse proxy or middleware wrapping the handler). Helpers: `tinymcp.BearerTokenAuth`, `tinymcp.WithCrossOriginProtection` (used in [`examples/http-deploy`](../examples/http-deploy)).
 - Do not set `DisableLocalhostProtection` unless you understand [MCP security guidance](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices).
 - `StartHTTP` and `ListenAndServeHTTP` set `ReadHeaderTimeout` and `IdleTimeout` on the underlying `http.Server`.

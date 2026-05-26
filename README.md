@@ -52,13 +52,15 @@ Choose **tinymcp** when you want the official protocol implementation with minim
 For HTTP/SSE, tinymcp wraps the official go-sdk handlers with minimal options:
 
 ```go
-// Streamable HTTP on :8080 (stateless demo mode)
-log.Fatal(server.StartHTTP(":8080", &tinymcp.HTTPOptions{Stateless: true}))
+// Streamable HTTP on loopback (stateless demo — no GET/SSE or server→client RPC)
+log.Fatal(server.StartHTTP("127.0.0.1:8080", &tinymcp.HTTPOptions{Stateless: true}))
 
 // Or mount on your own mux (auth, TLS, path prefix)
 handler, _ := tinymcp.StreamableHTTPHandler(server, nil)
 http.Handle("/mcp", handler)
 ```
+
+**Stateless mode** (`Stateless: true`) is the default in examples: one POST JSON-RPC per request, no long-lived SSE GET stream, and no server-initiated messages. Omit it or use session options when you need full streamable HTTP sessions — see [`docs/HTTP.md`](docs/HTTP.md).
 
 See [`docs/HTTP.md`](docs/HTTP.md) and [`examples/http`](examples/http). To host for [Smithery URL listing](docs/SMITHERY.md) (no Docker for end users), use [`examples/http-deploy`](examples/http-deploy). For advanced session routing or event stores, use `server.RawServer()` with the [go-sdk](https://github.com/modelcontextprotocol/go-sdk) directly.
 

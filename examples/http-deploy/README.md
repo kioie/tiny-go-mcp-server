@@ -86,6 +86,8 @@ Use the **exact public HTTPS origin** Smithery should proxy (no trailing slash).
 
 If scanning fails (WAF, auth wall), Smithery can use `/.well-known/mcp/server-card.json` — already included in this example.
 
+When you add or change tools, resources, or prompts, update [`server-card.json`](./server-card.json) to match. CI runs `go test ./examples/http-deploy` to catch drift.
+
 ## Environment
 
 | Variable | Default | Description |

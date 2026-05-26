@@ -2,38 +2,47 @@ package tinymcp
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
 // RegisterResource adds a resource with a fixed URI. uri must be absolute (e.g. file:///docs/readme).
 func RegisterResource(s *TinyServer, uri, name, description, mimeType string, handler mcp.ResourceHandler) error {
+	if handler == nil {
+		return fmt.Errorf("cannot register resource %q with a nil handler", name)
+	}
 	srv, err := rawServer(s)
 	if err != nil {
 		return err
 	}
-	srv.AddResource(&mcp.Resource{
-		URI:         uri,
-		Name:        name,
-		Description: description,
-		MIMEType:    mimeType,
-	}, handler)
-	return nil
+	return registerRecover(fmt.Sprintf("resource %q", name), func() {
+		srv.AddResource(&mcp.Resource{
+			URI:         uri,
+			Name:        name,
+			Description: description,
+			MIMEType:    mimeType,
+		}, handler)
+	})
 }
 
 // RegisterResourceTemplate adds a resource matched by URI template (e.g. file:///docs/{path}).
 func RegisterResourceTemplate(s *TinyServer, uriTemplate, name, description, mimeType string, handler mcp.ResourceHandler) error {
+	if handler == nil {
+		return fmt.Errorf("cannot register resource template %q with a nil handler", name)
+	}
 	srv, err := rawServer(s)
 	if err != nil {
 		return err
 	}
-	srv.AddResourceTemplate(&mcp.ResourceTemplate{
-		URITemplate: uriTemplate,
-		Name:        name,
-		Description: description,
-		MIMEType:    mimeType,
-	}, handler)
-	return nil
+	return registerRecover(fmt.Sprintf("resource template %q", name), func() {
+		srv.AddResourceTemplate(&mcp.ResourceTemplate{
+			URITemplate: uriTemplate,
+			Name:        name,
+			Description: description,
+			MIMEType:    mimeType,
+		}, handler)
+	})
 }
 
 // RegisterTextResource registers a static text resource at uri.

@@ -3,8 +3,11 @@ package tinymcp
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"strings"
 	"testing"
 
+	"github.com/modelcontextprotocol/go-sdk/jsonrpc"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -79,14 +82,14 @@ func TestRegisterPrompt(t *testing.T) {
 
 func TestRegisterResource_nilServer(t *testing.T) {
 	var s *TinyServer
-	if err := RegisterResource(s, "file:///x", "x", "", "", nil); err == nil {
-		t.Error("RegisterResource(nil): expected error")
+	if err := RegisterResource(s, "file:///x", "x", "", "", nil); err == nil || !strings.Contains(err.Error(), "nil server") {
+		t.Errorf("RegisterResource(nil): got %v, want nil server error", err)
 	}
-	if err := RegisterTextResource(s, "file:///x", "x", "", "", ""); err == nil {
-		t.Error("RegisterTextResource(nil): expected error")
+	if err := RegisterTextResource(s, "file:///x", "x", "", "", ""); err == nil || !strings.Contains(err.Error(), "nil server") {
+		t.Errorf("RegisterTextResource(nil): got %v, want nil server error", err)
 	}
-	if err := RegisterPrompt(s, "p", "", nil, nil); err == nil {
-		t.Error("RegisterPrompt(nil): expected error")
+	if err := RegisterPrompt(s, "p", "", nil, nil); err == nil || !strings.Contains(err.Error(), "nil server") {
+		t.Errorf("RegisterPrompt(nil): got %v, want nil server error", err)
 	}
 }
 
@@ -120,5 +123,41 @@ func TestPromptResult_emptyMessagesNotNull(t *testing.T) {
 	}
 	if string(b) != `{"description":"desc","messages":[]}` {
 		t.Fatalf("unexpected JSON: %s", b)
+	}
+}
+
+func TestRequiredPromptArgument(t *testing.T) {
+	ctx := t.Context()
+	s := NewServer("test", "1.0.0")
+	if err := RegisterPrompt(s, "review", "Review code", []*mcp.PromptArgument{
+		{Name: "code", Required: true},
+	}, func(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
+		code := req.Params.Arguments["code"]
+		if code == "" {
+			return nil, RequiredPromptArgument("code")
+		}
+		return PromptResult("Review", UserPromptMessage(code)), nil
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	t1, t2 := mcp.NewInMemoryTransports()
+	if _, err := s.RawServer().Connect(ctx, t1, nil); err != nil {
+		t.Fatal(err)
+	}
+	client := mcp.NewClient(&mcp.Implementation{Name: "client", Version: "1.0.0"}, nil)
+	cs, err := client.Connect(ctx, t2, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cs.Close()
+
+	_, err = cs.GetPrompt(ctx, &mcp.GetPromptParams{Name: "review"})
+	if err == nil {
+		t.Fatal("expected error for missing required argument")
+	}
+	var rpcErr *jsonrpc.Error
+	if !errors.As(err, &rpcErr) || rpcErr.Code != jsonrpc.CodeInvalidParams {
+		t.Fatalf("expected InvalidParams, got %v", err)
 	}
 }

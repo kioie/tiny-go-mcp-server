@@ -3,17 +3,18 @@ package tinymcp
 import (
 	"fmt"
 
+	"github.com/modelcontextprotocol/go-sdk/jsonrpc"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
 // RegisterPrompt adds a prompt template. arguments may be nil for prompts with no parameters.
 func RegisterPrompt(s *TinyServer, name, description string, arguments []*mcp.PromptArgument, handler mcp.PromptHandler) error {
-	if handler == nil {
-		return fmt.Errorf("cannot register prompt %q with a nil handler", name)
-	}
 	srv, err := rawServer(s)
 	if err != nil {
 		return err
+	}
+	if handler == nil {
+		return fmt.Errorf("cannot register prompt %q with a nil handler", name)
 	}
 	return registerRecover(fmt.Sprintf("prompt %q", name), func() {
 		srv.AddPrompt(&mcp.Prompt{
@@ -33,6 +34,14 @@ func PromptResult(description string, messages ...*mcp.PromptMessage) *mcp.GetPr
 	return &mcp.GetPromptResult{
 		Description: description,
 		Messages:    messages,
+	}
+}
+
+// RequiredPromptArgument returns InvalidParams for a missing required prompt argument.
+func RequiredPromptArgument(name string) error {
+	return &jsonrpc.Error{
+		Code:    jsonrpc.CodeInvalidParams,
+		Message: fmt.Sprintf("missing required argument %q", name),
 	}
 }
 

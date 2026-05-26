@@ -9,12 +9,12 @@ import (
 
 // RegisterResource adds a resource with a fixed URI. uri must be absolute (e.g. file:///docs/readme).
 func RegisterResource(s *TinyServer, uri, name, description, mimeType string, handler mcp.ResourceHandler) error {
-	if handler == nil {
-		return fmt.Errorf("cannot register resource %q with a nil handler", name)
-	}
 	srv, err := rawServer(s)
 	if err != nil {
 		return err
+	}
+	if handler == nil {
+		return fmt.Errorf("cannot register resource %q with a nil handler", name)
 	}
 	return registerRecover(fmt.Sprintf("resource %q", name), func() {
 		srv.AddResource(&mcp.Resource{
@@ -28,12 +28,12 @@ func RegisterResource(s *TinyServer, uri, name, description, mimeType string, ha
 
 // RegisterResourceTemplate adds a resource matched by URI template (e.g. file:///docs/{path}).
 func RegisterResourceTemplate(s *TinyServer, uriTemplate, name, description, mimeType string, handler mcp.ResourceHandler) error {
-	if handler == nil {
-		return fmt.Errorf("cannot register resource template %q with a nil handler", name)
-	}
 	srv, err := rawServer(s)
 	if err != nil {
 		return err
+	}
+	if handler == nil {
+		return fmt.Errorf("cannot register resource template %q with a nil handler", name)
 	}
 	return registerRecover(fmt.Sprintf("resource template %q", name), func() {
 		srv.AddResourceTemplate(&mcp.ResourceTemplate{

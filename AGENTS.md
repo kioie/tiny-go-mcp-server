@@ -24,7 +24,7 @@ Guidance for AI coding agents working in this repository.
 ## API notes
 
 - Tool registration: `tinymcp.RegisterTool(server, name, desc, handler)` or `RegisterToolDef` for full `mcp.Tool` metadata — returns errors for nil server and invalid tool definitions (no panics).
-- Resource/prompt registration: nil handlers return errors at registration time.
+- Resource/prompt registration: nil handlers return errors at registration time; nil server is reported before nil handler.
 - Server options: `NewServer(name, ver, tinymcp.WithInstructions(...))` or `NewServerWithOptions(name, ver, &mcp.ServerOptions{...})`; full control via `RawServer()`.
 - Handlers need both `tinymcp` and `github.com/modelcontextprotocol/go-sdk/mcp` imports.
 - Optional server logs: set env `TINY_GO_MCP_VERBOSE=1` (stderr only; stdio is reserved for MCP).

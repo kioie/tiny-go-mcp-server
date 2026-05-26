@@ -16,7 +16,9 @@ Prefer **streamable HTTP** for new remote deployments unless a client explicitly
 
 ```go
 server := tinymcp.NewServer("my-mcp", "1.0.0")
-_ = tinymcp.RegisterTool(server, "ping", "Echo a message", pingHandler)
+if err := tinymcp.RegisterTool(server, "ping", "Echo a message", pingHandler); err != nil {
+	log.Fatal(err)
+}
 
 // Blocks; bind to loopback for local-only access. Add TLS or a reverse proxy in production.
 log.Fatal(server.StartHTTP("127.0.0.1:8080", &tinymcp.HTTPOptions{

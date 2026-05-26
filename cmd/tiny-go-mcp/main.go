@@ -31,7 +31,7 @@ type GreetArguments struct {
 
 func main() {
 	// Initialize the Tiny Go MCP Server
-	server := tinymcp.NewServer("tiny-go-mcp", "1.1.2")
+	server := tinymcp.NewServer("tiny-go-mcp", "1.1.3")
 
 	// Register tools to the server using the simplified tinymcp library
 	if err := RegisterTools(server); err != nil {

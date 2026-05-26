@@ -30,7 +30,7 @@ import (
 )
 
 const (
-	serverVersion   = "1.1.2"
+	serverVersion   = "1.1.3"
 	infoResourceURI = "file:///info"
 )
 

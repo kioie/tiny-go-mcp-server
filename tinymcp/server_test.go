@@ -34,6 +34,17 @@ func TestRegisterTool_nilServer(t *testing.T) {
 	}
 }
 
+func TestRegisterToolDef_invalidInput(t *testing.T) {
+	s := NewServer("test", "0.0.1")
+	err := RegisterToolDef(s, &mcp.Tool{Name: "bad", Description: "x"},
+		func(_ context.Context, _ *mcp.CallToolRequest, args string) (*mcp.CallToolResult, any, error) {
+			return nil, nil, nil
+		})
+	if err == nil {
+		t.Fatal("expected error for invalid tool input type")
+	}
+}
+
 func TestTextResult(t *testing.T) {
 	r := TextResult("hello")
 	if len(r.Content) != 1 {

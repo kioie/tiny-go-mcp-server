@@ -46,7 +46,7 @@ Requirements ([Smithery docs](https://smithery.ai/docs/build/publish)):
 - Public **HTTPS** URL (no trailing slash)
 - **OAuth** only if your server requires auth (return **401**, not 403, for unauthenticated requests)
 
-Optional: tunnel locally with `ngrok http 8080` before publishing a test listing.
+Optional: tunnel locally with `ngrok http 8080` before publishing a test listing. Use [`examples/http-deploy`](../examples/http-deploy) for tunnel testing — it sets `DisableLocalhostProtection` for loopback + tunnel Host headers. [`examples/http`](../examples/http) requires the same flag for ngrok; see [`docs/HTTP.md`](./HTTP.md).
 
 ### 3. Server card (optional but included in example)
 
@@ -85,7 +85,7 @@ npx @anthropic-ai/mcpb pack .smithery/mcpb server.mcpb
 smithery mcp publish server.mcpb -n kioie/tiny-go-mcp
 ```
 
-This path **requires Docker on the end-user machine** (bundle runs `ghcr.io/kioie/tiny-go-mcp:1.1.0`).
+This path **requires Docker on the end-user machine** (bundle runs `ghcr.io/kioie/tiny-go-mcp:1.1.2`).
 
 **Live stdio listing:** https://smithery.ai/servers/kioie/tiny-go-mcp
 

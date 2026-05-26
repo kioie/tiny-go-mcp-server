@@ -49,8 +49,10 @@ func main() {
 	}
 
 	mcpHandler, err := tinymcp.StreamableHTTPHandler(server, &tinymcp.HTTPOptions{
-		Stateless:                  true, // simple default for hosted demos; use nil for full sessions
-		DisableLocalhostProtection: true, // required behind reverse proxies (Fly, Render, tunnels)
+		Stateless: true, // simple default for hosted demos; use nil for full sessions
+		// Lets local ngrok/tunnel testing work (loopback + non-loopback Host). Harmless on Fly/Render
+		// where traffic arrives on non-loopback interfaces; see tinymcp HTTPOptions docs.
+		DisableLocalhostProtection: true,
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -71,7 +73,7 @@ func main() {
 		log.Printf("Tiny Go MCP HTTP deploy example listening on %s (MCP at /)", addr)
 	}
 
-	if err := http.ListenAndServe(addr, mux); err != nil {
+	if err := tinymcp.ListenAndServeHTTP(addr, mux); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -79,19 +81,21 @@ func main() {
 func registerCapabilities(server *tinymcp.TinyServer) error {
 	openWorld := false
 	destructive := false
-	mcp.AddTool(server.RawServer(), &mcp.Tool{
+	if err := tinymcp.RegisterToolDef(server, &mcp.Tool{
 		Name: "ping",
 		Description: "Demo: echo a message over streamable HTTP MCP. Use only to verify HTTP transport, " +
 			"Smithery connectivity, or client wiring; do not use for production messaging—reply in chat instead. " +
 			"Returns the input message or \"pong\" when empty.",
 		Annotations: &mcp.ToolAnnotations{
 			ReadOnlyHint:    true,
-			IdempotentHint:    true,
-			OpenWorldHint:     &openWorld,
-			DestructiveHint:   &destructive,
-			Title:             "Ping",
+			IdempotentHint:  true,
+			OpenWorldHint:   &openWorld,
+			DestructiveHint: &destructive,
+			Title:           "Ping",
 		},
-	}, ping)
+	}, ping); err != nil {
+		return err
+	}
 
 	if err := tinymcp.RegisterTextResource(server,
 		infoResourceURI,
@@ -136,5 +140,5 @@ func listenAddr() string {
 	if v := os.Getenv("TINY_GO_MCP_ADDR"); v != "" {
 		return v
 	}
-	return ":8080"
+	return "127.0.0.1:8080"
 }

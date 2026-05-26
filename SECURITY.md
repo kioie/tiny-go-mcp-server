@@ -8,4 +8,4 @@ We will acknowledge reports promptly and work on fixes as needed.
 
 ## Scope
 
-This project is a local stdio MCP server library and reference binary. It does not expose network services by default. Review tool handlers you add — they run with the privileges of the host process that launches the MCP server.
+This project is an MCP server **library** and reference binaries. The default transport is **stdio** (no network listener). Optional HTTP/SSE helpers and deploy examples (`examples/http`, `examples/http-deploy`) **do** expose network services when you run them — treat public deployments like any other web API: add authentication, TLS, and rate limiting. Review tool handlers you add — they run with the privileges of the host process that launches the MCP server.

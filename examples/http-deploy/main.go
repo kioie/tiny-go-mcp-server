@@ -6,7 +6,8 @@
 // Run locally:
 //
 //	go run ./examples/http-deploy
-//	ngrok http 8080   # optional: public URL for Smithery scan
+//	TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1 go run ./examples/http-deploy
+//	ngrok http 8080   # optional: set env above for tunnel + Smithery scan
 //
 // Publish to Smithery (after HTTPS is live):
 //
@@ -49,10 +50,8 @@ func main() {
 	}
 
 	mcpHandler, err := tinymcp.StreamableHTTPHandler(server, &tinymcp.HTTPOptions{
-		Stateless: true, // simple default for hosted demos; use nil for full sessions
-		// Lets local ngrok/tunnel testing work (loopback + non-loopback Host). Harmless on Fly/Render
-		// where traffic arrives on non-loopback interfaces; see tinymcp HTTPOptions docs.
-		DisableLocalhostProtection: true,
+		Stateless:                  true, // simple default for hosted demos; use nil for full sessions
+		DisableLocalhostProtection: disableLocalhostProtection(),
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -141,4 +140,10 @@ func listenAddr() string {
 		return v
 	}
 	return "127.0.0.1:8080"
+}
+
+// disableLocalhostProtection opts out of the go-sdk DNS rebinding guard for loopback servers.
+// Set TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1 only for local ngrok/tunnel testing.
+func disableLocalhostProtection() bool {
+	return os.Getenv("TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION") == "1"
 }

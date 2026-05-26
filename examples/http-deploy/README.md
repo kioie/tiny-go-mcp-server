@@ -21,9 +21,10 @@ go run ./examples/http-deploy
 # MCP: http://127.0.0.1:8080/
 ```
 
-Optional public tunnel for Smithery testing:
+Optional public tunnel for Smithery testing (requires disabling localhost DNS-rebinding protection):
 
 ```bash
+TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1 go run ./examples/http-deploy
 ngrok http 8080
 # Publish https://YOUR_SUBDOMAIN.ngrok-free.app (see below)
 ```
@@ -83,4 +84,5 @@ If scanning fails (WAF, auth wall), Smithery can use `/.well-known/mcp/server-ca
 |----------|---------|-------------|
 | `PORT` | — | Set by most PaaS (e.g. Render, Railway) |
 | `TINY_GO_MCP_ADDR` | `127.0.0.1:8080` | Listen address when `PORT` is unset (PaaS sets `PORT` to bind on all interfaces) |
+| `TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION` | — | Set to `1` for local ngrok/tunnel testing only (disables DNS rebinding guard on loopback) |
 | `TINY_GO_MCP_VERBOSE` | — | Set to `1` for stderr startup logs |

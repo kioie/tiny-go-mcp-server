@@ -3,7 +3,8 @@
 // Run: go run ./examples/http
 //      TINY_GO_MCP_ADDR=0.0.0.0:8080 go run ./examples/http   # listen on all interfaces
 //
-// Local ngrok/tunnel testing requires DisableLocalhostProtection in HTTPOptions (see http-deploy).
+// Local ngrok/tunnel testing requires DisableLocalhostProtection in HTTPOptions, or
+// TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1 when using examples/http-deploy.
 package main
 
 import (

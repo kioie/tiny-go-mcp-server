@@ -21,7 +21,7 @@ Built on the official [`modelcontextprotocol/go-sdk`](https://github.com/modelco
 
 | | Tiny Go MCP Server | Full frameworks |
 |---|---|---|
-| **Goal** | Thin wrapper + tiny static binary | Full MCP feature surface |
+| **Goal** | Thin helper on official go-sdk + tiny static binary | Full MCP feature surface |
 | **Deps** | Official go-sdk only | Varies |
 | **Binary** | ~5MB stripped, no runtime on host | Often larger stacks |
 | **Schemas** | Inferred from struct tags | Manual or builder APIs |
@@ -32,12 +32,35 @@ Use this project as a **library** (`tinymcp` package) or as a **starting templat
 
 | | **tinymcp** (this repo) | **[mcp-go](https://github.com/mark3labs/mcp-go)** | **[go-sdk](https://github.com/modelcontextprotocol/go-sdk)** alone |
 |---|---|---|---|
-| **Best for** | Thin wrapper, tiny binary, official SDK | Rich helpers, large ecosystem | Full control, no extra layer |
+| **Best for** | Thin helper on go-sdk, tiny binary | Rich helpers, large ecosystem | Full control, no extra layer |
 | **Schema** | Struct tags → auto JSON Schema | Builder APIs / helpers | `AddTool` + generics yourself |
 | **Transport** | stdio (`Start()`), streamable HTTP (`StartHTTP`), legacy SSE (`StartSSE`) | stdio, SSE, HTTP, … | All transports |
 | **Deps** | go-sdk only | Standalone module | go-sdk only |
 
 Choose **tinymcp** when you want the official protocol implementation with minimal boilerplate and a small static server binary.
+
+### Philosophy
+
+**tinymcp is a thin helper on the official go-sdk — not a replacement for it.**
+
+We reduce setup and transport boilerplate (server creation, registration error handling, stdio/HTTP/SSE, `TextResult`, deploy examples). The protocol implementation, generics, and schema inference still come from [`modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk).
+
+That means handler code uses **both** imports — and that is intentional:
+
+```go
+import (
+    "github.com/kioie/tiny-go-mcp-server/tinymcp"
+    "github.com/modelcontextprotocol/go-sdk/mcp" // handler types, prompts, resources, advanced APIs
+)
+```
+
+| Use **tinymcp** for | Use **go-sdk** (`mcp`) for |
+|---------------------|----------------------------|
+| `NewServer`, `RegisterTool`, transports | Handler signatures (`CallToolRequest`, `GetPromptRequest`, …) |
+| Safe registration (errors, not panics) | Tool annotations, elicitation, custom protocol features |
+| `TextResult`, HTTP middleware helpers | Anything via `server.RawServer()` |
+
+We are **not** aiming for a non-leaky facade that hides the SDK. If you need full control, call `RawServer()` or use go-sdk directly — same underlying server, no lock-in.
 
 ### Transport
 

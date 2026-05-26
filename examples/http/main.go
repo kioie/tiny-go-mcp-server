@@ -2,9 +2,7 @@
 //
 // Run: go run ./examples/http
 //      TINY_GO_MCP_ADDR=0.0.0.0:8080 go run ./examples/http   # listen on all interfaces
-//
-// Local ngrok/tunnel testing requires DisableLocalhostProtection in HTTPOptions, or
-// TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1 when using examples/http-deploy.
+//      TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1 go run ./examples/http   # ngrok/tunnel testing
 package main
 
 import (
@@ -33,7 +31,10 @@ func main() {
 	}
 
 	// Stateless=true is a simple default for demos; use nil or Stateful opts for full sessions.
-	if err := server.StartHTTP(addr, &tinymcp.HTTPOptions{Stateless: true}); err != nil {
+	if err := server.StartHTTP(addr, &tinymcp.HTTPOptions{
+		Stateless:                  true,
+		DisableLocalhostProtection: tinymcp.DisableLocalhostProtectionFromEnv(),
+	}); err != nil {
 		log.Fatal(err)
 	}
 }

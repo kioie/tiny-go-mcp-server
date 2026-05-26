@@ -19,7 +19,7 @@ startCommand:
       args: [
         'run', '-i', '--rm',
         '-e', `TINY_GO_MCP_VERBOSE=${config.TINY_GO_MCP_VERBOSE || ''}`,
-        'ghcr.io/kioie/tiny-go-mcp:1.1.2'
+        'ghcr.io/kioie/tiny-go-mcp:1.1.3'
       ]
     })
   exampleConfig:

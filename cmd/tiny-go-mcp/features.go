@@ -21,7 +21,7 @@ func RegisterResourcesAndPrompts(server *tinymcp.TinyServer) error {
 		"info",
 		"Demo: static server metadata. Use to test resources/read; do not use for live config—read env or APIs instead.",
 		"text/plain",
-		"Tiny Go MCP Server v1.1.2 — tinymcp reference (tools, resources, prompts)",
+		"Tiny Go MCP Server v1.1.3 — tinymcp reference (tools, resources, prompts)",
 	); err != nil {
 		return fmt.Errorf("failed to register info resource: %w", err)
 	}

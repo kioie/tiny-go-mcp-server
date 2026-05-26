@@ -50,6 +50,12 @@ Official logo and banner: [`docs/BRANDING.md`](./BRANDING.md) · [`docs/assets/`
 
 Use this in directory listings and social posts.
 
+## Release backlog
+
+When cutting the next semver release, include postponed items:
+
+- [ ] **Graceful HTTP/SSE shutdown** — `ListenAndServeHTTPContext`, SIGTERM/`Shutdown` drain (postponed from v1.1.3 planning)
+
 ## Descriptions for agents
 
 Registry and directory text (`server.json`, `glama.json`) and each MCP **tool** description should tell models **when to use**, **when not to**, and **alternatives** (including sibling tools: “use `add` instead of `subtract` when …”). See [`README.md`](../README.md) “When to use what” and the reference tool table.

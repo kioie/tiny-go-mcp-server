@@ -18,8 +18,8 @@ Prefer **streamable HTTP** for new remote deployments unless a client explicitly
 server := tinymcp.NewServer("my-mcp", "1.0.0")
 _ = tinymcp.RegisterTool(server, "ping", "Echo a message", pingHandler)
 
-// Blocks; listen on all interfaces. Add TLS or a reverse proxy in production.
-log.Fatal(server.StartHTTP(":8080", &tinymcp.HTTPOptions{
+// Blocks; bind to loopback for local-only access. Add TLS or a reverse proxy in production.
+log.Fatal(server.StartHTTP("127.0.0.1:8080", &tinymcp.HTTPOptions{
     Stateless: true, // simple demos; omit for full sessions + server-initiated messages
 }))
 ```
@@ -33,7 +33,7 @@ if err != nil {
 }
 mux := http.NewServeMux()
 mux.Handle("/mcp", handler)
-log.Fatal(http.ListenAndServe(":8080", mux))
+log.Fatal(http.ListenAndServe("127.0.0.1:8080", mux))
 ```
 
 Runnable example: [`examples/http`](../examples/http).
@@ -67,9 +67,11 @@ Clients use `SSEClientTransport` with your server’s SSE endpoint URL. Prefer s
 
 ## Security
 
-- Bind to `127.0.0.1:8080` when only local access is needed.
+- Bind to `127.0.0.1:8080` when only local access is needed (`TINY_GO_MCP_ADDR=0.0.0.0:8080` to listen on all interfaces).
+- For local **ngrok/tunnel** testing, set `DisableLocalhostProtection: true` in `HTTPOptions` (included in [`examples/http-deploy`](../examples/http-deploy)).
 - Put **TLS**, authentication, and rate limiting in front of public endpoints (reverse proxy or middleware wrapping the handler).
 - Do not set `DisableLocalhostProtection` unless you understand [MCP security guidance](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices).
+- `StartHTTP` and `ListenAndServeHTTP` set `ReadHeaderTimeout` and `IdleTimeout` on the underlying `http.Server`.
 
 ## Escape hatch
 

@@ -31,11 +31,27 @@ func RegisterTool[In, Out any](s *TinyServer, name, description string, handler 
 	if s == nil || s.server == nil {
 		return errors.New("cannot register tool on a nil server")
 	}
+	return RegisterToolDef(s, &mcp.Tool{
+		Name:        name,
+		Description: description,
+	}, handler)
+}
+
+// RegisterToolDef registers a tool with full go-sdk Tool metadata (annotations, etc.).
+// Invalid tool definitions surface as returned errors instead of panicking.
+func RegisterToolDef[In, Out any](s *TinyServer, tool *mcp.Tool, handler mcp.ToolHandlerFor[In, Out]) error {
+	if s == nil || s.server == nil {
+		return errors.New("cannot register tool on a nil server")
+	}
+	if tool == nil {
+		return errors.New("cannot register a nil tool")
+	}
+	name := tool.Name
+	if name == "" {
+		name = "<unnamed>"
+	}
 	return registerRecover(fmt.Sprintf("tool %q", name), func() {
-		mcp.AddTool(s.server, &mcp.Tool{
-			Name:        name,
-			Description: description,
-		}, handler)
+		mcp.AddTool(s.server, tool, handler)
 	})
 }
 

@@ -10,6 +10,10 @@ Host a **streamable HTTP** MCP server so users connect through [Smithery](https:
 
 Full Smithery guide: [`docs/SMITHERY.md`](../../docs/SMITHERY.md).
 
+## Security
+
+This example is **intentionally unauthenticated** so Smithery can scan and proxy it. Anyone who can reach your public URL can call MCP methods. **Do not deploy real tools or sensitive data without auth middleware** wrapping the MCP handler. Return **401** (not 403) when auth is required — see [`docs/SMITHERY.md`](../../docs/SMITHERY.md).
+
 ## Run locally
 
 ```bash
@@ -62,7 +66,7 @@ Live example: https://tiny-go-mcp-http.fly.dev → Smithery https://smithery.ai/
 ## Publish on Smithery (URL)
 
 1. `smithery auth login`
-2. Ensure your deployment returns **200** on `/` for MCP initialize (and optionally serves the server card).
+2. Verify MCP with a **POST** JSON-RPC `initialize` to `/` (returns **200**). `GET /` returns **405** — that is expected in stateless mode.
 3. Publish:
 
 ```bash
@@ -78,5 +82,5 @@ If scanning fails (WAF, auth wall), Smithery can use `/.well-known/mcp/server-ca
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PORT` | — | Set by most PaaS (e.g. Render, Railway) |
-| `TINY_GO_MCP_ADDR` | `:8080` | Listen address when `PORT` is unset |
+| `TINY_GO_MCP_ADDR` | `127.0.0.1:8080` | Listen address when `PORT` is unset (PaaS sets `PORT` to bind on all interfaces) |
 | `TINY_GO_MCP_VERBOSE` | — | Set to `1` for stderr startup logs |

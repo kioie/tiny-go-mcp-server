@@ -1,7 +1,9 @@
 // Streamable HTTP MCP example (POST + SSE per current MCP spec).
 //
 // Run: go run ./examples/http
-//      TINY_GO_MCP_ADDR=:8080 go run ./examples/http
+//      TINY_GO_MCP_ADDR=0.0.0.0:8080 go run ./examples/http   # listen on all interfaces
+//
+// Local ngrok/tunnel testing requires DisableLocalhostProtection in HTTPOptions (see http-deploy).
 package main
 
 import (
@@ -18,7 +20,7 @@ type pingArgs struct {
 }
 
 func main() {
-	addr := envOr("TINY_GO_MCP_ADDR", ":8080")
+	addr := envOr("TINY_GO_MCP_ADDR", "127.0.0.1:8080")
 	server := tinymcp.NewServer("tiny-go-mcp-http", "1.0.0")
 
 	if err := tinymcp.RegisterTool(server, "ping", "Echo a message over HTTP MCP", ping); err != nil {

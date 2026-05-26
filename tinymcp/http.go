@@ -79,13 +79,24 @@ func SSEHandler(s *TinyServer, opts *SSEOptions) (http.Handler, error) {
 	}, opts.sseOpts()), nil
 }
 
+// ListenAndServeHTTP starts addr with handler using timeouts suited to MCP HTTP (SSE-friendly).
+func ListenAndServeHTTP(addr string, handler http.Handler) error {
+	srv := &http.Server{
+		Addr:              addr,
+		Handler:           handler,
+		ReadHeaderTimeout: 10 * time.Second,
+		IdleTimeout:       120 * time.Second,
+	}
+	return srv.ListenAndServe()
+}
+
 // StartHTTP listens on addr and serves streamable HTTP MCP until the server stops or errors.
 func (s *TinyServer) StartHTTP(addr string, opts *HTTPOptions) error {
 	h, err := StreamableHTTPHandler(s, opts)
 	if err != nil {
 		return err
 	}
-	return http.ListenAndServe(addr, h)
+	return ListenAndServeHTTP(addr, h)
 }
 
 // StartSSE listens on addr and serves legacy SSE MCP until the server stops or errors.
@@ -94,5 +105,5 @@ func (s *TinyServer) StartSSE(addr string, opts *SSEOptions) error {
 	if err != nil {
 		return err
 	}
-	return http.ListenAndServe(addr, h)
+	return ListenAndServeHTTP(addr, h)
 }

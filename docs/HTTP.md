@@ -31,8 +31,10 @@ Or mount the handler on an existing `http.Server` (auth, CORS, paths):
 ```go
 handler, err := tinymcp.StreamableHTTPHandler(server, nil)
 if err != nil {
-    log.Fatal(err)
+	log.Fatal(err)
 }
+handler = tinymcp.WithCrossOriginProtection(handler)
+handler = tinymcp.BearerTokenAuth(os.Getenv("MCP_API_KEY"), handler)
 mux := http.NewServeMux()
 mux.Handle("/mcp", handler)
 log.Fatal(http.ListenAndServe("127.0.0.1:8080", mux))
@@ -71,7 +73,7 @@ Clients use `SSEClientTransport` with your server’s SSE endpoint URL. Prefer s
 
 - Bind to `127.0.0.1:8080` when only local access is needed (`TINY_GO_MCP_ADDR=0.0.0.0:8080` to listen on all interfaces).
 - For local **ngrok/tunnel** testing on loopback, set `TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1` when running [`examples/http-deploy`](../examples/http-deploy), or set `DisableLocalhostProtection: true` in `HTTPOptions` (e.g. [`examples/http`](../examples/http)).
-- Put **TLS**, authentication, and rate limiting in front of public endpoints (reverse proxy or middleware wrapping the handler).
+- Put **TLS**, authentication, and rate limiting in front of public endpoints (reverse proxy or middleware wrapping the handler). Helpers: `tinymcp.BearerTokenAuth`, `tinymcp.WithCrossOriginProtection` (used in [`examples/http-deploy`](../examples/http-deploy)).
 - Do not set `DisableLocalhostProtection` unless you understand [MCP security guidance](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices).
 - `StartHTTP` and `ListenAndServeHTTP` set `ReadHeaderTimeout` and `IdleTimeout` on the underlying `http.Server`.
 

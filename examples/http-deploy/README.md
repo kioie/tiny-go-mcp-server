@@ -12,7 +12,15 @@ Full Smithery guide: [`docs/SMITHERY.md`](../../docs/SMITHERY.md).
 
 ## Security
 
-This example is **intentionally unauthenticated** so Smithery can scan and proxy it. Anyone who can reach your public URL can call MCP methods. **Do not deploy real tools or sensitive data without auth middleware** wrapping the MCP handler. Return **401** (not 403) when auth is required — see [`docs/SMITHERY.md`](../../docs/SMITHERY.md).
+This example is **open by default** so Smithery can scan and proxy it (`TINY_GO_MCP_API_KEY` unset). Anyone who can reach your public URL can call MCP methods.
+
+For production:
+
+1. Set **`TINY_GO_MCP_API_KEY`** to require `Authorization: Bearer <key>` on MCP (`/`). Return **401** (not 403) when auth fails — Smithery-compatible.
+2. Cross-origin CSRF protection is enabled on the MCP handler via `tinymcp.WithCrossOriginProtection` (server-to-server clients without `Origin` are unaffected).
+3. **Do not deploy real tools or sensitive data** without reviewing auth and tool privileges.
+
+See [`docs/HTTP.md`](../../docs/HTTP.md) and [`docs/SMITHERY.md`](../../docs/SMITHERY.md).
 
 ## Run locally
 
@@ -84,5 +92,6 @@ If scanning fails (WAF, auth wall), Smithery can use `/.well-known/mcp/server-ca
 |----------|---------|-------------|
 | `PORT` | — | Set by most PaaS (e.g. Render, Railway) |
 | `TINY_GO_MCP_ADDR` | `127.0.0.1:8080` | Listen address when `PORT` is unset (PaaS sets `PORT` to bind on all interfaces) |
+| `TINY_GO_MCP_API_KEY` | — | When set, MCP (`/`) requires `Authorization: Bearer <key>` |
 | `TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION` | — | Set to `1` for local ngrok/tunnel testing only (disables DNS rebinding guard on loopback) |
 | `TINY_GO_MCP_VERBOSE` | — | Set to `1` for stderr startup logs |

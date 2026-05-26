@@ -90,3 +90,54 @@ func TestHTTPHandlers_nilServer(t *testing.T) {
 		t.Error("StartSSE(nil): expected error")
 	}
 }
+
+func TestBearerTokenAuth(t *testing.T) {
+	ok := httptest.NewRecorder()
+	BearerTokenAuth("secret", http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})).ServeHTTP(ok, httptest.NewRequest(http.MethodPost, "/", nil))
+	if ok.Code != http.StatusUnauthorized {
+		t.Fatalf("missing auth: status = %d, want 401", ok.Code)
+	}
+
+	withToken := httptest.NewRecorder()
+	req := httptest.NewRequest(http.MethodPost, "/", nil)
+	req.Header.Set("Authorization", "Bearer secret")
+	BearerTokenAuth("secret", http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})).ServeHTTP(withToken, req)
+	if withToken.Code != http.StatusOK {
+		t.Fatalf("valid auth: status = %d, want 200", withToken.Code)
+	}
+
+	open := httptest.NewRecorder()
+	http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}).ServeHTTP(open, httptest.NewRequest(http.MethodPost, "/", nil))
+	BearerTokenAuth("", http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})).ServeHTTP(open, httptest.NewRequest(http.MethodPost, "/", nil))
+	if open.Code != http.StatusOK {
+		t.Fatalf("empty token disables auth: status = %d, want 200", open.Code)
+	}
+}
+
+func TestWithCrossOriginProtection(t *testing.T) {
+	h := WithCrossOriginProtection(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	}))
+	req := httptest.NewRequest(http.MethodPost, "http://example.com/", nil)
+	req.Header.Set("Sec-Fetch-Site", "cross-site")
+	req.Header.Set("Origin", "https://evil.example")
+	rec := httptest.NewRecorder()
+	h.ServeHTTP(rec, req)
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf("cross-origin POST: status = %d, want 403", rec.Code)
+	}
+
+	rec2 := httptest.NewRecorder()
+	h.ServeHTTP(rec2, httptest.NewRequest(http.MethodPost, "http://example.com/", nil))
+	if rec2.Code != http.StatusOK {
+		t.Fatalf("server-to-server POST: status = %d, want 200", rec2.Code)
+	}
+}

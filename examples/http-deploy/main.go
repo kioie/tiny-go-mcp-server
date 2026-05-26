@@ -56,6 +56,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	mcpHandler = tinymcp.WithCrossOriginProtection(mcpHandler)
+	mcpHandler = tinymcp.BearerTokenAuth(os.Getenv("TINY_GO_MCP_API_KEY"), mcpHandler)
 
 	mux := http.NewServeMux()
 	mux.Handle("/health", http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {

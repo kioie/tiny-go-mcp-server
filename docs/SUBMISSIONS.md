@@ -4,8 +4,8 @@ Steps and text for second-tier directories and social posts (P1).
 
 ## awesome-mcp-servers
 
-- **PR:** https://github.com/punkpeye/awesome-mcp-servers/pull/6665 (open, CI green)
-- **Action:** Wait for maintainer merge; comment if stale
+- **Listed:** https://github.com/punkpeye/awesome-mcp-servers#frameworks (Frameworks section, merged [PR #6665](https://github.com/punkpeye/awesome-mcp-servers/pull/6665))
+- **Description refresh:** [PR #6965](https://github.com/punkpeye/awesome-mcp-servers/pull/6965) (v1.1.3, HTTP/SSE, Smithery link)
 
 ## mcp.so
 

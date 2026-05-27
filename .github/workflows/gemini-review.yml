@@ -52,20 +52,6 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Prepare prompt context
-        if: steps.check.outputs.skip != 'true'
-        run: |
-          mkdir -p .gemini
-          jq -n \
-            --arg repo "${REPOSITORY}" \
-            --arg pr "${PULL_REQUEST_NUMBER}" \
-            --arg context "${ADDITIONAL_CONTEXT}" \
-            '{repository: $repo, pull_request_number: $pr, additional_context: $context}' > .gemini/context.json
-        env:
-          REPOSITORY: ${{ github.repository }}
-          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
-          ADDITIONAL_CONTEXT: ${{ inputs.additional_context }}
-
       - name: Run Gemini pull request review
         if: steps.check.outputs.skip != 'true'
         uses: google-github-actions/run-gemini-cli@v0
@@ -74,6 +60,9 @@ jobs:
           GEMINI_CLI_TRUST_WORKSPACE: true
           GITHUB_TOKEN: ${{ steps.mint_identity_token.outputs.token || secrets.GITHUB_TOKEN || github.token }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          REPOSITORY: ${{ github.repository }}
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
+          ADDITIONAL_CONTEXT: ${{ inputs.additional_context }}
         with:
           gcp_location: ${{ vars.GOOGLE_CLOUD_LOCATION }}
           gcp_project_id: ${{ vars.GOOGLE_CLOUD_PROJECT }}
@@ -128,4 +117,4 @@ jobs:
             [
               "https://github.com/gemini-cli-extensions/code-review"
             ]
-          prompt: /gemini-review
+          prompt: /pr-code-review

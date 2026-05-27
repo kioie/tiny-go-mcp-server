@@ -18,10 +18,8 @@ node_modules/
 .smithery/
 server.mcpb
 
-# gemini-cli (generated at runtime in CI; keep .gemini/commands/ in git)
-.gemini/settings.json
-.gemini/telemetry.log
-.gemini/context.json
+# gemini-cli runtime artifacts (CI)
+.gemini/
 
 # GitHub App credentials (optional Gemini dispatch auth)
 gha-creds-*.json

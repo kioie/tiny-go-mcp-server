@@ -39,7 +39,7 @@ Non-draft pull requests trigger [**Gemini CLI**](https://github.com/marketplace/
 
 Reviews run automatically on PR open/update. Re-run manually with `@gemini-cli /review` on the PR (optionally add focus text, e.g. `@gemini-cli /review focus on HTTP security`).
 
-Review rules: [`.gemini/commands/gemini-review.toml`](.gemini/commands/gemini-review.toml), [GEMINI.md](GEMINI.md), [AGENTS.md](AGENTS.md).
+Review rules: [GEMINI.md](GEMINI.md), [AGENTS.md](AGENTS.md) (via the official `code-review` extension `/pr-code-review` command).
 
 ## Adding tools to the example server
 

@@ -28,6 +28,19 @@ go mod download
 
 4. Open a pull request against `main`.
 
+## Automated PR review
+
+Non-draft pull requests trigger [**Gemini CLI**](https://github.com/marketplace/actions/run-gemini-cli) via [`.github/workflows/gemini-dispatch.yml`](.github/workflows/gemini-dispatch.yml) → [`.github/workflows/gemini-review.yml`](.github/workflows/gemini-review.yml).
+
+**Repository admin setup (one time):**
+
+1. Get a key from [Google AI Studio](https://aistudio.google.com/).
+2. Add Actions secret `GEMINI_API_KEY` (`Settings → Secrets and variables → Actions`).
+
+Reviews run automatically on PR open/update. Re-run manually with `@gemini-cli /review` on the PR (optionally add focus text, e.g. `@gemini-cli /review focus on HTTP security`).
+
+Review rules: [`.gemini/commands/gemini-review.toml`](.gemini/commands/gemini-review.toml), [GEMINI.md](GEMINI.md), [AGENTS.md](AGENTS.md).
+
 ## Adding tools to the example server
 
 1. Define an arguments struct with `json` and `jsonschema` tags.

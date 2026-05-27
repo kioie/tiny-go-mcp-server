@@ -17,3 +17,9 @@ node_modules/
 # Smithery MCPB build artifacts
 .smithery/
 server.mcpb
+
+# gemini-cli runtime artifacts (CI)
+.gemini/
+
+# GitHub App credentials (optional Gemini dispatch auth)
+gha-creds-*.json

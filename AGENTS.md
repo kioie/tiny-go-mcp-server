@@ -53,7 +53,7 @@ Guidance for AI coding agents working in this repository.
 
 PRs should pass: tests (`-race`), golangci-lint, and build. Security scanning runs via CodeQL on `main`.
 
-Non-draft PRs get an automated Gemini code review (`.github/workflows/gemini-dispatch.yml`). Address legitimate findings before merge, or comment `@gemini-cli /review` to re-run.
+Non-draft PRs get an automated OpenRouter code review (`.github/workflows/openrouter-pr-review.yml`). Address legitimate findings before merge, or comment `/review` to re-run.
 
 ## Publishing
 

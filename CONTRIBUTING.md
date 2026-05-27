@@ -30,16 +30,17 @@ go mod download
 
 ## Automated PR review
 
-Non-draft pull requests trigger [**Gemini CLI**](https://github.com/marketplace/actions/run-gemini-cli) via [`.github/workflows/gemini-dispatch.yml`](.github/workflows/gemini-dispatch.yml) → [`.github/workflows/gemini-review.yml`](.github/workflows/gemini-review.yml).
+Non-draft pull requests trigger an [**OpenRouter**](https://openrouter.ai) review via [`.github/workflows/openrouter-pr-review.yml`](.github/workflows/openrouter-pr-review.yml).
 
 **Repository admin setup (one time):**
 
-1. Get a key from [Google AI Studio](https://aistudio.google.com/).
-2. Add Actions secret `GEMINI_API_KEY` (`Settings → Secrets and variables → Actions`).
+1. Create an API key at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys).
+2. Add Actions secret `OPENROUTER_API_KEY` (`Settings → Secrets and variables → Actions`).
+3. Optional repository variable `OPENROUTER_MODEL` (default: `anthropic/claude-3.5-haiku`).
 
-Reviews run automatically on PR open/update. Re-run manually with `@gemini-cli /review` on the PR (optionally add focus text, e.g. `@gemini-cli /review focus on HTTP security`).
+Reviews run on PR open/update. Re-run by commenting `/review` on the PR.
 
-Review rules: [GEMINI.md](GEMINI.md), [AGENTS.md](AGENTS.md) (via the official `code-review` extension `/pr-code-review` command).
+Review criteria follow [AGENTS.md](AGENTS.md). The workflow uses `continue-on-error: true` so transient model/API outages do not block merges.
 
 ## Adding tools to the example server
 

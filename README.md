@@ -314,9 +314,15 @@ tinymcp.TextResult("message")                               // tool text helper
 tinymcp.TextResource(uri, mime, text)                       // resource read helper
 tinymcp.PromptResult(desc, tinymcp.UserPromptMessage("…")) // prompt helper
 server.RawServer()                                          // escape hatch to go-sdk
+
+// v1.2+: panic-at-startup registration or errors.Is sentinels
+tinymcp.MustRegisterTool(server, name, description, handler)
+errors.Is(err, tinymcp.ErrNilServer)                        // ErrNilTool, ErrNilHandler, ErrRegistrationFailed
+opts := (&tinymcp.HTTPOptions{Stateless: true}).WithMiddleware(requestLogger)
+tinymcp.ListenAndServeHTTPContext(ctx, addr, handler)       // graceful shutdown; also StartHTTPContext / StartSSEContext
 ```
 
-Documentation: [pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp](https://pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp)
+Documentation: [pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp](https://pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp). Upgrading from v1.1.x: [docs/MIGRATION-v1.2.md](docs/MIGRATION-v1.2.md).
 
 ---
 
@@ -326,6 +332,7 @@ Documentation: [pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp](https://
 |---------|-------------|
 | `make test` | Run tests with race detector |
 | `make lint` | golangci-lint |
+| `make lint-tools` | Validate MCP tool descriptions in reference servers |
 | `make coverage` | Coverage report |
 | `make build` | Dev binary `./tiny-go-mcp` |
 | `make release` | Stripped static binary |
@@ -344,28 +351,46 @@ upx --best --lzma tiny-go-mcp
 ## Project structure
 
 ```
-tinymcp/           # Library package
-cmd/tiny-go-mcp/   # Reference MCP server
-examples/minimal/  # Minimal stdio example
-examples/http/         # Streamable HTTP example
-examples/http-deploy/  # Deployable HTTP + Smithery URL listing (server card, Render/Fly)
-examples/resources/    # Resources + prompts example
+tinymcp/              # Library package
+cmd/tiny-go-mcp/      # Reference MCP server
+template/             # gonew stdio scaffold
+template-http/        # gonew streamable HTTP deploy scaffold
+examples/minimal/     # Minimal stdio example
+examples/http/        # Streamable HTTP example
+examples/http-deploy/ # Deployable HTTP + Smithery URL listing (server card, Render/Fly)
+examples/resources/   # Resources + prompts example
 examples/mcp-client-config.json  # Cursor/Claude-style template
-docs/HTTP.md       # stdio vs HTTP vs SSE
-docs/DISCOVERY.md  # Registries and visibility
-server.json        # MCP Registry metadata (publish with mcp-publisher)
-.github/workflows/ # CI, lint, CodeQL, releases
+scripts/lint-tools/   # MCP tool description linter (make lint-tools)
+docs/                 # Guides — see below
+server.json           # MCP Registry metadata (publish with mcp-publisher)
+CHANGELOG.md          # Release history
+SYSTEM_PROMPT.md      # Agent-facing API summary for codegen
+.github/workflows/    # CI, lint, CodeQL, releases
 ```
+
+Key docs in `docs/`:
+
+| Doc | Purpose |
+|-----|---------|
+| [QUICKSTART.md](docs/QUICKSTART.md) | Step-by-step library setup |
+| [HTTP.md](docs/HTTP.md) | stdio vs streamable HTTP vs legacy SSE |
+| [STABILITY.md](docs/STABILITY.md) | Public API stability policy |
+| [MIGRATION-v1.2.md](docs/MIGRATION-v1.2.md) | Upgrade guide from v1.1.x |
+| [TLS.md](docs/TLS.md) | HTTPS via reverse proxy or Go |
+| [LOCALHOST-PROTECTION.md](docs/LOCALHOST-PROTECTION.md) | DNS rebinding security advisory |
+| [DISCOVERY.md](docs/DISCOVERY.md) | Registries and visibility |
+| [GLAMA.md](docs/GLAMA.md) | Glama hosting |
+| [SMITHERY.md](docs/SMITHERY.md) | Smithery URL and MCPB listings |
 
 ---
 
 ## Releases
 
-Tag a semver version (e.g. `v1.0.0`) to publish stable `go get` versions and trigger [GitHub Releases](https://github.com/kioie/tiny-go-mcp-server/releases) with cross-platform binaries. Release history: [CHANGELOG.md](CHANGELOG.md). Public API stability: [docs/STABILITY.md](docs/STABILITY.md). Agent-facing API summary: [SYSTEM_PROMPT.md](SYSTEM_PROMPT.md).
+Tag a semver version (e.g. `v1.2.0`) to publish stable `go get` versions and trigger [GitHub Releases](https://github.com/kioie/tiny-go-mcp-server/releases) with cross-platform binaries and multi-arch GHCR images. Release history: [CHANGELOG.md](CHANGELOG.md). Public API stability: [docs/STABILITY.md](docs/STABILITY.md). Agent-facing API summary: [SYSTEM_PROMPT.md](SYSTEM_PROMPT.md). Upgrading from v1.1.x: [docs/MIGRATION-v1.2.md](docs/MIGRATION-v1.2.md).
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.2.0
+git push origin v1.2.0
 ```
 
 ## Discovery and registries

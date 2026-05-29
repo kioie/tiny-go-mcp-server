@@ -1,6 +1,6 @@
 # Agent instructions (Tiny Go MCP Server)
 
-Guidance for AI coding agents working in this repository.
+Guidance for AI coding agents working in this repository. For a compact, token-efficient API cheat sheet (including when generating code outside this repo), see [SYSTEM_PROMPT.md](SYSTEM_PROMPT.md).
 
 ## Commands
 

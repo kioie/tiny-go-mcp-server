@@ -53,6 +53,12 @@ Review criteria follow [AGENTS.md](AGENTS.md). The workflow uses `continue-on-er
 
 Tag with semver (`v1.0.0`). The [Release workflow](.github/workflows/release.yml) builds cross-platform `tiny-go-mcp` binaries and attaches them to the GitHub release.
 
+Before tagging:
+
+1. Move `[Unreleased]` entries in [CHANGELOG.md](CHANGELOG.md) into a new version section with date.
+2. Confirm [docs/STABILITY.md](docs/STABILITY.md) still matches any API changes.
+3. Bump version strings in `server.json`, `glama.json`, and deploy examples if applicable.
+
 ## Questions
 
 Open a [GitHub issue](https://github.com/kioie/tiny-go-mcp-server/issues) for bugs or feature requests.

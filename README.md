@@ -62,6 +62,42 @@ import (
 
 We are **not** aiming for a non-leaky facade that hides the SDK. If you need full control, call `RawServer()` or use go-sdk directly — same underlying server, no lock-in.
 
+### tinymcp vs raw go-sdk
+
+Same protocol implementation — tinymcp removes repetitive setup. Handler code still imports `mcp` for request types in both cases.
+
+**go-sdk alone** (minimal stdio server):
+
+```go
+server := mcp.NewServer(&mcp.Implementation{Name: "my-mcp", Version: "1.0.0"}, nil)
+mcp.AddTool(server, &mcp.Tool{
+    Name:        "greet",
+    Description: "Greet someone by name",
+}, greet)
+if err := server.Run(context.Background(), &mcp.StdioTransport{}); err != nil {
+    log.Fatal(err)
+}
+```
+
+**tinymcp** (same tool, less boilerplate):
+
+```go
+s := tinymcp.NewServer("my-mcp", "1.0.0")
+if err := tinymcp.RegisterTool(s, "greet", "Greet someone by name", greet); err != nil {
+    log.Fatal(err)
+}
+log.Fatal(s.Start())
+```
+
+| tinymcp adds | Still on go-sdk (`mcp`) |
+|--------------|-------------------------|
+| `NewServer(name, ver)` | Handler signatures (`CallToolRequest`, prompts, resources) |
+| `RegisterTool` + struct-tag JSON Schema | Tool annotations via `RegisterToolDef` + `mcp.Tool` |
+| Safe registration errors (no panics) | Advanced session / event-store APIs |
+| `Start()` / `StartHTTP()` / HTTP middleware | Full control via `RawServer()` |
+
+Use **go-sdk alone** when you want zero wrapper. Use **tinymcp** when you want less setup while staying on the official implementation.
+
 ### Transport
 
 | Method | API | Typical clients |
@@ -90,6 +126,8 @@ See [`docs/HTTP.md`](docs/HTTP.md) and [`examples/http`](examples/http). To host
 ---
 
 ## Quick start (library)
+
+Step-by-step guide: [docs/QUICKSTART.md](docs/QUICKSTART.md). AI codegen: [SYSTEM_PROMPT.md](SYSTEM_PROMPT.md).
 
 ```bash
 go get github.com/kioie/tiny-go-mcp-server/tinymcp@latest

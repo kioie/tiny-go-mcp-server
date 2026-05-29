@@ -57,7 +57,22 @@ Before tagging:
 
 1. Move `[Unreleased]` entries in [CHANGELOG.md](CHANGELOG.md) into a new version section with date.
 2. Confirm [docs/STABILITY.md](docs/STABILITY.md) still matches any API changes.
-3. Bump version strings in `server.json`, `glama.json`, and deploy examples if applicable.
+3. Bump version strings consistently (checklist):
+
+| File | Field |
+|------|-------|
+| `CHANGELOG.md` | New version section + date |
+| `server.json` | `version`, package `identifier` / image tag |
+| `glama.json` | `version`, container tags |
+| `smithery.yaml` | Docker image tag |
+| `cmd/tiny-go-mcp/main.go` | Server version in `NewServer` |
+| `cmd/tiny-go-mcp/features.go` | Info resource text |
+| `examples/http-deploy/main.go` | `serverVersion` constant |
+| `examples/http-deploy/server-card.json` | `version` |
+| `docs/GLAMA.md`, `docs/SUBMISSIONS.md` | Example version strings (if cited) |
+| `template/go.mod` | `github.com/kioie/tiny-go-mcp-server` require version (when releasing template) |
+
+4. Tag and push: `git tag vX.Y.Z && git push origin vX.Y.Z` — [Release workflow](.github/workflows/release.yml) builds binaries and pushes GHCR.
 
 ## Questions
 

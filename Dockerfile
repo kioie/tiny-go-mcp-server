@@ -4,6 +4,8 @@
 
 FROM golang:1.26-alpine AS builder
 
+ARG TARGETARCH
+
 RUN apk add --no-cache ca-certificates git
 
 WORKDIR /src
@@ -13,7 +15,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build \
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build \
     -ldflags="-s -w" \
     -o /out/tiny-go-mcp \
     ./cmd/tiny-go-mcp

@@ -114,7 +114,9 @@ func newHTTPServer(addr string, handler http.Handler) *http.Server {
 		Addr:              addr,
 		Handler:           handler,
 		ReadHeaderTimeout: 10 * time.Second,
+		ReadTimeout:       30 * time.Second, // slow-loris guard on request bodies
 		IdleTimeout:       120 * time.Second,
+		// WriteTimeout unset — streamable HTTP/SSE responses may be long-lived.
 	}
 }
 

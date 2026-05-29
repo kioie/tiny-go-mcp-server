@@ -46,6 +46,12 @@ Stability guarantees for the public API are in [docs/STABILITY.md](docs/STABILIT
 - CI coverage artifact upload and 70% gate on `tinymcp` + `cmd/tiny-go-mcp`.
 - v1.2 migration guide: `docs/MIGRATION-v1.2.md`.
 
+### Added (deployment — v1.2.0)
+
+- GHCR Docker images built for **linux/amd64** and **linux/arm64** on release.
+- `docs/TLS.md` — HTTPS via reverse proxy, nginx/Caddy, and optional Go autocert.
+- HTTP `ReadTimeout` (30s) on `ListenAndServeHTTP` / `ListenAndServeHTTPContext` for slow-loris protection.
+
 ## [1.1.3] - 2026-05-26
 
 ### Added

@@ -320,7 +320,7 @@ server.json        # MCP Registry metadata (publish with mcp-publisher)
 
 ## Releases
 
-Tag a semver version (e.g. `v1.0.0`) to publish stable `go get` versions and trigger [GitHub Releases](https://github.com/kioie/tiny-go-mcp-server/releases) with cross-platform binaries.
+Tag a semver version (e.g. `v1.0.0`) to publish stable `go get` versions and trigger [GitHub Releases](https://github.com/kioie/tiny-go-mcp-server/releases) with cross-platform binaries. Release history: [CHANGELOG.md](CHANGELOG.md). Public API stability: [docs/STABILITY.md](docs/STABILITY.md). Agent-facing API summary: [SYSTEM_PROMPT.md](SYSTEM_PROMPT.md).
 
 ```bash
 git tag v1.0.0
@@ -333,7 +333,7 @@ See [docs/DISCOVERY.md](docs/DISCOVERY.md) for MCP Registry (`server.json`), awe
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). CI runs tests, lint, and CodeQL; Dependabot keeps Go and Actions dependencies updated.
+See [CONTRIBUTING.md](CONTRIBUTING.md). For AI codegen outside this repo, see [SYSTEM_PROMPT.md](SYSTEM_PROMPT.md). CI runs tests, lint, and CodeQL; Dependabot keeps Go and Actions dependencies updated.
 
 ## License
 

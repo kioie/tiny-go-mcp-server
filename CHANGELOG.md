@@ -1,0 +1,92 @@
+# Changelog
+
+All notable changes to **Tiny Go MCP Server** are documented here.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) for the Go module `github.com/kioie/tiny-go-mcp-server/tinymcp`.
+
+Stability guarantees for the public API are in [docs/STABILITY.md](docs/STABILITY.md).
+
+## [Unreleased]
+
+### Added
+
+- OpenRouter automated PR review workflow (`.github/workflows/openrouter-pr-review.yml`).
+- README Philosophy section (thin helper on official go-sdk, intentional dual imports).
+
+### Changed
+
+- Dependabot bumps: go-sdk v1.6.1, GitHub Actions updates.
+
+### Documentation
+
+- awesome-mcp-servers listing status in `docs/DISCOVERY.md` and `docs/SUBMISSIONS.md`.
+
+## [1.1.3] - 2026-05-26
+
+### Added
+
+- `NewServer` / `NewServerWithOptions` optional `ServerOptions` passthrough.
+- HTTP middleware: `BearerTokenAuth`, `WithCrossOriginProtection`, `DisableLocalhostProtectionFromEnv`.
+- Env-gated localhost protection disable for `examples/http-deploy`.
+- Server-card drift test in `examples/http-deploy`.
+
+### Fixed
+
+- Registration hardening: `registerRecover`, nil server/handler checks, ordered error reporting.
+- HTTP deploy docs and Fly/Smithery security guidance.
+- Audit polish (low-priority findings L1, L2, L6, L5, L7, M2).
+
+### Changed
+
+- Version strings aligned across `server.json`, `glama.json`, `smithery.yaml`, and deploy examples.
+
+## [1.1.2] - 2026-05-22
+
+### Added
+
+- `examples/http-deploy` for Smithery URL listing and public HTTP demo.
+- Smithery MCPB publish assets and live stdio listing docs.
+- Official logo, banner, and branding assets (`docs/BRANDING.md`).
+
+### Documentation
+
+- Adoption listing status in `docs/SUBMISSIONS.md`.
+- r/mcp launch post recorded in `docs/DISCOVERY.md`.
+
+## [1.1.1] - 2026-05-22
+
+### Added
+
+- `template/` module for `gonew github.com/kioie/tiny-go-mcp-server/template@latest`.
+- Smithery and second-tier directory submission copy in `docs/SUBMISSIONS.md`.
+
+## [1.1.0] - 2026-05-22
+
+### Added
+
+- Streamable HTTP and legacy SSE transports (`StartHTTP`, `StartSSE`, `StreamableHTTPHandler`, `SSEHandler`).
+- Resources and prompts helpers (`RegisterTextResource`, `RegisterResource`, `RegisterPrompt`, …).
+- `Dockerfile`, `glama.json`, and Glama hosting docs.
+- MCP Registry `server.json` and GHCR image push on release.
+- Reference server resources/prompts (`file:///info`, `code_review` prompt).
+
+### Documentation
+
+- Agent-oriented tool description guidance in README and `AGENTS.md`.
+- Glama score badge on README.
+
+## [1.0.0] - 2026-05-20
+
+### Added
+
+- Initial stable release of `tinymcp` on official `modelcontextprotocol/go-sdk`.
+- Stdio reference server `cmd/tiny-go-mcp` (add, subtract, greet tools).
+- Struct-tag JSON Schema inference via `RegisterTool`.
+- `examples/minimal`, CI (test, lint, CodeQL), and cross-platform release binaries.
+
+[Unreleased]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.1.3...HEAD
+[1.1.3]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.1.2...v1.1.3
+[1.1.2]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.1.1...v1.1.2
+[1.1.1]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.1.0...v1.1.1
+[1.1.0]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/kioie/tiny-go-mcp-server/releases/tag/v1.0.0

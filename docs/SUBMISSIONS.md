@@ -35,7 +35,7 @@ Submit via awesome-go PR; link back from README once merged.
 **Category:** Framework / Developer Tools  
 **Description:**
 
-> Minimal Go library on the official MCP go-sdk — stdio, streamable HTTP, legacy SSE; tools, resources, prompts; struct-derived JSON Schema; ~5MB static binaries. Reference server on Glama and MCP Registry (`io.github.kioie/tiny-go-mcp` v1.1.3).
+> Minimal Go library on the official MCP go-sdk — stdio, streamable HTTP, legacy SSE; tools, resources, prompts; struct-derived JSON Schema; ~5MB static binaries. Reference server on Glama and MCP Registry (`io.github.kioie/tiny-go-mcp` v1.2.0).
 
 **Install:**
 
@@ -80,7 +80,7 @@ npx @anthropic-ai/mcpb pack .smithery/mcpb server.mcpb
 smithery mcp publish server.mcpb -n kioie/tiny-go-mcp
 ```
 
-Requires Docker on the client machine (bundle runs `ghcr.io/kioie/tiny-go-mcp:1.1.3`). Alternative: connect GitHub at https://smithery.ai/new.
+Requires Docker on the client machine (bundle runs `ghcr.io/kioie/tiny-go-mcp:1.2.0`). Alternative: connect GitHub at https://smithery.ai/new.
 
 ## Project scaffold (`gonew`)
 
@@ -115,10 +115,10 @@ We shipped **Tiny Go MCP Server** — a thin Go layer on the official `modelcont
 
 - **tinymcp** library: typed tools, resources, prompts, stdio + HTTP/SSE helpers
 - Reference server: demo tools + resource + prompt
-- **MCP Registry:** `io.github.kioie/tiny-go-mcp` v1.1.3
+- **MCP Registry:** `io.github.kioie/tiny-go-mcp` v1.2.0
 - **Glama:** https://glama.ai/mcp/servers/kioie/tiny-go-mcp-server
 - **Smithery:** https://smithery.ai/servers/kioie/tiny-go-mcp
-- **Docker:** `ghcr.io/kioie/tiny-go-mcp:1.1.3`
+- **Docker:** `ghcr.io/kioie/tiny-go-mcp:1.2.0`
 
 ```bash
 gonew github.com/kioie/tiny-go-mcp-server/template@latest example.com/my-mcp my-mcp

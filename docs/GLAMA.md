@@ -44,13 +44,13 @@ docker run -i --rm -e TINY_GO_MCP_VERBOSE=1 tiny-go-mcp:local
 If you publish the image to GHCR first (release tags push **linux/amd64** and **linux/arm64** via GitHub Actions):
 
 ```bash
-docker build -t ghcr.io/kioie/tiny-go-mcp:1.1.3 .
-docker push ghcr.io/kioie/tiny-go-mcp:1.1.3
+docker build -t ghcr.io/kioie/tiny-go-mcp:1.2.0 .
+docker push ghcr.io/kioie/tiny-go-mcp:1.2.0
 ```
 
 Then in Glama choose **From a package or image** and use:
 
-- **Image:** `ghcr.io/kioie/tiny-go-mcp:1.1.3`
+- **Image:** `ghcr.io/kioie/tiny-go-mcp:1.2.0`
 - **Transport:** stdio (Glama wraps automatically)
 
 3. Glama indexes from GitHub — after merging a release, open [server admin](https://glama.ai/mcp/servers/kioie/tiny-go-mcp-server/admin) and click **Sync Server** so tool/resource/prompt scores refresh.

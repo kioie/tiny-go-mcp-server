@@ -3,7 +3,7 @@ module github.com/kioie/tiny-go-mcp-server/template-http
 go 1.26.1
 
 require (
-	github.com/kioie/tiny-go-mcp-server v1.1.3
+	github.com/kioie/tiny-go-mcp-server v1.2.0
 	github.com/modelcontextprotocol/go-sdk v1.6.1
 )
 

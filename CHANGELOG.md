@@ -8,56 +8,43 @@ Stability guarantees for the public API are in [docs/STABILITY.md](docs/STABILIT
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-05-29
+
 ### Added
 
 - OpenRouter automated PR review workflow (`.github/workflows/openrouter-pr-review.yml`).
 - README Philosophy section (thin helper on official go-sdk, intentional dual imports).
-- Phase 2 discoverability: `docs/QUICKSTART.md`, README tinymcp vs go-sdk comparison, pkg.go.dev `Example*` functions.
+- `docs/QUICKSTART.md`, README tinymcp vs go-sdk comparison, pkg.go.dev `Example*` functions.
 - GitHub issue templates and CHANGELOG validation workflow.
 - awesome-go submission draft in `docs/SUBMISSIONS.md`.
-
-### Changed
-
-- Dependabot bumps: go-sdk v1.6.1, GitHub Actions updates.
-- Expanded release version-bump checklist in `CONTRIBUTING.md`.
-- HTTP middleware stack documentation in `examples/http-deploy/README.md`.
-
-### Documentation
-
-- awesome-mcp-servers listing status in `docs/DISCOVERY.md` and `docs/SUBMISSIONS.md`.
-
-### Added (API — v1.2.0)
-
 - `MustRegisterTool`, `MustRegisterToolDef`, `MustRegisterPrompt`, `MustRegisterResource`, `MustRegisterResourceTemplate`, `MustRegisterTextResource` — panic-at-startup registration helpers.
 - Sentinel errors: `ErrNilServer`, `ErrNilTool`, `ErrNilHandler`, `ErrRegistrationFailed` (use `errors.Is`).
 - `HTTPOptions.Middleware` and `HTTPOptions.WithMiddleware` for handler wrapping (logging, rate limits).
 - Graceful HTTP shutdown: `ListenAndServeHTTPContext`, `StartHTTPContext`, `StartSSEContext`; `ListenAndServeHTTP` drains on SIGINT/SIGTERM.
-
-### Changed (API)
-
-- Registration and HTTP handler errors now return sentinel errors instead of ad-hoc strings (check with `errors.Is`, not string matching).
-
-### Added (testing — v1.2.0)
-
 - Stdio subprocess integration test for reference server (`cmd/tiny-go-mcp`).
 - Fuzz tests for tool argument JSON decoding (`tinymcp/fuzz_test.go`).
 - HTTP integration test for middleware + context shutdown.
 - Benchmarks: `RegisterTool`, `TextResult`, streamable HTTP initialize.
 - CI coverage artifact upload and 70% gate on `tinymcp` + `cmd/tiny-go-mcp`.
 - v1.2 migration guide: `docs/MIGRATION-v1.2.md`.
-
-### Added (deployment — v1.2.0)
-
 - GHCR Docker images built for **linux/amd64** and **linux/arm64** on release.
 - `docs/TLS.md` — HTTPS via reverse proxy, nginx/Caddy, and optional Go autocert.
 - HTTP `ReadTimeout` (30s) on `ListenAndServeHTTP` / `ListenAndServeHTTPContext` for slow-loris protection.
-
-### Added (agent tooling — v1.2.0)
-
 - `make lint-tools` — validates MCP tool descriptions (when / when-not / siblings) in reference servers.
 - `template-http/` gonew scaffold for streamable HTTP deploy (Smithery/Fly path).
 - `docs/LOCALHOST-PROTECTION.md` — DNS rebinding security advisory.
 - CI: multi-arch Docker build verification (no push); Fly.io/Render examples in `docs/TLS.md`.
+
+### Changed
+
+- Dependabot bumps: go-sdk v1.6.1, GitHub Actions updates.
+- Expanded release version-bump checklist in `CONTRIBUTING.md`.
+- HTTP middleware stack documentation in `examples/http-deploy/README.md`.
+- Registration and HTTP handler errors now return sentinel errors instead of ad-hoc strings (check with `errors.Is`, not string matching).
+
+### Documentation
+
+- awesome-mcp-servers listing status in `docs/DISCOVERY.md` and `docs/SUBMISSIONS.md`.
 
 ## [1.1.3] - 2026-05-26
 
@@ -122,7 +109,8 @@ Stability guarantees for the public API are in [docs/STABILITY.md](docs/STABILIT
 - Struct-tag JSON Schema inference via `RegisterTool`.
 - `examples/minimal`, CI (test, lint, CodeQL), and cross-platform release binaries.
 
-[Unreleased]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.1.3...HEAD
+[Unreleased]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.1.3...v1.2.0
 [1.1.3]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/kioie/tiny-go-mcp-server/compare/v1.1.0...v1.1.1

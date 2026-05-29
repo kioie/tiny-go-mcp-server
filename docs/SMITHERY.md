@@ -85,7 +85,7 @@ npx @anthropic-ai/mcpb pack .smithery/mcpb server.mcpb
 smithery mcp publish server.mcpb -n kioie/tiny-go-mcp
 ```
 
-This path **requires Docker on the end-user machine** (bundle runs `ghcr.io/kioie/tiny-go-mcp:1.1.3`).
+This path **requires Docker on the end-user machine** (bundle runs `ghcr.io/kioie/tiny-go-mcp:1.2.0`).
 
 **Live stdio listing:** https://smithery.ai/servers/kioie/tiny-go-mcp
 

@@ -1,7 +1,7 @@
 {
   "serverInfo": {
     "name": "tiny-go-mcp-http",
-    "version": "1.1.3"
+    "version": "1.2.0"
   },
   "authentication": {
     "required": false

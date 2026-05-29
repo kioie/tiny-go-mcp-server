@@ -10,7 +10,7 @@ const child = spawn(
     "--rm",
     "-e",
     `TINY_GO_MCP_VERBOSE=${verbose}`,
-    "ghcr.io/kioie/tiny-go-mcp:1.1.3",
+    "ghcr.io/kioie/tiny-go-mcp:1.2.0",
   ],
   { stdio: "inherit" },
 );

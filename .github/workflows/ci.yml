@@ -47,5 +47,10 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
-      - name: Generate coverage report
-        run: make coverage
+      - name: Check coverage threshold (tinymcp + cmd)
+        run: bash .github/scripts/check-coverage.sh 70
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.out

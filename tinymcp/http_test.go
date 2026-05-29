@@ -1,11 +1,15 @@
 package tinymcp
 
 import (
+	"context"
+	"errors"
 	"io"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestStreamableHTTPHandler_initialize(t *testing.T) {
@@ -77,17 +81,97 @@ func TestSSEHandler_connect(t *testing.T) {
 
 func TestHTTPHandlers_nilServer(t *testing.T) {
 	var s *TinyServer
-	if _, err := StreamableHTTPHandler(s, nil); err == nil {
-		t.Error("StreamableHTTPHandler(nil): expected error")
+	if _, err := StreamableHTTPHandler(s, nil); !errors.Is(err, ErrNilServer) {
+		t.Errorf("StreamableHTTPHandler(nil): got %v, want ErrNilServer", err)
 	}
-	if _, err := SSEHandler(s, nil); err == nil {
-		t.Error("SSEHandler(nil): expected error")
+	if _, err := SSEHandler(s, nil); !errors.Is(err, ErrNilServer) {
+		t.Errorf("SSEHandler(nil): got %v, want ErrNilServer", err)
 	}
-	if err := s.StartHTTP(":0", nil); err == nil {
-		t.Error("StartHTTP(nil): expected error")
+	if err := s.StartHTTP(":0", nil); !errors.Is(err, ErrNilServer) {
+		t.Errorf("StartHTTP(nil): got %v, want ErrNilServer", err)
 	}
-	if err := s.StartSSE(":0", nil); err == nil {
-		t.Error("StartSSE(nil): expected error")
+	if err := s.StartSSE(":0", nil); !errors.Is(err, ErrNilServer) {
+		t.Errorf("StartSSE(nil): got %v, want ErrNilServer", err)
+	}
+}
+
+func TestStreamableHTTPHandler_middleware(t *testing.T) {
+	var called bool
+	s := NewServer("test-http", "1.0.0")
+	h, err := StreamableHTTPHandler(s, (&HTTPOptions{JSONResponse: true}).WithMiddleware(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			called = true
+			next.ServeHTTP(w, r)
+		})
+	}))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ts := httptest.NewServer(h)
+	t.Cleanup(ts.Close)
+
+	req, err := http.NewRequest(http.MethodPost, ts.URL, strings.NewReader(
+		`{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}`,
+	))
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json, text/event-stream")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("status = %d, want 200", resp.StatusCode)
+	}
+	if !called {
+		t.Fatal("middleware was not invoked")
+	}
+}
+
+func TestListenAndServeHTTPContext_shutdown(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	s := NewServer("test-http", "1.0.0")
+	h, err := StreamableHTTPHandler(s, &HTTPOptions{JSONResponse: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	addr := ln.Addr().String()
+	ln.Close()
+
+	done := make(chan error, 1)
+	go func() {
+		done <- ListenAndServeHTTPContext(ctx, addr, h)
+	}()
+
+	deadline := time.Now().Add(2 * time.Second)
+	for time.Now().Before(deadline) {
+		conn, err := net.Dial("tcp", addr)
+		if err == nil {
+			conn.Close()
+			break
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+
+	cancel()
+
+	select {
+	case err := <-done:
+		if err != nil && !errors.Is(err, context.Canceled) {
+			t.Fatalf("ListenAndServeHTTPContext: %v", err)
+		}
+	case <-time.After(5 * time.Second):
+		t.Fatal("timeout waiting for graceful shutdown")
 	}
 }
 

@@ -22,8 +22,12 @@ Breaking changes to the public `tinymcp` API require a **v2** module path (`/tin
 | Stable in v1.x | Notes |
 |----------------|-------|
 | `NewServer`, `RegisterTool`, `RegisterToolDef` | Error-returning registration API |
+| `MustRegister*` variants | Panic-at-startup registration (v1.2+) |
+| `ErrNilServer`, `ErrNilTool`, `ErrNilHandler`, `ErrRegistrationFailed` | Sentinel errors for `errors.Is` (v1.2+) |
 | `TextResult`, resource/prompt helpers | |
-| `Start`, `StartHTTP`, `StartSSE`, HTTP handlers | Options may gain fields |
+| `Start`, `StartHTTP`, `StartSSE`, `StartHTTPContext`, `StartSSEContext`, HTTP handlers | Options may gain fields |
+| `ListenAndServeHTTP`, `ListenAndServeHTTPContext` | Graceful shutdown on signal or context cancel (v1.2+) |
+| `HTTPOptions.Middleware`, `WithMiddleware` | Handler wrapping (v1.2+) |
 | `RawServer()` escape hatch | Underlying go-sdk may evolve with dependency bumps |
 
 ## What is not guaranteed stable

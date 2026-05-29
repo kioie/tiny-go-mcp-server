@@ -102,7 +102,8 @@ tinymcp.RegisterTool(s, "add",
 | `docs/QUICKSTART.md` | Step-by-step first server (stdio + HTTP) |
 | `examples/http-deploy/` | Smithery URL / Fly deploy pattern |
 | `examples/resources/` | Resources + prompts |
-| `template/` | `gonew` scaffold |
+| `template/` | `gonew` stdio scaffold |
+| `template-http/` | `gonew` HTTP deploy scaffold |
 | `docs/HTTP.md` | stdio vs HTTP vs SSE |
 | `CHANGELOG.md` | Release history |
 

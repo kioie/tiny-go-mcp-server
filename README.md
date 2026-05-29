@@ -166,16 +166,19 @@ See [`examples/minimal`](examples/minimal) for a runnable copy-paste example.
 
 ### Scaffold a new server
 
-Requires tagged module [`template/`](template/) (v1.1.1+):
+Requires tagged module [`template/`](template/) (v1.1.1+) for stdio, or [`template-http/`](template-http/) for streamable HTTP:
 
 ```bash
 go install golang.org/x/tools/cmd/gonew@latest
 gonew github.com/kioie/tiny-go-mcp-server/template@latest example.com/my-mcp my-mcp
-cd my-mcp
-go run .
+cd my-mcp && go run .
+
+# HTTP deploy (Smithery / Fly / Render):
+gonew github.com/kioie/tiny-go-mcp-server/template-http@latest example.com/my-mcp-http my-mcp-http
+cd my-mcp-http && go run .
 ```
 
-Or copy [`examples/minimal`](examples/minimal) or [`template/`](template/) directly.
+Or copy [`examples/minimal`](examples/minimal), [`template/`](template/), or [`template-http/`](template-http/) directly.
 
 ---
 

@@ -8,6 +8,7 @@ Guidance for AI coding agents working in this repository. For a compact, token-e
 - **Test package**: `go test -race -v ./tinymcp`
 - **Test single**: `go test -run TestName ./path/to/pkg -v`
 - **Lint**: `make lint` (requires [golangci-lint](https://golangci-lint.run/))
+- **Lint tool descriptions**: `make lint-tools` (AGENTS.md when/when-not/siblings pattern)
 - **Coverage**: `make coverage` (all packages) or `make coverage-check` (70% gate on tinymcp + cmd)
 - **Build example server**: `make build` → `./tiny-go-mcp`
 - **Minimal example**: `go run ./examples/minimal`

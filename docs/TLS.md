@@ -39,6 +39,20 @@ server {
 
 Run tinymcp on loopback only (`127.0.0.1:8080`) behind the proxy. See [`examples/http-deploy`](../examples/http-deploy).
 
+### Fly.io
+
+Fly terminates TLS on `*.fly.dev` automatically. Deploy the HTTP example with [`fly.http.toml`](../fly.http.toml):
+
+```bash
+fly deploy --config fly.http.toml
+```
+
+Your app listens on `$PORT` internally; Fly exposes HTTPS externally.
+
+### Render
+
+Render provides HTTPS on `*.onrender.com`. Set **Root directory** to `examples/http-deploy`, **Build** `go build -o server .`, **Start** `./server`. See [`examples/http-deploy/render.yaml`](../examples/http-deploy/render.yaml).
+
 ## Go-native TLS (advanced)
 
 When you must terminate TLS in-process (no reverse proxy):

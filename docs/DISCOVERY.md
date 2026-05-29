@@ -54,7 +54,7 @@ Use this in directory listings and social posts.
 
 When cutting the next semver release, include postponed items:
 
-- [ ] **Graceful HTTP/SSE shutdown** — `ListenAndServeHTTPContext`, SIGTERM/`Shutdown` drain (postponed from v1.1.3 planning)
+- [x] **Graceful HTTP/SSE shutdown** — `ListenAndServeHTTPContext`, SIGTERM/`Shutdown` drain (v1.2.0)
 
 ## Descriptions for agents
 

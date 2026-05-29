@@ -44,13 +44,17 @@ Args struct: `json` + `jsonschema` tags (schema inferred automatically).
 | API | Use |
 |-----|-----|
 | `RegisterTool(s, name, desc, handler)` | Typed tool + auto schema |
+| `MustRegisterTool(s, name, desc, handler)` | Same; panics at startup on error |
 | `RegisterToolDef(s, &mcp.Tool{...}, handler)` | Full tool metadata (annotations) |
 | `RegisterTextResource`, `RegisterResource`, `RegisterResourceTemplate` | Read-only context |
 | `RegisterPrompt(s, name, desc, args, handler)` | Prompt templates |
 | `NewServer(name, ver, tinymcp.WithInstructions(...))` | Optional server instructions |
 | `RawServer()` | Escape hatch to underlying `*mcp.Server` |
+| `errors.Is(err, tinymcp.ErrNilServer)` etc. | Programmatic registration error handling |
+| `HTTPOptions.WithMiddleware(mw...)` | Logging, rate limits on MCP handler |
+| `ListenAndServeHTTPContext(ctx, addr, h)` | Graceful shutdown when ctx canceled |
 
-All registration functions **return errors** (nil server, nil handler, invalid tool). Check errors at startup; do not ignore.
+All registration functions **return errors** (nil server, nil handler, invalid tool). Check errors at startup, or use `MustRegister*` helpers.
 
 ## Transports
 
@@ -84,10 +88,11 @@ tinymcp.RegisterTool(s, "add",
 
 | Do | Don't |
 |----|-------|
-| Return `tinymcp.TextResult("...")` for success text | Panic on registration — check errors |
+| Return `tinymcp.TextResult("...")` for success text | Panic on registration — check errors or use `MustRegister*` |
+| Use `errors.Is(err, tinymcp.ErrNilServer)` for registration failures | String-match registration error messages |
 | Use `context.Context` first in handlers | Put secrets in tool responses |
 | Bind HTTP demos to loopback unless auth/TLS is configured | Assume tinymcp hides go-sdk types |
-| Add `-race` tests for handlers | String-match registration errors for control flow (no sentinels yet) |
+| Add `-race` tests for handlers | Ignore SIGTERM — use `ListenAndServeHTTP` or `ListenAndServeHTTPContext` |
 
 ## Layout pointers
 

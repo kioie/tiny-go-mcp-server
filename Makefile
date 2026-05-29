@@ -1,4 +1,4 @@
-.PHONY: all build release test lint coverage clean install
+.PHONY: all build release test lint coverage coverage-check clean install
 
 BINARY_NAME=tiny-go-mcp
 CMD=./cmd/tiny-go-mcp
@@ -24,6 +24,9 @@ lint:
 coverage:
 	go test -race -coverprofile=coverage.out -covermode=atomic ./...
 	go tool cover -func=coverage.out
+
+coverage-check:
+	bash .github/scripts/check-coverage.sh 70
 
 clean:
 	rm -f $(BINARY_NAME) tinymcp.exe coverage.out

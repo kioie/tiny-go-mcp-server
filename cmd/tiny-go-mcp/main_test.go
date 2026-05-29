@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/kioie/tiny-go-mcp-server/tinymcp"
@@ -206,6 +207,42 @@ func TestRegisterResourcesAndPrompts(t *testing.T) {
 		server := tinymcp.NewServer("test-server", "1.1.0")
 		if err := RegisterResourcesAndPrompts(server); err != nil {
 			t.Fatalf("unexpected error: %v", err)
+		}
+	})
+}
+
+func TestHandleCodeReviewPrompt(t *testing.T) {
+	t.Run("returns prompt with code argument", func(t *testing.T) {
+		ctx := t.Context()
+		req := &mcp.GetPromptRequest{
+			Params: &mcp.GetPromptParams{
+				Arguments: map[string]string{"code": "func main() {}"},
+			},
+		}
+
+		result, err := handleCodeReviewPrompt(ctx, req)
+		if err != nil {
+			t.Fatalf("handleCodeReviewPrompt failed: %v", err)
+		}
+		if len(result.Messages) != 1 {
+			t.Fatalf("expected 1 message, got %d", len(result.Messages))
+		}
+		msg, ok := result.Messages[0].Content.(*mcp.TextContent)
+		if !ok {
+			t.Fatalf("expected TextContent, got %T", result.Messages[0].Content)
+		}
+		if !strings.Contains(msg.Text, "func main()") {
+			t.Errorf("expected code in prompt message, got %q", msg.Text)
+		}
+	})
+
+	t.Run("missing code returns error", func(t *testing.T) {
+		ctx := t.Context()
+		req := &mcp.GetPromptRequest{Params: &mcp.GetPromptParams{Arguments: map[string]string{}}}
+
+		_, err := handleCodeReviewPrompt(ctx, req)
+		if err == nil {
+			t.Fatal("expected error when code argument is empty")
 		}
 	})
 }

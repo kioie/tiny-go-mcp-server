@@ -8,7 +8,7 @@ Guidance for AI coding agents working in this repository. For a compact, token-e
 - **Test package**: `go test -race -v ./tinymcp`
 - **Test single**: `go test -run TestName ./path/to/pkg -v`
 - **Lint**: `make lint` (requires [golangci-lint](https://golangci-lint.run/))
-- **Coverage**: `make coverage`
+- **Coverage**: `make coverage` (all packages) or `make coverage-check` (70% gate on tinymcp + cmd)
 - **Build example server**: `make build` → `./tiny-go-mcp`
 - **Minimal example**: `go run ./examples/minimal`
 - **HTTP example**: `go run ./examples/http` (listens on `:8080`, override with `TINY_GO_MCP_ADDR`)
@@ -23,11 +23,13 @@ Guidance for AI coding agents working in this repository. For a compact, token-e
 
 ## API notes
 
-- Tool registration: `tinymcp.RegisterTool(server, name, desc, handler)` or `RegisterToolDef` for full `mcp.Tool` metadata — returns errors for nil server and invalid tool definitions (no panics).
+- Tool registration: `tinymcp.RegisterTool(server, name, desc, handler)` or `RegisterToolDef` for full `mcp.Tool` metadata — returns errors for nil server and invalid tool definitions (no panics). Use `MustRegisterTool` / `MustRegisterPrompt` at startup to panic on misconfiguration.
+- Registration errors: `errors.Is(err, tinymcp.ErrNilServer)`, `ErrNilTool`, `ErrNilHandler`, `ErrRegistrationFailed` — do not string-match.
 - Resource/prompt registration: nil handlers return errors at registration time; nil server is reported before nil handler.
 - Server options: `NewServer(name, ver, tinymcp.WithInstructions(...))` or `NewServerWithOptions(name, ver, &mcp.ServerOptions{...})`; full control via `RawServer()`.
 - Handlers need both `tinymcp` and `github.com/modelcontextprotocol/go-sdk/mcp` imports.
-- HTTP middleware: `tinymcp.WithCrossOriginProtection`, `tinymcp.BearerTokenAuth`, `tinymcp.DisableLocalhostProtectionFromEnv` — see [`examples/http-deploy`](../examples/http-deploy).
+- HTTP middleware: `tinymcp.WithCrossOriginProtection`, `tinymcp.BearerTokenAuth`, `tinymcp.DisableLocalhostProtectionFromEnv`, `HTTPOptions.WithMiddleware` — see [`examples/http-deploy`](../examples/http-deploy).
+- HTTP lifecycle: `ListenAndServeHTTP` drains on SIGINT/SIGTERM; `ListenAndServeHTTPContext` / `StartHTTPContext` for custom shutdown — see `docs/HTTP.md`.
 - Optional server logs: set env `TINY_GO_MCP_VERBOSE=1` (stderr only; stdio is reserved for MCP).
 - HTTP/SSE: `StartHTTP`, `StartSSE`, `StreamableHTTPHandler`, `SSEHandler` — see `docs/HTTP.md`.
 - Resources: `RegisterResource`, `RegisterResourceTemplate`, `RegisterTextResource`, `TextResource`

@@ -10,6 +10,8 @@ Host a **streamable HTTP** MCP server so users connect through [Smithery](https:
 
 Full Smithery guide: [`docs/SMITHERY.md`](../../docs/SMITHERY.md).
 
+This example uses `tinymcp.ListenAndServeHTTP`, which **drains active connections on SIGINT/SIGTERM** — suitable for Fly, Render, and Railway without extra signal wiring. See [`docs/HTTP.md`](../../docs/HTTP.md) for `ListenAndServeHTTPContext` when you need custom lifecycle control.
+
 ## HTTP middleware stack
 
 This example wires the recommended production middleware order (inner → outer):

@@ -14,7 +14,7 @@ func RegisterResource(s *TinyServer, uri, name, description, mimeType string, ha
 		return err
 	}
 	if handler == nil {
-		return fmt.Errorf("cannot register resource %q with a nil handler", name)
+		return fmt.Errorf("%w: resource %q", ErrNilHandler, name)
 	}
 	return registerRecover(fmt.Sprintf("resource %q", name), func() {
 		srv.AddResource(&mcp.Resource{
@@ -26,6 +26,13 @@ func RegisterResource(s *TinyServer, uri, name, description, mimeType string, ha
 	})
 }
 
+// MustRegisterResource is like RegisterResource but panics on error. Safe at process startup.
+func MustRegisterResource(s *TinyServer, uri, name, description, mimeType string, handler mcp.ResourceHandler) {
+	if err := RegisterResource(s, uri, name, description, mimeType, handler); err != nil {
+		panic(err)
+	}
+}
+
 // RegisterResourceTemplate adds a resource matched by URI template (e.g. file:///docs/{path}).
 func RegisterResourceTemplate(s *TinyServer, uriTemplate, name, description, mimeType string, handler mcp.ResourceHandler) error {
 	srv, err := rawServer(s)
@@ -33,7 +40,7 @@ func RegisterResourceTemplate(s *TinyServer, uriTemplate, name, description, mim
 		return err
 	}
 	if handler == nil {
-		return fmt.Errorf("cannot register resource template %q with a nil handler", name)
+		return fmt.Errorf("%w: resource template %q", ErrNilHandler, name)
 	}
 	return registerRecover(fmt.Sprintf("resource template %q", name), func() {
 		srv.AddResourceTemplate(&mcp.ResourceTemplate{
@@ -45,6 +52,13 @@ func RegisterResourceTemplate(s *TinyServer, uriTemplate, name, description, mim
 	})
 }
 
+// MustRegisterResourceTemplate is like RegisterResourceTemplate but panics on error.
+func MustRegisterResourceTemplate(s *TinyServer, uriTemplate, name, description, mimeType string, handler mcp.ResourceHandler) {
+	if err := RegisterResourceTemplate(s, uriTemplate, name, description, mimeType, handler); err != nil {
+		panic(err)
+	}
+}
+
 // RegisterTextResource registers a static text resource at uri.
 func RegisterTextResource(s *TinyServer, uri, name, description, mimeType, text string) error {
 	return RegisterResource(s, uri, name, description, mimeType,
@@ -54,6 +68,13 @@ func RegisterTextResource(s *TinyServer, uri, name, description, mimeType, text 
 			}
 			return TextResource(uri, mimeType, text), nil
 		})
+}
+
+// MustRegisterTextResource is like RegisterTextResource but panics on error.
+func MustRegisterTextResource(s *TinyServer, uri, name, description, mimeType, text string) {
+	if err := RegisterTextResource(s, uri, name, description, mimeType, text); err != nil {
+		panic(err)
+	}
 }
 
 // TextResource builds a ReadResourceResult with a single text body.

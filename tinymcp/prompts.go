@@ -14,7 +14,7 @@ func RegisterPrompt(s *TinyServer, name, description string, arguments []*mcp.Pr
 		return err
 	}
 	if handler == nil {
-		return fmt.Errorf("cannot register prompt %q with a nil handler", name)
+		return fmt.Errorf("%w: prompt %q", ErrNilHandler, name)
 	}
 	return registerRecover(fmt.Sprintf("prompt %q", name), func() {
 		srv.AddPrompt(&mcp.Prompt{
@@ -23,6 +23,13 @@ func RegisterPrompt(s *TinyServer, name, description string, arguments []*mcp.Pr
 			Arguments:   arguments,
 		}, handler)
 	})
+}
+
+// MustRegisterPrompt is like RegisterPrompt but panics on error. Safe at process startup.
+func MustRegisterPrompt(s *TinyServer, name, description string, arguments []*mcp.PromptArgument, handler mcp.PromptHandler) {
+	if err := RegisterPrompt(s, name, description, arguments, handler); err != nil {
+		panic(err)
+	}
 }
 
 // PromptResult builds a GetPromptResult from prompt messages.

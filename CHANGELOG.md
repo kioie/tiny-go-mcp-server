@@ -21,6 +21,17 @@ Stability guarantees for the public API are in [docs/STABILITY.md](docs/STABILIT
 
 - awesome-mcp-servers listing status in `docs/DISCOVERY.md` and `docs/SUBMISSIONS.md`.
 
+### Added (API — v1.2.0)
+
+- `MustRegisterTool`, `MustRegisterToolDef`, `MustRegisterPrompt`, `MustRegisterResource`, `MustRegisterResourceTemplate`, `MustRegisterTextResource` — panic-at-startup registration helpers.
+- Sentinel errors: `ErrNilServer`, `ErrNilTool`, `ErrNilHandler`, `ErrRegistrationFailed` (use `errors.Is`).
+- `HTTPOptions.Middleware` and `HTTPOptions.WithMiddleware` for handler wrapping (logging, rate limits).
+- Graceful HTTP shutdown: `ListenAndServeHTTPContext`, `StartHTTPContext`, `StartSSEContext`; `ListenAndServeHTTP` drains on SIGINT/SIGTERM.
+
+### Changed (API)
+
+- Registration and HTTP handler errors now return sentinel errors instead of ad-hoc strings (check with `errors.Is`, not string matching).
+
 ## [1.1.3] - 2026-05-26
 
 ### Added

@@ -5,7 +5,6 @@ package tinymcp
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -29,7 +28,7 @@ func NewServer(name, version string, opts ...ServerOption) *TinyServer {
 // Invalid tool definitions surface as returned errors instead of panicking.
 func RegisterTool[In, Out any](s *TinyServer, name, description string, handler mcp.ToolHandlerFor[In, Out]) error {
 	if s == nil || s.server == nil {
-		return errors.New("cannot register tool on a nil server")
+		return ErrNilServer
 	}
 	return RegisterToolDef(s, &mcp.Tool{
 		Name:        name,
@@ -37,14 +36,21 @@ func RegisterTool[In, Out any](s *TinyServer, name, description string, handler 
 	}, handler)
 }
 
+// MustRegisterTool is like RegisterTool but panics on error. Safe at process startup.
+func MustRegisterTool[In, Out any](s *TinyServer, name, description string, handler mcp.ToolHandlerFor[In, Out]) {
+	if err := RegisterTool(s, name, description, handler); err != nil {
+		panic(err)
+	}
+}
+
 // RegisterToolDef registers a tool with full go-sdk Tool metadata (annotations, etc.).
 // Invalid tool definitions surface as returned errors instead of panicking.
 func RegisterToolDef[In, Out any](s *TinyServer, tool *mcp.Tool, handler mcp.ToolHandlerFor[In, Out]) error {
 	if s == nil || s.server == nil {
-		return errors.New("cannot register tool on a nil server")
+		return ErrNilServer
 	}
 	if tool == nil {
-		return errors.New("cannot register a nil tool")
+		return ErrNilTool
 	}
 	name := tool.Name
 	if name == "" {
@@ -55,10 +61,17 @@ func RegisterToolDef[In, Out any](s *TinyServer, tool *mcp.Tool, handler mcp.Too
 	})
 }
 
+// MustRegisterToolDef is like RegisterToolDef but panics on error. Safe at process startup.
+func MustRegisterToolDef[In, Out any](s *TinyServer, tool *mcp.Tool, handler mcp.ToolHandlerFor[In, Out]) {
+	if err := RegisterToolDef(s, tool, handler); err != nil {
+		panic(err)
+	}
+}
+
 // Start runs the server over stdin/stdout (stdio), the standard transport for local AI clients.
 func (s *TinyServer) Start() error {
 	if s == nil || s.server == nil {
-		return errors.New("cannot start a nil server")
+		return ErrNilServer
 	}
 	return s.server.Run(context.Background(), &mcp.StdioTransport{})
 }

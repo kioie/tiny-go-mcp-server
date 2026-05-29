@@ -29,7 +29,10 @@ log.Fatal(server.StartHTTP("127.0.0.1:8080", &tinymcp.HTTPOptions{
 Or mount the handler on an existing `http.Server` (auth, CORS, paths):
 
 ```go
-handler, err := tinymcp.StreamableHTTPHandler(server, nil)
+opts := (&tinymcp.HTTPOptions{Stateless: true}).WithMiddleware(
+    requestLogger, // your func(http.Handler) http.Handler
+)
+handler, err := tinymcp.StreamableHTTPHandler(server, opts)
 if err != nil {
 	log.Fatal(err)
 }
@@ -37,7 +40,17 @@ handler = tinymcp.WithCrossOriginProtection(handler)
 handler = tinymcp.BearerTokenAuth(os.Getenv("MCP_API_KEY"), handler)
 mux := http.NewServeMux()
 mux.Handle("/mcp", handler)
-log.Fatal(http.ListenAndServe("127.0.0.1:8080", mux))
+log.Fatal(tinymcp.ListenAndServeHTTP("127.0.0.1:8080", mux))
+```
+
+`ListenAndServeHTTP` drains active connections on **SIGINT** or **SIGTERM** (PaaS deploys). For custom lifecycle control:
+
+```go
+ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+defer stop()
+if err := tinymcp.ListenAndServeHTTPContext(ctx, addr, mux); err != nil && !errors.Is(err, context.Canceled) {
+	log.Fatal(err)
+}
 ```
 
 Runnable example: [`examples/http`](../examples/http).
@@ -50,6 +63,18 @@ Runnable example: [`examples/http`](../examples/http).
 | `JSONResponse` | POST replies as `application/json` instead of SSE |
 | `SessionTimeout` | Close idle sessions after duration |
 | `DisableLocalhostProtection` | Disable DNS rebinding guard (use with care) |
+| `Middleware` | Wrap MCP handler (first = innermost); chain with `WithMiddleware` |
+
+### Middleware order
+
+Recommended wrapping (inner → outer):
+
+1. `StreamableHTTPHandler` (MCP core)
+2. `HTTPOptions.Middleware` — logging, rate limits, metrics
+3. `WithCrossOriginProtection` — browser clients
+4. `BearerTokenAuth` — optional API key
+
+See [`examples/http-deploy`](../examples/http-deploy) for a full stack.
 
 ### Client connection
 
@@ -75,7 +100,7 @@ Clients use `SSEClientTransport` with your server’s SSE endpoint URL. Prefer s
 - For local **ngrok/tunnel** testing on loopback, set `TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1` (`tinymcp.DisableLocalhostProtectionFromEnv()` in [`examples/http`](../examples/http) and [`examples/http-deploy`](../examples/http-deploy)).
 - Put **TLS**, authentication, and rate limiting in front of public endpoints (reverse proxy or middleware wrapping the handler). Helpers: `tinymcp.BearerTokenAuth`, `tinymcp.WithCrossOriginProtection` (used in [`examples/http-deploy`](../examples/http-deploy)).
 - Do not set `DisableLocalhostProtection` unless you understand [MCP security guidance](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices).
-- `StartHTTP` and `ListenAndServeHTTP` set `ReadHeaderTimeout` and `IdleTimeout` on the underlying `http.Server`.
+- `StartHTTP` and `ListenAndServeHTTP` set `ReadHeaderTimeout` and `IdleTimeout` on the underlying `http.Server`, and drain on SIGINT/SIGTERM.
 
 ## Escape hatch
 

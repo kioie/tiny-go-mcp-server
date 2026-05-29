@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"strings"
 	"testing"
 
 	"github.com/modelcontextprotocol/go-sdk/jsonrpc"
@@ -82,24 +81,24 @@ func TestRegisterPrompt(t *testing.T) {
 
 func TestRegisterResource_nilServer(t *testing.T) {
 	var s *TinyServer
-	if err := RegisterResource(s, "file:///x", "x", "", "", nil); err == nil || !strings.Contains(err.Error(), "nil server") {
-		t.Errorf("RegisterResource(nil): got %v, want nil server error", err)
+	if err := RegisterResource(s, "file:///x", "x", "", "", nil); !errors.Is(err, ErrNilServer) {
+		t.Errorf("RegisterResource(nil): got %v, want ErrNilServer", err)
 	}
-	if err := RegisterTextResource(s, "file:///x", "x", "", "", ""); err == nil || !strings.Contains(err.Error(), "nil server") {
-		t.Errorf("RegisterTextResource(nil): got %v, want nil server error", err)
+	if err := RegisterTextResource(s, "file:///x", "x", "", "", ""); !errors.Is(err, ErrNilServer) {
+		t.Errorf("RegisterTextResource(nil): got %v, want ErrNilServer", err)
 	}
-	if err := RegisterPrompt(s, "p", "", nil, nil); err == nil || !strings.Contains(err.Error(), "nil server") {
-		t.Errorf("RegisterPrompt(nil): got %v, want nil server error", err)
+	if err := RegisterPrompt(s, "p", "", nil, nil); !errors.Is(err, ErrNilServer) {
+		t.Errorf("RegisterPrompt(nil): got %v, want ErrNilServer", err)
 	}
 }
 
 func TestRegister_nilHandlerOnServer(t *testing.T) {
 	s := NewServer("test", "1.0.0")
-	if err := RegisterPrompt(s, "p", "demo", nil, nil); err == nil {
-		t.Fatal("RegisterPrompt(nil handler): expected error")
+	if err := RegisterPrompt(s, "p", "demo", nil, nil); !errors.Is(err, ErrNilHandler) {
+		t.Fatalf("RegisterPrompt(nil handler): got %v, want ErrNilHandler", err)
 	}
-	if err := RegisterResource(s, "file:///x", "x", "", "text/plain", nil); err == nil {
-		t.Fatal("RegisterResource(nil handler): expected error")
+	if err := RegisterResource(s, "file:///x", "x", "", "text/plain", nil); !errors.Is(err, ErrNilHandler) {
+		t.Fatalf("RegisterResource(nil handler): got %v, want ErrNilHandler", err)
 	}
 }
 
@@ -108,8 +107,8 @@ func TestRegisterResourceTemplate_invalidTemplate(t *testing.T) {
 	err := RegisterResourceTemplate(s, "{{{", "bad", "", "text/plain", func(context.Context, *mcp.ReadResourceRequest) (*mcp.ReadResourceResult, error) {
 		return nil, nil
 	})
-	if err == nil {
-		t.Fatal("expected error for invalid URI template")
+	if !errors.Is(err, ErrRegistrationFailed) {
+		t.Fatalf("expected ErrRegistrationFailed, got %v", err)
 	}
 }
 

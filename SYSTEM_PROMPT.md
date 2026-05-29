@@ -94,6 +94,7 @@ tinymcp.RegisterTool(s, "add",
 | Path | Purpose |
 |------|---------|
 | `examples/minimal/` | Smallest copy-paste server |
+| `docs/QUICKSTART.md` | Step-by-step first server (stdio + HTTP) |
 | `examples/http-deploy/` | Smithery URL / Fly deploy pattern |
 | `examples/resources/` | Resources + prompts |
 | `template/` | `gonew` scaffold |

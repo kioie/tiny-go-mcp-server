@@ -10,6 +10,28 @@ Host a **streamable HTTP** MCP server so users connect through [Smithery](https:
 
 Full Smithery guide: [`docs/SMITHERY.md`](../../docs/SMITHERY.md).
 
+## HTTP middleware stack
+
+This example wires the recommended production middleware order (inner → outer):
+
+```go
+mcpHandler, _ := tinymcp.StreamableHTTPHandler(server, &tinymcp.HTTPOptions{
+    Stateless:                  true,
+    DisableLocalhostProtection: tinymcp.DisableLocalhostProtectionFromEnv(), // ngrok/tunnel only
+})
+mcpHandler = tinymcp.WithCrossOriginProtection(mcpHandler) // browser clients
+mcpHandler = tinymcp.BearerTokenAuth(os.Getenv("TINY_GO_MCP_API_KEY"), mcpHandler) // optional auth
+```
+
+| Helper | When to use |
+|--------|-------------|
+| `StreamableHTTPHandler` + `Stateless: true` | Hosted demos, Smithery URL listing |
+| `DisableLocalhostProtectionFromEnv` | Local tunnel testing only (`TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1`) |
+| `WithCrossOriginProtection` | Browser-based MCP clients (no effect on server-to-server) |
+| `BearerTokenAuth` | Production when `TINY_GO_MCP_API_KEY` is set |
+
+For a minimal HTTP example without deploy extras, see [`examples/http`](../http). For auth/CORS patterns only, see [`tinymcp` godoc examples](https://pkg.go.dev/github.com/kioie/tiny-go-mcp-server/tinymcp#example-StreamableHTTPHandler).
+
 ## Security
 
 This example is **open by default** so Smithery can scan and proxy it (`TINY_GO_MCP_API_KEY` unset). Anyone who can reach your public URL can call MCP methods.

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Quick start guide
+    url: https://github.com/kioie/tiny-go-mcp-server/blob/main/docs/QUICKSTART.md
+    about: Step-by-step first server (stdio and HTTP)
+  - name: SYSTEM_PROMPT (AI agents)
+    url: https://github.com/kioie/tiny-go-mcp-server/blob/main/SYSTEM_PROMPT.md
+    about: Token-efficient API reference for code generation

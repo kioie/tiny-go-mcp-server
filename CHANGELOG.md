@@ -12,10 +12,15 @@ Stability guarantees for the public API are in [docs/STABILITY.md](docs/STABILIT
 
 - OpenRouter automated PR review workflow (`.github/workflows/openrouter-pr-review.yml`).
 - README Philosophy section (thin helper on official go-sdk, intentional dual imports).
+- Phase 2 discoverability: `docs/QUICKSTART.md`, README tinymcp vs go-sdk comparison, pkg.go.dev `Example*` functions.
+- GitHub issue templates and CHANGELOG validation workflow.
+- awesome-go submission draft in `docs/SUBMISSIONS.md`.
 
 ### Changed
 
 - Dependabot bumps: go-sdk v1.6.1, GitHub Actions updates.
+- Expanded release version-bump checklist in `CONTRIBUTING.md`.
+- HTTP middleware stack documentation in `examples/http-deploy/README.md`.
 
 ### Documentation
 

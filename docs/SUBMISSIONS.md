@@ -7,6 +7,22 @@ Steps and text for second-tier directories and social posts (P1).
 - **Listed:** https://github.com/punkpeye/awesome-mcp-servers#frameworks (Frameworks section, merged [PR #6665](https://github.com/punkpeye/awesome-mcp-servers/pull/6665))
 - **Description refresh:** [PR #6965](https://github.com/punkpeye/awesome-mcp-servers/pull/6965) (v1.1.3, HTTP/SSE, Smithery link)
 
+## awesome-go
+
+**Not yet listed.** Proposed PR to [avelino/awesome-go](https://github.com/avelino/awesome-go) under **Artificial Intelligence** (or a new **Model Context Protocol** subsection if maintainers prefer):
+
+```markdown
+- [tiny-go-mcp-server](https://github.com/kioie/tiny-go-mcp-server) - Thin helper on the official MCP go-sdk — stdio, streamable HTTP, legacy SSE; struct-tag JSON Schema; resources and prompts. Quick start: [docs/QUICKSTART.md](https://github.com/kioie/tiny-go-mcp-server/blob/main/docs/QUICKSTART.md).
+```
+
+Also list the official SDK if missing:
+
+```markdown
+- [go-sdk](https://github.com/modelcontextprotocol/go-sdk) - Official Go SDK for Model Context Protocol servers and clients (Google + MCP collaboration).
+```
+
+Submit via awesome-go PR; link back from README once merged.
+
 ## mcp.so
 
 **Submitted:** https://github.com/chatmcp/mcpso/issues/2470 (awaiting triage)

@@ -134,7 +134,7 @@ func TestStreamableHTTPHandler_middleware(t *testing.T) {
 }
 
 func TestListenAndServeHTTPContext_shutdown(t *testing.T) {
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(t.Context())
 	s := NewServer("test-http", "1.0.0")
 	h, err := StreamableHTTPHandler(s, &HTTPOptions{JSONResponse: true})
 	if err != nil {

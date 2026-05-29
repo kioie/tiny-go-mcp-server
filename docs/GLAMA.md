@@ -41,7 +41,7 @@ docker run -i --rm -e TINY_GO_MCP_VERBOSE=1 tiny-go-mcp:local
 
 ## Deploy on Glama (from Dockerfile / image)
 
-If you publish the image to GHCR first:
+If you publish the image to GHCR first (release tags push **linux/amd64** and **linux/arm64** via GitHub Actions):
 
 ```bash
 docker build -t ghcr.io/kioie/tiny-go-mcp:1.1.3 .

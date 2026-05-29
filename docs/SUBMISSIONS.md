@@ -93,6 +93,16 @@ go run .
 
 Requires Go 1.26+ and tagged submodule `template` (`template/v1.1.1+`).
 
+### HTTP deploy (`template-http`)
+
+```bash
+gonew github.com/kioie/tiny-go-mcp-server/template-http@latest example.com/my-mcp-http my-mcp-http
+cd my-mcp-http
+go run .
+```
+
+Requires tagged `template-http` submodule. See [`template-http/README.md`](../template-http/README.md).
+
 ## Launch post (r/mcp)
 
 **Posted:** https://www.reddit.com/r/mcp/comments/1tkru4a/tiny_go_mcp_server_v11_minimal_tinymcp_on/

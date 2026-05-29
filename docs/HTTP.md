@@ -97,7 +97,7 @@ Clients use `SSEClientTransport` with your server’s SSE endpoint URL. Prefer s
 ## Security
 
 - Bind to `127.0.0.1:8080` when only local access is needed (`TINY_GO_MCP_ADDR=0.0.0.0:8080` to listen on all interfaces).
-- For local **ngrok/tunnel** testing on loopback, set `TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1` (`tinymcp.DisableLocalhostProtectionFromEnv()` in [`examples/http`](../examples/http) and [`examples/http-deploy`](../examples/http-deploy)).
+- For local **ngrok/tunnel** testing on loopback, set `TINY_GO_MCP_DISABLE_LOCALHOST_PROTECTION=1` (`tinymcp.DisableLocalhostProtectionFromEnv()` in [`examples/http`](../examples/http) and [`examples/http-deploy`](../examples/http-deploy)). See [`docs/LOCALHOST-PROTECTION.md`](LOCALHOST-PROTECTION.md).
 - Put **TLS** in front of public endpoints — see [`docs/TLS.md`](TLS.md). Authentication and rate limiting: reverse proxy or middleware. Helpers: `tinymcp.BearerTokenAuth`, `tinymcp.WithCrossOriginProtection` (used in [`examples/http-deploy`](../examples/http-deploy)).
 - Do not set `DisableLocalhostProtection` unless you understand [MCP security guidance](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices).
 - `StartHTTP` and `ListenAndServeHTTP` set `ReadHeaderTimeout` (10s), `ReadTimeout` (30s), and `IdleTimeout` (120s) on the underlying `http.Server`, and drain on SIGINT/SIGTERM. `WriteTimeout` is intentionally unset so streamable HTTP/SSE responses can be long-lived.

@@ -71,6 +71,7 @@ Before tagging:
 | `examples/http-deploy/server-card.json` | `version` |
 | `docs/GLAMA.md`, `docs/SUBMISSIONS.md` | Example version strings (if cited) |
 | `template/go.mod` | `github.com/kioie/tiny-go-mcp-server` require version (when releasing template) |
+| `template-http/go.mod` | Same when releasing HTTP template submodule |
 
 4. Tag and push: `git tag vX.Y.Z && git push origin vX.Y.Z` — [Release workflow](.github/workflows/release.yml) builds binaries and pushes GHCR.
 

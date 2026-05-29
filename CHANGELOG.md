@@ -52,6 +52,13 @@ Stability guarantees for the public API are in [docs/STABILITY.md](docs/STABILIT
 - `docs/TLS.md` — HTTPS via reverse proxy, nginx/Caddy, and optional Go autocert.
 - HTTP `ReadTimeout` (30s) on `ListenAndServeHTTP` / `ListenAndServeHTTPContext` for slow-loris protection.
 
+### Added (agent tooling — v1.2.0)
+
+- `make lint-tools` — validates MCP tool descriptions (when / when-not / siblings) in reference servers.
+- `template-http/` gonew scaffold for streamable HTTP deploy (Smithery/Fly path).
+- `docs/LOCALHOST-PROTECTION.md` — DNS rebinding security advisory.
+- CI: multi-arch Docker build verification (no push); Fly.io/Render examples in `docs/TLS.md`.
+
 ## [1.1.3] - 2026-05-26
 
 ### Added

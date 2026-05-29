@@ -84,9 +84,7 @@ func registerCapabilities(server *tinymcp.TinyServer) error {
 	destructive := false
 	if err := tinymcp.RegisterToolDef(server, &mcp.Tool{
 		Name: "ping",
-		Description: "Demo: echo a message over streamable HTTP MCP. Use only to verify HTTP transport, " +
-			"Smithery connectivity, or client wiring; do not use for production messaging—reply in chat instead. " +
-			"Returns the input message or \"pong\" when empty.",
+		Description: "Demo: echo a message over streamable HTTP MCP. Use only to verify HTTP transport and Smithery wiring; do not use for production messaging—reply in chat instead. Use ping (not other tools) when testing connectivity. Returns the input message or \"pong\" when empty.",
 		Annotations: &mcp.ToolAnnotations{
 			ReadOnlyHint:    true,
 			IdempotentHint:  true,

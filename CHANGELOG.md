@@ -32,6 +32,15 @@ Stability guarantees for the public API are in [docs/STABILITY.md](docs/STABILIT
 
 - Registration and HTTP handler errors now return sentinel errors instead of ad-hoc strings (check with `errors.Is`, not string matching).
 
+### Added (testing — v1.2.0)
+
+- Stdio subprocess integration test for reference server (`cmd/tiny-go-mcp`).
+- Fuzz tests for tool argument JSON decoding (`tinymcp/fuzz_test.go`).
+- HTTP integration test for middleware + context shutdown.
+- Benchmarks: `RegisterTool`, `TextResult`, streamable HTTP initialize.
+- CI coverage artifact upload and 70% gate on `tinymcp` + `cmd/tiny-go-mcp`.
+- v1.2 migration guide: `docs/MIGRATION-v1.2.md`.
+
 ## [1.1.3] - 2026-05-26
 
 ### Added
